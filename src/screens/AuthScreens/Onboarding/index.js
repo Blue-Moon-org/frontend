@@ -7,6 +7,7 @@ import { data } from "./onboardData";
 export const Onbording = () => {
   return (
     <SafeAreaView>
+      
       <Text style={{ color: "red" }}>Helooo</Text>
     </SafeAreaView>
   );
