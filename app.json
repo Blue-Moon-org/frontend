@@ -15,16 +15,19 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.company.bluemoon"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+       "package": "com.company.bluemoon"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
-    }
+    },
+    "scheme":"Bluemoon"
   }
 }

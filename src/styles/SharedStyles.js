@@ -1,9 +1,11 @@
 import { StyleSheet } from "react-native";
-import { layout } from "../utils/scale";
+import { scale } from "../utils/scale";
+import { colors } from "../constants/colorpallette";
 
 export const SharedStyles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: layout.pixelSizeHorizontal(16),
+    paddingHorizontal: scale.pixelSizeHorizontal(16),
+    backgroundColor: "white",
   },
 });

@@ -1,4 +1,4 @@
-import {Fontscales} from "./Fontscales"
-import { SharedStyles } from "./sharedStyles"
+import { Fontscales } from "./Fontscales";
+import { SharedStyles } from "./SharedStyles";
 
-export { Fontscales, SharedStyles}
+export { Fontscales, SharedStyles };

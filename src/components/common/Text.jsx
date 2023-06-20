@@ -14,7 +14,7 @@ export const Text = ({
 }) => {
   return (
     <MainText
-      allowFontScaling={false}
+      allowFontScaling={true}
       numberOfLines={numberOfLines}
       ellipsizeMode={ellipsizeMode}
       style={[color, textStyle]}

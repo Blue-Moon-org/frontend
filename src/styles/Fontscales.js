@@ -1,157 +1,172 @@
 import { StyleSheet } from "react-native";
-import { layout } from "../utils/scale";
+import { scale } from "../utils/scale";
 
 export const Fontscales = StyleSheet.create({
   // heading
 
   headingSmallRegular: {
-    fontSize: layout.size.h3,
-    lineHeight: layout.lineSize.lh3,
+    fontSize: scale.size.h3,
+    lineHeight: scale.lineSize.lh3,
     fontWeight: "400",
+    fontFamily: "Outfit_400Regular",
   },
   headingSmallMedium: {
-    fontSize: layout.size.h3,
-    lineHeight: layout.lineSize.lh3,
+    fontSize: scale.size.h3,
+    lineHeight: scale.lineSize.lh3,
     fontWeight: "500",
+    fontFamily: "Outfit_500Medium",
   },
   headingSmallBold: {
-    fontSize: layout.size.h3,
-    lineHeight: layout.lineSize.lh3,
+    fontSize: scale.size.h3,
+    lineHeight: scale.lineSize.lh3,
     fontWeight: "700",
+    fontFamily: "Outfit_700Bold",
   },
 
   headingLargeRegular: {
-    fontSize: layout.size.h1,
-    lineHeight: layout.lineSize.lh1,
+    fontSize: scale.size.h1,
+    lineHeight: scale.lineSize.lh1,
     fontWeight: "400",
+    fontFamily: "Outfit_400Regular",
   },
   headingLargeRegular: {
-    fontSize: layout.size.h1,
-    lineHeight: layout.lineSize.lh1,
+    fontSize: scale.size.h1,
+    lineHeight: scale.lineSize.lh1,
     fontWeight: "500",
+    fontFamily: "Outfit_500Medium",
   },
   headingLargeBold: {
-    fontSize: layout.size.h1,
-    lineHeight: layout.lineSize.lh1,
+    fontSize: scale.size.h1,
+    lineHeight: scale.lineSize.lh1,
     fontWeight: "700",
+    fontFamily: "Outfit_700Bold",
   },
 
   // paragraph
 
   paragraphSmallRegular: {
-    fontSize: layout.size.h5,
-    lineHeight: layout.lineSize.lh5,
+    fontSize: scale.size.h5,
+    lineHeight: scale.lineSize.lh5,
     fontWeight: "400",
+    fontFamily: "Outfit_400Regular",
   },
   paragraphSmallMedium: {
-    fontSize: layout.size.h5,
-    lineHeight: layout.lineSize.lh5,
+    fontSize: scale.size.h5,
+    lineHeight: scale.lineSize.lh5,
     fontWeight: "500",
+    fontFamily: "Outfit_500Medium",
   },
   paragraphSmallBold: {
-    fontSize: layout.size.h5,
-    lineHeight: layout.lineSize.lh5,
+    fontSize: scale.size.h5,
+    lineHeight: scale.lineSize.lh5,
     fontWeight: "700",
+    fontFamily: "Outfit_700Bold",
   },
 
   paragraphMediumRegular: {
-    fontSize: layout.size.h4,
-    lineHeight: layout.lineSize.lh4,
+    fontSize: scale.size.h4,
+    lineHeight: scale.lineSize.lh4,
     fontWeight: "400",
-  },
-  paragraphMediumRegular: {
-    fontSize: layout.size.h4,
-    lineHeight: layout.lineSize.lh4,
-    fontWeight: "500",
+    fontFamily: "Outfit_400Regular",
   },
   paragraphMediumBold: {
-    fontSize: layout.size.h4,
-    lineHeight: layout.lineSize.lh4,
+    fontSize: scale.size.h4,
+    lineHeight: scale.lineSize.lh4,
     fontWeight: "700",
+    fontFamily: "Outfit_700Bold",
   },
 
   paragraphLargeRegular: {
-    fontSize: layout.size.h2,
-    lineHeight: layout.lineSize.lh2,
+    fontSize: scale.size.h2,
+    lineHeight: scale.lineSize.lh2,
     fontWeight: "400",
+    fontFamily: "Outfit_400Regular",
   },
   paragraphLargeRegular: {
-    fontSize: layout.size.h2,
-    lineHeight: layout.lineSize.lh2,
+    fontSize: scale.size.h2,
+    lineHeight: scale.lineSize.lh2,
     fontWeight: "500",
+    fontFamily: "Outfit_500Medium",
   },
   paragraphLargeBold: {
-    fontSize: layout.size.h2,
-    lineHeight: layout.lineSize.lh2,
+    fontSize: scale.size.h2,
+    lineHeight: scale.lineSize.lh2,
     fontWeight: "700",
+    fontFamily: "Outfit_700Bold",
   },
 
   //   label
 
   labelSmallRegular: {
-    fontSize: layout.size.h5,
-    lineHeight: layout.lineSize.lh5,
+    fontSize: scale.size.h5,
+    lineHeight: scale.lineSize.lh5,
     fontWeight: "400",
+    fontFamily: "Outfit_400Regular",
   },
   labelSmallMedium: {
-    fontSize: layout.size.h5,
-    lineHeight: layout.lineSize.lh5,
+    fontSize: scale.size.h5,
+    lineHeight: scale.lineSize.lh5,
     fontWeight: "500",
+    fontFamily: "Outfit_500Medium",
   },
   labelSmallBold: {
-    fontSize: layout.size.h5,
-    lineHeight: layout.lineSize.lh5,
+    fontSize: scale.size.h5,
+    lineHeight: scale.lineSize.lh5,
     fontWeight: "700",
+    fontFamily: "Outfit_700Bold",
   },
 
   labelMediumRegular: {
-    fontSize: layout.size.h4,
-    lineHeight: layout.lineSize.lh4,
+    fontSize: scale.size.h4,
+    lineHeight: scale.lineSize.lh4,
     fontWeight: "400",
+    fontFamily: "Outfit_400Regular",
   },
   labelMediumRegular: {
-    fontSize: layout.size.h4,
-    lineHeight: layout.lineSize.lh4,
+    fontSize: scale.size.h4,
+    lineHeight: scale.lineSize.lh4,
     fontWeight: "500",
+    fontFamily: "Outfit_500Medium",
   },
   labelMediumBold: {
-    fontSize: layout.size.h4,
-    lineHeight: layout.lineSize.lh4,
+    fontSize: scale.size.h4,
+    lineHeight: scale.lineSize.lh4,
     fontWeight: "700",
+    fontFamily: "Outfit_700Bold",
   },
 
   labelLargeRegular: {
-    fontSize: layout.size.h3,
-    lineHeight: layout.lineSize.lh3,
+    fontSize: scale.size.h3,
+    lineHeight: scale.lineSize.lh3,
     fontWeight: "400",
+    fontFamily: "Outfit_400Regular",
   },
   labelLargeRegular: {
-    fontSize: layout.size.h3,
-    lineHeight: layout.lineSize.lh3,
+    fontSize: scale.size.h3,
+    lineHeight: scale.lineSize.lh3,
     fontWeight: "500",
+    fontFamily: "Outfit_500Medium",
   },
   labelLargeBold: {
-    fontSize: layout.size.h3,
-    lineHeight: layout.lineSize.lh3,
+    fontSize: scale.size.h3,
+    lineHeight: scale.lineSize.lh3,
     fontWeight: "700",
+    fontFamily: "Outfit_700Bold",
   },
 
   // Tabs
   tabInactive: {
-    fontSize: layout.size.h4,
-    lineHeight: layout.lineSize.lh4,
+    fontSize: scale.size.h4,
+    lineHeight: scale.lineSize.lh4,
     fontWeight: "400",
+    fontFamily: "Outfit_400Regular",
   },
   tabActive: {
-    fontSize: layout.size.h4,
-    lineHeight: layout.lineSize.lh4,
+    fontSize: scale.size.h4,
+    lineHeight: scale.lineSize.lh4,
     fontWeight: "700",
+    fontFamily: "Outfit_700Bold",
   },
 
   //   others
-
-  container: {
-    flex: 1,
-    paddingHorizontal: layout.pixelSizeHorizontal(16),
-  },
 });

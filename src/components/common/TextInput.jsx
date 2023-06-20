@@ -68,12 +68,12 @@ export const TextInput = ({
 
 const styles = StyleSheet.create({
   textInputStyle: {
-    height: layout.heightPixel(52),
-    borderRadius: layout.fontPixel(1),
-    paddingVertical: layout.pixelSizeVertical(4),
-    borderWidth: layout.widthPixel(1),
+    height: scale.heightPixel(52),
+    borderRadius: scale.fontPixel(1),
+    paddingVertical: scale.pixelSizeVertical(4),
+    borderWidth: scale.widthPixel(1),
     fontFamily: "Outfit_400Regular",
-    fontSize: layout.fontPixel(16),
+    fontSize: scale.fontPixel(16),
     lineHeight: scale.lineSize.lh1,
     paddingHorizontal: scale.pixelSizeHorizontal(16),
     paddingVertical: scale.pixelSizeVertical(14),
