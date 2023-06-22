@@ -12,6 +12,7 @@ export const TextInput = ({
   editable,
   defaultValue,
   key,
+  refs,
   inlineImagePadding,
   multiline,
   maxLength,
@@ -26,6 +27,8 @@ export const TextInput = ({
   autoComplete,
   autoFocus,
   clearButtonMode,
+  returnKeyType,
+  returnKeyLabel,
   others,
 }) => {
   return (
@@ -47,13 +50,14 @@ export const TextInput = ({
       clearButtonMode={clearButtonMode ? "while-editing" : "never"}
       selectionColor={colors.gray1}
       textContentType={textContentType}
-      tex
+      returnKeyType={returnKeyType}
+      returnKeyLabel={returnKeyLabel}
       placeholder={placeholder}
       placeholderTextColor={"#838383"}
       onBlur={onBlur}
       onFocus={onFocus}
       autoComplete={autoComplete}
-      AUT
+      ref={refs}
       autoFocus={autoFocus}
       style={[
         styles.textInputStyle,
