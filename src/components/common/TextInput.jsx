@@ -1,6 +1,7 @@
 import { TextInput as Input, StyleSheet } from "react-native";
 import React from "react";
 import { scale } from "../../utils/scale";
+import { colors } from "../../constants/colorpallette";
 
 export const TextInput = ({
   onChangeText,
@@ -22,6 +23,9 @@ export const TextInput = ({
   keyboardType,
   onContentSizeChange,
   inputState,
+  autoComplete,
+  autoFocus,
+  clearButtonMode,
   others,
 }) => {
   return (
@@ -34,19 +38,23 @@ export const TextInput = ({
       enablesReturnKeyAutomatically={false}
       blurOnSubmit={true}
       editable={editable}
-      cursorColor={theme.dark1}
+      cursorColor={colors.grey1}
       defaultValue={defaultValue}
       key={key}
       inlineImagePadding={inlineImagePadding}
       multiline={multiline}
       maxLength={maxLength}
-      clearButtonMode={"while-editing"}
-      //   selectionColor={theme.gray1}
+      clearButtonMode={clearButtonMode ? "while-editing" : "never"}
+      selectionColor={colors.gray1}
       textContentType={textContentType}
+      tex
       placeholder={placeholder}
       placeholderTextColor={"#838383"}
       onBlur={onBlur}
       onFocus={onFocus}
+      autoComplete={autoComplete}
+      AUT
+      autoFocus={autoFocus}
       style={[
         styles.textInputStyle,
         textInputStyle,
@@ -68,13 +76,12 @@ export const TextInput = ({
 
 const styles = StyleSheet.create({
   textInputStyle: {
-    height: scale.heightPixel(52),
-    borderRadius: scale.fontPixel(1),
+    height: scale.heightPixel(47),
+    borderRadius: scale.fontPixel(5),
     paddingVertical: scale.pixelSizeVertical(4),
     borderWidth: scale.widthPixel(1),
     fontFamily: "Outfit_400Regular",
-    fontSize: scale.fontPixel(16),
-    lineHeight: scale.lineSize.lh1,
+    fontSize: scale.fontPixel(13),
     paddingHorizontal: scale.pixelSizeHorizontal(16),
     paddingVertical: scale.pixelSizeVertical(14),
     borderColor: "#F0F0F0",

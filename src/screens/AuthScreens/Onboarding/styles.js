@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     paddingTop: scale.pixelSizeVertical(22),
   },
   control: {
-    marginBottom: scale.pixelSizeVertical(55),
+    marginBottom: scale.pixelSizeVertical(20),
     width: "100%",
     backgroundColor: "transparent",
   },
@@ -50,8 +50,24 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     borderRadius: scale.fontPixel(8),
   },
+  registerButton: {
+    // backgroundColor: colors.mainPrimary,
+    paddingHorizontal: scale.pixelSizeHorizontal(30),
+    paddingVertical: scale.fontPixel(12),
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    borderRadius: scale.fontPixel(8),
+    marginTop: scale.pixelSizeVertical(15),
+  },
   googleSignUpText: {
     color: "white",
     paddingLeft: scale.pixelSizeHorizontal(10),
   },
+  registerText: {
+    color: colors.mainPrimary,
+    paddingLeft: scale.pixelSizeHorizontal(10),
+  },
+  buttonContainer: {},
 });

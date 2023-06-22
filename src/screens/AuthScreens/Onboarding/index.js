@@ -8,6 +8,7 @@ import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Text } from "../../../components/common";
 import { Control } from "./Control";
+import { useNavigation } from "@react-navigation/native";
 
 export const Onbording = () => {
   const RenderComponents = ({ item, index }) => {
@@ -44,7 +45,7 @@ export const Onbording = () => {
   const slideref = useRef(null);
 
   const viewableItemChanged = useRef(({ viewableItems }) => {
-    setCurrentIndex(viewableItems[0].index);
+    setCurrentIndex(viewableItems[0] ? viewableItems[0]?.index : 2);
   }).current;
 
   const viewConfig = useRef({
@@ -59,10 +60,12 @@ export const Onbording = () => {
     }
   };
 
+  const { navigate } = useNavigation();
+
   return (
     <SafeAreaView style={SharedStyles.container}>
       <Text
-        onPress={() => {}}
+        onPress={() => navigate("Register")}
         textStyle={[styles.skipText, Fontscales.paragraphMediumRegular]}
         text={"Skip"}
       />
@@ -78,7 +81,7 @@ export const Onbording = () => {
         }}
         onViewableItemsChanged={viewableItemChanged}
         keyExtractor={(item) => item.id}
-        scrollEventThrottle={16}
+        scrollEventThrottle={32}
         viewabilityConfig={viewConfig}
         ref={slideref}
         onScroll={Animated.event(
@@ -92,6 +95,7 @@ export const Onbording = () => {
         percentage={(currentIndex + 1) * (100 / data.length)}
         scrollTo={scrollControl}
         currentIndex={currentIndex}
+        navigate={navigate}
       />
     </SafeAreaView>
   );

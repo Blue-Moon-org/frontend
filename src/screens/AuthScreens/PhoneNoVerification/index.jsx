@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export const Verification = () => {
+export const PhoneNoVerification = () => {
   return (
     <View>
       <Text>index</Text>

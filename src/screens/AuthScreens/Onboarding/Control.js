@@ -6,7 +6,6 @@ import Svg, { G, Circle } from "react-native-svg";
 import { colors } from "../../../constants/colorpallette";
 import { Ionicons } from "@expo/vector-icons";
 import { data } from "./onboardData";
-import { Text } from "../../../components/common";
 import { SignInWithGoogle } from "./SignInWithGoogle";
 
 export const Control = ({ percentage, scrollTo, currentIndex }) => {
@@ -50,7 +49,6 @@ export const Control = ({ percentage, scrollTo, currentIndex }) => {
       progressAnimation.removeAllListeners();
     };
   }, []);
-
 
   return (
     <View style={styles.control}>
