@@ -100,7 +100,7 @@ export const Buyer = ({ updateBuyersState, buyersState }) => {
                   //   editable={}
                   // onChangeText={}
                   placeholder={"************"}
-                  textContentType={"givenName"}
+                  textContentType={"password"}
                   // autoComplete={"name-given"}
                   // value={""}
                   clearButtonMode={false}

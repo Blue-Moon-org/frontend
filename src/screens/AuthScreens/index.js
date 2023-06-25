@@ -4,6 +4,8 @@ import { Login } from "./Login";
 import { Register } from "./Register";
 import { PhoneNoVerification } from "./PhoneNoVerification";
 import { Onbording } from "./Onboarding";
+import { ForgotPasswordVerification } from "./ForgotPassword/ForgotPasswordVerification";
+import { ResetPassword } from "./ForgotPassword/ResetPassword";
 
 export {
   ForgotPassword,
@@ -12,4 +14,6 @@ export {
   EmailVerification,
   PhoneNoVerification,
   Onbording,
+  ForgotPasswordVerification,
+  ResetPassword,
 };

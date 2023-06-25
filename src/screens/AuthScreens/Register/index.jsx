@@ -37,7 +37,7 @@ export const Register = () => {
     <SafeAreaView style={[SharedStyles.container]}>
       <Text
         textStyle={[styles.headerText, Fontscales.headingLargeBold]}
-        text={"Register for a \n account"}
+        text={"Register for an \nAccount"}
       />
       <Text
         textStyle={[styles.subText, Fontscales.paragraphSmallMedium]}

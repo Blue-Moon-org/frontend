@@ -7,6 +7,8 @@ import {
   Register,
   EmailVerification,
   PhoneNoVerification,
+  ForgotPasswordVerification,
+  ResetPassword,
 } from "../screens/AuthScreens";
 
 const Stack = createSharedElementStackNavigator();
@@ -64,6 +66,26 @@ export const AuthStack = () => {
         }}
         name="PhoneNoVerification"
         component={PhoneNoVerification}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+          presentation: "card",
+          animationTypeForReplace: "push",
+          animation: "slide_from_right",
+        }}
+        name="ForgotPasswordVerification"
+        component={ForgotPasswordVerification}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+          presentation: "card",
+          animationTypeForReplace: "push",
+          animation: "slide_from_right",
+        }}
+        name="ResetPassword"
+        component={ResetPassword}
       />
     </Stack.Navigator>
   );

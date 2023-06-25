@@ -22,7 +22,7 @@ export const Login = () => {
       <View style={{ height: "100%" }}>
         <Text
           textStyle={[styles.headerText, Fontscales.headingLargeBold]}
-          text={"Log in your \n account"}
+          text={"Log in your \nAccount"}
         />
         <Text
           textStyle={[styles.subText, Fontscales.paragraphSmallMedium]}
@@ -89,7 +89,11 @@ export const Login = () => {
               />
               <Text textStyle={styles.rememberMeText} text={"Remember me"} />
             </View>
-            <Text textStyle={styles.forgotPassword} text="forgot password?" />
+            <Text
+              onPress={() => navigate("ForgotPassword")}
+              textStyle={styles.forgotPassword}
+              text="forgot password?"
+            />
           </View>
 
           <View style={styles.outterContainer}>
