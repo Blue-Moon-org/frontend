@@ -8,12 +8,18 @@ import {
 } from "../../../components/common";
 import { styles } from "./styles";
 import { scale } from "../../../utils/scale";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
 
-export const Designer = ({ updateDesignersState, designersState }) => {
+export const Designer = ({
+  updateDesignersState,
+  designersState,
+  submitDesignersAccount,
+  registerData,
+}) => {
   const { navigate } = useNavigation();
+
   return (
     <View
       style={{
@@ -25,17 +31,19 @@ export const Designer = ({ updateDesignersState, designersState }) => {
         <View>
           <View style={styles.subContainer}>
             <View style={{ width: "48%" }}>
-              <Text text={"First Name"} textStyle={styles.label} />
+              <Text text={"Full Name"} textStyle={styles.label} />
               <TextInput
                 textInputStyle={{}}
                 //    inputState={}
                 //   editable={}
-                // onChangeText={}
+                onChangeText={(text) =>
+                  updateDesignersState({ ...designersState, fullName: text })
+                }
                 placeholder={"Enter your first name"}
                 textContentType={"givenName"}
-                // autoComplete={"name-given"}
+                autoComplete={"name-given"}
                 autoFocus={true}
-                // value={""}
+                value={designersState.fullName}
               />
             </View>
 
@@ -46,10 +54,12 @@ export const Designer = ({ updateDesignersState, designersState }) => {
                 autoComplete={"username"}
                 //    inputState={}
                 //   editable={}
-                // onChangeText={}
+                onChangeText={(text) =>
+                  updateDesignersState({ ...designersState, brandName: text })
+                }
                 placeholder={"Enter your last last"}
                 textContentType={"familyName"}
-                // value={""}
+                value={designersState.brandName}
               />
             </View>
           </View>
@@ -59,10 +69,12 @@ export const Designer = ({ updateDesignersState, designersState }) => {
             textInputStyle={[styles.inputSpace]}
             //    inputState={}
             //   editable={}
-            // onChangeText={}
+            onChangeText={(text) =>
+              updateDesignersState({ ...designersState, email: text })
+            }
             placeholder={"example@newmail.com"}
             textContentType={"name"}
-            // value={""}
+            value={designersState.email}
             autoComplete={"email"}
           />
 
@@ -71,10 +83,12 @@ export const Designer = ({ updateDesignersState, designersState }) => {
             textInputStyle={[styles.inputSpace]}
             //    inputState={}
             //   editable={}
-            // onChangeText={}
+            onChangeText={(text) =>
+              updateDesignersState({ ...designersState, address: text })
+            }
             placeholder={"Enter your address"}
             textContentType={"addressCity"}
-            // value={""}
+            value={designersState.address}
             autoComplete={"street-address"}
           />
 
@@ -85,11 +99,13 @@ export const Designer = ({ updateDesignersState, designersState }) => {
                 textInputStyle={{}}
                 //    inputState={}
                 //   editable={}
-                // onChangeText={}
+                onChangeText={(text) =>
+                  updateDesignersState({ ...designersState, phoneNumber: text })
+                }
+                autoComplete={"tel-device"}
                 placeholder={"+XXX XXX XXXX XXX"}
-                textContentType={"givenName"}
-                // autoComplete={"name-given"}
-                // value={""}
+                value={designersState.phoneNumber}
+                textContentType={"telephoneNumber"}
               />
             </View>
 
@@ -97,13 +113,18 @@ export const Designer = ({ updateDesignersState, designersState }) => {
               <Text text={"Other Contact"} textStyle={styles.label} />
               <TextInput
                 textInputStyle={{}}
-                autoComplete={"username"}
                 //    inputState={}
                 //   editable={}
-                // onChangeText={}
+                onChangeText={(text) =>
+                  updateDesignersState({
+                    ...designersState,
+                    otherContact: text,
+                  })
+                }
+                value={designersState.otherContact}
+                autoComplete={"tel-device"}
                 placeholder={"+XXX XXX XXXX XXX"}
-                textContentType={"familyName"}
-                // value={""}
+                textContentType={"telephoneNumber"}
               />
             </View>
           </View>
@@ -116,11 +137,15 @@ export const Designer = ({ updateDesignersState, designersState }) => {
                   textInputStyle={styles.textInputStyle}
                   //    inputState={}
                   //   editable={}
-                  // onChangeText={}
+                  onChangeText={(text) =>
+                    updateDesignersState({
+                      ...designersState,
+                      password: text,
+                    })
+                  }
                   placeholder={"************"}
-                  textContentType={"givenName"}
-                  // autoComplete={"name-given"}
-                  // value={""}
+                  textContentType={"password"}
+                  value={designersState.password}
                   clearButtonMode={false}
                   secureTextEntry={!designersState.showPassword}
                 />
@@ -150,10 +175,15 @@ export const Designer = ({ updateDesignersState, designersState }) => {
                   autoComplete={"name-family"}
                   //    inputState={}
                   //   editable={}
-                  // onChangeText={}
+                  onChangeText={(text) =>
+                    updateDesignersState({
+                      ...designersState,
+                      confirmPassword: text,
+                    })
+                  }
                   placeholder={"************"}
-                  textContentType={"familyName"}
-                  // value={""}
+                  textContentType={"password"}
+                  value={designersState.confirmPassword}
                   clearButtonMode={false}
                   secureTextEntry={!designersState.showPassword}
                 />
@@ -206,21 +236,31 @@ export const Designer = ({ updateDesignersState, designersState }) => {
             </BaseText>
           </View>
 
+          <View style={styles.errContainer}>
+            <Text
+              style={{
+                color: "red",
+              }}
+              text={designersState.error ?? registerData.error.message}
+            />
+          </View>
+
           <View
             style={{
               justifyContent: "center",
               alignItems: "center",
-              marginTop: scale.pixelSizeVertical(20),
+              marginTop: scale.pixelSizeVertical(15),
             }}
           >
             <Button
               textStyle={styles.btnTextStyle}
               title={"Add Specialties"}
               containerStyle={styles.btnContainer}
+              onPress={() => submitDesignersAccount()}
             />
           </View>
 
-          <View style={{ paddingTop: scale.pixelSizeVertical(40) }}>
+          <View style={{ paddingTop: scale.pixelSizeVertical(23) }}>
             <BaseText style={[styles.textScale, { textAlign: "center" }]}>
               Already a user?{" "}
               <Text

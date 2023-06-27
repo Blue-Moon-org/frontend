@@ -133,4 +133,14 @@ export const styles = StyleSheet.create({
     borderBottomColor: "transparent",
     paddingRight: scale.pixelSizeHorizontal(7),
   },
+  textInputStyleHidden: {
+    opacity: 0,
+    height: 1,
+    width: 1,
+    backgroundColor: "red",
+    borderColor: "red",
+    borderWidth: 1,
+    position: "absolute",
+    zIndex: -19,
+  },
 });

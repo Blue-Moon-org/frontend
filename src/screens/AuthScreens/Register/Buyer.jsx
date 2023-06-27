@@ -12,7 +12,12 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
 
-export const Buyer = ({ updateBuyersState, buyersState }) => {
+export const Buyer = ({
+  updateBuyersState,
+  buyersState,
+  submitBuyersAccount,
+  registerData,
+}) => {
   const { navigate } = useNavigation();
   return (
     <View
@@ -28,14 +33,19 @@ export const Buyer = ({ updateBuyersState, buyersState }) => {
               <Text text={"First Name"} textStyle={styles.label} />
               <TextInput
                 textInputStyle={{}}
-                //    inputState={}
-                //   editable={}
-                // onChangeText={}
+                //  inputState={}
+                // editable={}
+                onChangeText={(text) =>
+                  updateBuyersState({
+                    ...buyersState,
+                    firstName: text,
+                  })
+                }
                 placeholder={"Enter your first name"}
                 textContentType={"givenName"}
-                // autoComplete={"name-given"}
+                autoComplete={"name-given"}
                 autoFocus={true}
-                // value={""}
+                value={buyersState.firstName}
               />
             </View>
 
@@ -46,10 +56,15 @@ export const Buyer = ({ updateBuyersState, buyersState }) => {
                 autoComplete={"name-family"}
                 //    inputState={}
                 //   editable={}
-                // onChangeText={}
-                placeholder={"Enter your last last"}
+                onChangeText={(text) =>
+                  updateBuyersState({
+                    ...buyersState,
+                    lastName: text,
+                  })
+                }
+                placeholder={"Enter your last name"}
                 textContentType={"familyName"}
-                // value={""}
+                value={buyersState.lastName}
               />
             </View>
           </View>
@@ -59,10 +74,15 @@ export const Buyer = ({ updateBuyersState, buyersState }) => {
             textInputStyle={[styles.inputSpace]}
             //    inputState={}
             //   editable={}
-            // onChangeText={}
+            onChangeText={(text) => {
+              updateBuyersState({
+                ...buyersState,
+                email: text,
+              });
+            }}
             placeholder={"example@newmail.com"}
             textContentType={"name"}
-            // value={""}
+            value={buyersState.email}
             autoComplete={"email"}
           />
 
@@ -71,10 +91,15 @@ export const Buyer = ({ updateBuyersState, buyersState }) => {
             textInputStyle={[styles.inputSpace]}
             //    inputState={}
             //   editable={}
-            // onChangeText={}
+            onChangeText={(text) =>
+              updateBuyersState({
+                ...buyersState,
+                address: text,
+              })
+            }
             placeholder={"Enter your address"}
             textContentType={"addressCity"}
-            // value={""}
+            value={buyersState.address}
             autoComplete={"street-address"}
           />
 
@@ -83,10 +108,16 @@ export const Buyer = ({ updateBuyersState, buyersState }) => {
             textInputStyle={[styles.inputSpace]}
             //    inputState={}
             //   editable={}
-            // onChangeText={}
+            onChangeText={(text) =>
+              updateBuyersState({
+                ...buyersState,
+                phoneNumber: text,
+              })
+            }
+            keyboardType={"phone-pad"}
             placeholder={"+XXX XXX XXXX XXX"}
             textContentType={"telephoneNumber"}
-            // value={""}
+            value={buyersState.phoneNumber}
             autoComplete={"tel-device"}
           />
 
@@ -98,11 +129,16 @@ export const Buyer = ({ updateBuyersState, buyersState }) => {
                   textInputStyle={styles.textInputStyle}
                   //    inputState={}
                   //   editable={}
-                  // onChangeText={}
+                  onChangeText={(text) => {
+                    const textReplace = text.replace(/ +/g, "");
+                    updateBuyersState({
+                      ...buyersState,
+                      password: textReplace,
+                    });
+                  }}
                   placeholder={"************"}
                   textContentType={"password"}
-                  // autoComplete={"name-given"}
-                  // value={""}
+                  value={buyersState.password}
                   clearButtonMode={false}
                   secureTextEntry={!buyersState.showPassword}
                 />
@@ -130,10 +166,16 @@ export const Buyer = ({ updateBuyersState, buyersState }) => {
                   autoComplete={"password"}
                   //    inputState={}
                   //   editable={}
-                  // onChangeText={}
+                  onChangeText={(text) => {
+                    const textReplace = text.replace(/ +/g, "");
+                    updateBuyersState({
+                      ...buyersState,
+                      confirmPassword: textReplace,
+                    });
+                  }}
                   placeholder={"************"}
                   textContentType={"password"}
-                  // value={""}
+                  value={buyersState.confirmPassword}
                   clearButtonMode={false}
                   secureTextEntry={!buyersState.showPassword}
                 />
@@ -184,22 +226,29 @@ export const Buyer = ({ updateBuyersState, buyersState }) => {
             </BaseText>
           </View>
 
+          <View style={styles.errContainer}>
+            <Text
+              textStyle={styles.errorText}
+              text={buyersState.error ?? registerData.error.message}
+            />
+          </View>
+
           <View
             style={{
               justifyContent: "center",
               alignItems: "center",
-              marginTop: scale.pixelSizeVertical(20),
+              marginTop: scale.pixelSizeVertical(15),
             }}
           >
             <Button
               textStyle={styles.btnTextStyle}
               title={"Register"}
               containerStyle={styles.btnContainer}
-              onPress={() => navigate("EmailVerification")}
+              onPress={() => submitBuyersAccount()}
             />
           </View>
 
-          <View style={{ paddingTop: scale.pixelSizeVertical(40) }}>
+          <View style={{ paddingTop: scale.pixelSizeVertical(23) }}>
             <BaseText style={[styles.textScale, { textAlign: "center" }]}>
               Already a user?{" "}
               <Text

@@ -123,7 +123,7 @@ export const ForgotPasswordVerification = () => {
             textContentType={"oneTimeCode"}
             onBlur={() => handleBlur()}
             refs={inputRef}
-            textInputStyle={styles.textInputStyle}
+            textInputStyle={styles.textInputStyleHidden}
           />
         </View>
 

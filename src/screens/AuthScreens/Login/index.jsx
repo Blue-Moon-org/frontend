@@ -8,14 +8,43 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { scale } from "../../../utils/scale";
 import { colors } from "../../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
+import { UseSelector, useDispatch, useSelector } from "react-redux";
+import { userLogin } from "../../../Redux/actions";
 
 export const Login = () => {
   const [state, updateState] = useState({
     showPassword: false,
     rememberMe: true,
+    email: "",
+    password: "",
+    error: "",
   });
 
+  const dispatch = useDispatch();
+
+  const loginData = useSelector((state) => state.loginState);
+  console.warn(loginData);
   const { navigate } = useNavigation();
+
+  const loginHandler = () => {
+    if (state.email === "") {
+      updateState({
+        ...state,
+        error: "email field can not be enter",
+      });
+    } else if (state.password === "") {
+      updateState({
+        ...state,
+        error: "password field can not be enter",
+      });
+    } else {
+      updateState({
+        ...state,
+        error: "",
+      });
+      dispatch(userLogin(state));
+    }
+  };
 
   return (
     <SafeAreaView style={[SharedStyles.container]}>
@@ -36,10 +65,16 @@ export const Login = () => {
             textInputStyle={[styles.inputSpace]}
             //    inputState={}
             //   editable={}
-            // onChangeText={}
+            onChangeText={(text) => {
+              updateState({
+                ...state,
+                email: text,
+              });
+            }}
+            keyboardType={"email"}
             placeholder={"example@newmail.com"}
-            textContentType={"name"}
-            // value={""}
+            textContentType={"email"}
+            value={state.email}
             autoComplete={"email"}
           />
 
@@ -50,10 +85,15 @@ export const Login = () => {
               autoComplete={"password"}
               //    inputState={}
               //   editable={}
-              // onChangeText={}
+              onChangeText={(text) => {
+                updateState({
+                  ...state,
+                  password: text,
+                });
+              }}
               placeholder={"************"}
               textContentType={"password"}
-              // value={""}
+              value={state.password}
               clearButtonMode={false}
               secureTextEntry={!state.showPassword}
             />
@@ -98,6 +138,7 @@ export const Login = () => {
 
           <View style={styles.outterContainer}>
             <Button
+              onPress={() => loginHandler()}
               textStyle={styles.btnTextStyle}
               containerStyle={styles.innerContainer}
               title={"Log in"}

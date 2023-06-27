@@ -70,6 +70,15 @@ export const styles = StyleSheet.create({
   btnTextStyle: {
     color: "white",
   },
+
+  errorText: {
+    fontSize: scale.fontPixel(13),
+    fontFamily: "Outfit_400Regular",
+    lineHeight: scale.heightPixel(15),
+    paddingBottom: scale.pixelSizeVertical(8),
+    paddingLeft: scale.pixelSizeHorizontal(5),
+    color: colors.error,
+  },
   btnContainer: {
     backgroundColor: colors.mainPrimary,
     paddingHorizontal: scale.pixelSizeHorizontal(40),
@@ -91,4 +100,6 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingRight: scale.pixelSizeHorizontal(16),
   },
+  errContainer: {},
+  // errorText: {},
 });
