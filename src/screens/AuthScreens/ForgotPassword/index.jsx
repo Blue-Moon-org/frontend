@@ -1,13 +1,44 @@
 import { Keyboard, Pressable, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, TextInput, Button } from "../../../components/common";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { forgotPassword } from "../../../Redux/actions";
 
 export const ForgotPassword = () => {
   const { navigate } = useNavigation();
+
+  const [state, updateState] = useState({
+    email: "",
+    error: "",
+  });
+
+  const dispatch = useDispatch();
+
+  const data = useSelector((state) => state.forgotPassword);
+
+  const continueHandler = () => {
+    if (state.email === "") {
+      updateState({
+        ...state,
+        error: "Field must not be blank",
+      });
+    } else if (/^\S+@\S+\.\S+$/.test(state.email) === false) {
+      updateState({
+        ...state,
+        error: "Invalid email",
+      });
+    } else {
+      dispatch(forgotPassword(state, navigate));
+      updateState({
+        ...state,
+        error: "",
+      });
+    }
+  };
 
   return (
     <SafeAreaView style={SharedStyles.container}>
@@ -27,18 +58,29 @@ export const ForgotPassword = () => {
           textInputStyle={[styles.inputSpace]}
           //    inputState={}
           //   editable={}
-          // onChangeText={}
+          onChangeText={(text) => {
+            updateState({
+              ...state,
+              email: text,
+            });
+          }}
           placeholder={"example@newmail.com"}
-          textContentType={"name"}
-          // value={""}
+          textContentType={"emailAddress"}
+          value={state.email}
           autoComplete={"email"}
+          keyboardType={"email-address"}
         />
+
+        <View style={styles.errContainer}>
+          <Text
+            textStyle={styles.errorText}
+            text={state.error ?? data.error.message}
+          />
+        </View>
 
         <View style={styles.outterContainer}>
           <Button
-            onPress={() => {
-              navigate("ForgotPasswordVerification");
-            }}
+            onPress={() => continueHandler()}
             textStyle={styles.btnTextStyle}
             containerStyle={styles.innerContainer}
             title={"Continue"}

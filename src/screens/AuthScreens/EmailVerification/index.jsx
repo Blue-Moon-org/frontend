@@ -8,6 +8,8 @@ import { Fontscales, SharedStyles } from "../../../styles";
 import { Button, Text, TextInput } from "../../../components/common";
 import { colors } from "../../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
+import { emailVerify } from "../../../Redux/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 export const EmailVerification = () => {
   const [otpState, updateOtpState] = useState({
@@ -15,6 +17,7 @@ export const EmailVerification = () => {
     codeReady: false,
     codeMaxLength: 5,
     inputFocus: false,
+    error: null,
   });
 
   const { navigate } = useNavigation();
@@ -29,7 +32,7 @@ export const EmailVerification = () => {
     );
 
     return () => updateOtpState({ ...otpState, codeReady: false });
-  }, []);
+  }, [otpState.code]);
 
   const eachDigit = new Array(otpState.codeMaxLength).fill(0);
 
@@ -40,7 +43,6 @@ export const EmailVerification = () => {
     const isCurrentDigit = index === otpState.code.length;
     const isLastDigit = index === otpState.codeMaxLength - 1;
     const codeFull = otpState.code.length === otpState.codeMaxLength;
-
     const isDigitFocus = isCurrentDigit || (isLastDigit && codeFull);
 
     return (
@@ -66,8 +68,28 @@ export const EmailVerification = () => {
 
   const inputRef = useRef(null);
 
+  const dispatch = useDispatch();
+
+  const data = useSelector((state) => state.emailVerify);
+
   const handleBlur = () => {
     updateOtpState({ ...otpState, inputFocus: false });
+  };
+
+  const verifyHandler = () => {
+    if (otpState.codeReady === false) {
+      updateOtpState({
+        ...otpState,
+        error: "Inavlid code",
+      });
+    } else {
+      dispatch(emailVerify(otpState, navigate));
+      updateOtpState({
+        ...otpState,
+        error: null,
+      });
+      navigate("PhoneNoVerification");
+    }
   };
 
   const onpress = () => {
@@ -124,6 +146,14 @@ export const EmailVerification = () => {
             onBlur={() => handleBlur()}
             refs={inputRef}
             textInputStyle={styles.textInputStyle}
+            autoFocus={true}
+          />
+        </View>
+
+        <View style={styles.errContainer}>
+          <Text
+            textStyle={styles.errorText}
+            text={otpState.error ?? data?.error?.message}
           />
         </View>
 
@@ -135,9 +165,7 @@ export const EmailVerification = () => {
           />
 
           <Button
-            onPress={() => {
-              navigate("PhoneNoVerification");
-            }}
+            onPress={() => verifyHandler()}
             textStyle={[styles.verifyBtnText, Fontscales.labelSmallRegular]}
             containerStyle={styles.VerifyBtnContainer}
             title={"Verify"}

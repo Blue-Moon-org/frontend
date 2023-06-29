@@ -8,6 +8,8 @@ import { Fontscales, SharedStyles } from "../../../styles";
 import { Button, Text, TextInput } from "../../../components/common";
 import { colors } from "../../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { forgotPasswordVerification } from "../../../Redux/actions";
 
 export const ForgotPasswordVerification = () => {
   const [otpState, updateOtpState] = useState({
@@ -15,6 +17,7 @@ export const ForgotPasswordVerification = () => {
     codeReady: false,
     codeMaxLength: 5,
     inputFocus: false,
+    error: "",
   });
 
   const { navigate } = useNavigation();
@@ -29,7 +32,7 @@ export const ForgotPasswordVerification = () => {
     );
 
     return () => updateOtpState({ ...otpState, codeReady: false });
-  }, []);
+  }, [otpState.code]);
 
   const eachDigit = new Array(otpState.codeMaxLength).fill(0);
 
@@ -73,6 +76,25 @@ export const ForgotPasswordVerification = () => {
   const onpress = () => {
     updateOtpState({ ...otpState, inputFocus: true });
     inputRef?.current?.focus();
+  };
+
+  const dispatch = useDispatch();
+
+  const data = useSelector((state) => state.forgotPasswordVerification);
+
+  const verifyHandler = () => {
+    if (otpState.codeReady === false) {
+      updateOtpState({
+        ...otpState,
+        error: "Inavlid code",
+      });
+    } else {
+      dispatch(forgotPasswordVerification(otpState, navigate));
+      updateOtpState({
+        ...otpState,
+        error: "",
+      });
+    }
   };
 
   return (
@@ -124,6 +146,14 @@ export const ForgotPasswordVerification = () => {
             onBlur={() => handleBlur()}
             refs={inputRef}
             textInputStyle={styles.textInputStyleHidden}
+            autoFocus={true}
+          />
+        </View>
+
+        <View style={styles.errContainer}>
+          <Text
+            textStyle={styles.errorText}
+            text={otpState.error ?? data.error.message}
           />
         </View>
 
@@ -135,9 +165,7 @@ export const ForgotPasswordVerification = () => {
           />
 
           <Button
-            onPress={() => {
-              navigate("ResetPassword");
-            }}
+            onPress={() => verifyHandler()}
             textStyle={[styles.verifyBtnText, Fontscales.labelSmallRegular]}
             containerStyle={styles.VerifyBtnContainer}
             title={"Verify"}

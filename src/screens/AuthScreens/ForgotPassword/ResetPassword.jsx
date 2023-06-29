@@ -8,13 +8,47 @@ import { useNavigation } from "@react-navigation/native";
 import { colors } from "../../../constants/colorpallette";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { scale } from "../../../utils/scale";
+import { useDispatch, useSelector } from "react-redux";
+import { forgotPasswordReset } from "../../../Redux/actions";
 
 export const ResetPassword = () => {
   const { navigate } = useNavigation();
 
   const [newPassword, UpdateNewPassword] = useState({
     showPassword: false,
+    password: "",
+    confirmPassword: "",
+    error: "",
   });
+
+  const dispatch = useDispatch();
+
+  const data = useSelector((state) => state.forgotPasswordReset);
+
+  const submitHandler = () => {
+    if (newPassword.password === "") {
+      UpdateNewPassword({
+        ...newPassword,
+        error: "Password field must not be filled",
+      });
+    } else if (newPassword.confirmPassword === "") {
+      UpdateNewPassword({
+        ...newPassword,
+        error: "Confirm password field must not be filled",
+      });
+    } else if (newPassword.password !== newPassword.confirmPassword) {
+      UpdateNewPassword({
+        ...newPassword,
+        error: "Password does not match ",
+      });
+    } else {
+      dispatch(forgotPasswordReset(newPassword, navigate));
+      UpdateNewPassword({
+        ...newPassword,
+        error: "",
+      });
+    }
+  };
 
   return (
     <SafeAreaView style={SharedStyles.container}>
@@ -34,11 +68,17 @@ export const ResetPassword = () => {
               textInputStyle={styles.textInputStyle}
               //    inputState={}
               //   editable={}
-              // onChangeText={}
+              onChangeText={(text) => {
+                const textReplace = text.replace(/ +/g, "");
+                UpdateNewPassword({
+                  ...newPassword,
+                  password: textReplace,
+                });
+              }}
               placeholder={"************"}
               textContentType={"password"}
               // autoComplete={"name-given"}
-              // value={""}
+              value={newPassword.password}
               clearButtonMode={false}
               secureTextEntry={!newPassword.showPassword}
             />
@@ -64,10 +104,16 @@ export const ResetPassword = () => {
               autoComplete={"password"}
               //    inputState={}
               //   editable={}
-              // onChangeText={}
+              onChangeText={(text) => {
+                const textReplace = text.replace(/ +/g, "");
+                UpdateNewPassword({
+                  ...newPassword,
+                  confirmPassword: textReplace,
+                });
+              }}
               placeholder={"************"}
               textContentType={"password"}
-              // value={""}
+              value={newPassword.confirmPassword}
               clearButtonMode={false}
               secureTextEntry={!newPassword.showPassword}
             />
@@ -87,11 +133,16 @@ export const ResetPassword = () => {
           </View>
         </View>
 
+        <View style={styles.errContainer}>
+          <Text
+            textStyle={styles.errorText}
+            text={newPassword.error ?? data.error.message}
+          />
+        </View>
+
         <View style={styles.outterContainer}>
           <Button
-            onPress={() => {
-              navigate("Login");
-            }}
+            onPress={() => submitHandler()}
             textStyle={styles.btnTextStyle}
             containerStyle={styles.innerContainer}
             title={"Submit"}

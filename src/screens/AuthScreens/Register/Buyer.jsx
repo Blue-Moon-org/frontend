@@ -81,9 +81,10 @@ export const Buyer = ({
               });
             }}
             placeholder={"example@newmail.com"}
-            textContentType={"name"}
+            textContentType={"emailAddress"}
             value={buyersState.email}
             autoComplete={"email"}
+            keyboardType={"email-address"}
           />
 
           <Text text={"Address"} textStyle={styles.label} />

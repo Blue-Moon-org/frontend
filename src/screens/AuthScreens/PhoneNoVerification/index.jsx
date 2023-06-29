@@ -8,6 +8,8 @@ import { Fontscales, SharedStyles } from "../../../styles";
 import { Button, Text, TextInput } from "../../../components/common";
 import { colors } from "../../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
+import { phoneNoVerify } from "../../../Redux/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 export const PhoneNoVerification = () => {
   const [otpState, updateOtpState] = useState({
@@ -15,9 +17,29 @@ export const PhoneNoVerification = () => {
     codeReady: false,
     codeMaxLength: 5,
     inputFocus: false,
+    error: null,
   });
 
   const { navigate } = useNavigation();
+  const dispatch = useDispatch();
+
+  const data = useSelector((state) => state.phoneNoVerify);
+
+  const verifyHandler = () => {
+    if (otpState.codeReady === false) {
+      updateOtpState({
+        ...otpState,
+        error: "Inavlid code",
+      });
+    } else {
+      dispatch(phoneNoVerify(otpState, navigate));
+      updateOtpState({
+        ...otpState,
+        error: null,
+      });
+      navigate("Login");
+    }
+  };
 
   useEffect(() => {
     updateOtpState(
@@ -29,7 +51,7 @@ export const PhoneNoVerification = () => {
     );
 
     return () => updateOtpState({ ...otpState, codeReady: false });
-  }, []);
+  }, [otpState.code]);
 
   const eachDigit = new Array(otpState.codeMaxLength).fill(0);
 
@@ -124,6 +146,14 @@ export const PhoneNoVerification = () => {
             onBlur={() => handleBlur()}
             refs={inputRef}
             textInputStyle={styles.textInputStyle}
+            autoFocus={true}
+          />
+        </View>
+
+        <View style={styles.errContainer}>
+          <Text
+            textStyle={styles.errorText}
+            text={otpState.error ?? data?.error?.message}
           />
         </View>
 
@@ -135,9 +165,7 @@ export const PhoneNoVerification = () => {
           />
 
           <Button
-            onPress={() => {
-              navigate("Login");
-            }}
+            onPress={() => verifyHandler()}
             textStyle={[styles.verifyBtnText, Fontscales.labelSmallRegular]}
             containerStyle={styles.VerifyBtnContainer}
             title={"Verify"}

@@ -80,4 +80,12 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: scale.fontPixel(10),
   },
+  errorText: {
+    fontSize: scale.fontPixel(13),
+    fontFamily: "Outfit_400Regular",
+    lineHeight: scale.heightPixel(15),
+    paddingTop: scale.pixelSizeVertical(12),
+    paddingLeft: scale.pixelSizeHorizontal(5),
+    color: colors.error,
+  },
 });

@@ -23,7 +23,6 @@ export const Login = () => {
   const dispatch = useDispatch();
 
   const loginData = useSelector((state) => state.loginState);
-  console.warn(loginData);
   const { navigate } = useNavigation();
 
   const loginHandler = () => {
@@ -31,6 +30,11 @@ export const Login = () => {
       updateState({
         ...state,
         error: "email field can not be enter",
+      });
+    } else if (/^\S+@\S+\.\S+$/.test(state.email) === false) {
+      updateState({
+        ...state,
+        error: "Invalid email",
       });
     } else if (state.password === "") {
       updateState({
@@ -42,7 +46,7 @@ export const Login = () => {
         ...state,
         error: "",
       });
-      dispatch(userLogin(state));
+      dispatch(userLogin(state, navigate));
     }
   };
 
@@ -71,9 +75,9 @@ export const Login = () => {
                 email: text,
               });
             }}
-            keyboardType={"email"}
+            keyboardType={"email-address"}
             placeholder={"example@newmail.com"}
-            textContentType={"email"}
+            textContentType={"emailAddress"}
             value={state.email}
             autoComplete={"email"}
           />
@@ -86,9 +90,10 @@ export const Login = () => {
               //    inputState={}
               //   editable={}
               onChangeText={(text) => {
+                const textReplace = text.replace(/ +/g, "");
                 updateState({
                   ...state,
-                  password: text,
+                  password: textReplace,
                 });
               }}
               placeholder={"************"}
@@ -133,6 +138,13 @@ export const Login = () => {
               onPress={() => navigate("ForgotPassword")}
               textStyle={styles.forgotPassword}
               text="forgot password?"
+            />
+          </View>
+
+          <View style={styles.errContainer}>
+            <Text
+              textStyle={styles.errorText}
+              text={state.error ?? loginData.error.message}
             />
           </View>
 

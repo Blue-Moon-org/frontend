@@ -94,4 +94,12 @@ export const styles = StyleSheet.create({
   signUpText: {
     color: colors.mainPrimary,
   },
+  errorText: {
+    fontSize: scale.fontPixel(13),
+    fontFamily: "Outfit_400Regular",
+    lineHeight: scale.heightPixel(15),
+    paddingTop: scale.pixelSizeVertical(12),
+    paddingLeft: scale.pixelSizeHorizontal(5),
+    color: colors.error,
+  },
 });

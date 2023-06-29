@@ -73,10 +73,10 @@ export const Designer = ({
               updateDesignersState({ ...designersState, email: text })
             }
             placeholder={"example@newmail.com"}
-            textContentType={"name"}
+            textContentType={"emailAddress"}
             value={designersState.email}
             autoComplete={"email"}
-          />
+            keyboardType={"email-address"}          />
 
           <Text text={"Address"} textStyle={styles.label} />
           <TextInput

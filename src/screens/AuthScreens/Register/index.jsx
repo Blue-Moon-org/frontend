@@ -10,9 +10,12 @@ import { Buyer } from "./Buyer";
 import { Designer } from "./Designer";
 import { useDispatch, useSelector } from "react-redux";
 import { userRegistration } from "../../../Redux/actions";
+import { useNavigation } from "@react-navigation/native";
 
 export const Register = () => {
   const [accountId, updateAccountId] = useState(1);
+
+  const { navigate } = useNavigation();
 
   const data = [
     {
@@ -48,6 +51,7 @@ export const Register = () => {
         ...buyersState,
         error: "Name fields cannot be blank",
       });
+      navigate("EmailVerification");
     } else if (/^\S+@\S+\.\S+$/.test(buyersState.email) === false) {
       updateBuyersState({
         ...buyersState,
@@ -90,7 +94,7 @@ export const Register = () => {
         ...buyersState,
         error: null,
       });
-      dispatch(userRegistration(designersState));
+      dispatch(userRegistration(designersState, navigate));
     }
   };
 
@@ -157,7 +161,7 @@ export const Register = () => {
         ...designersState,
         error: null,
       });
-      dispatch(userRegistration(designersState));
+      dispatch(userRegistration(designersState, navigate));
     }
   };
 

@@ -143,4 +143,20 @@ export const styles = StyleSheet.create({
     position: "absolute",
     zIndex: -19,
   },
+  errorText: {
+    fontSize: scale.fontPixel(13),
+    fontFamily: "Outfit_400Regular",
+    lineHeight: scale.heightPixel(5),
+    paddingTop: scale.pixelSizeVertical(12),
+    paddingLeft: scale.pixelSizeHorizontal(5),
+    color: colors.error,
+  },
+  errorText: {
+    fontSize: scale.fontPixel(13),
+    fontFamily: "Outfit_400Regular",
+    lineHeight: scale.heightPixel(15),
+    paddingTop: scale.pixelSizeVertical(12),
+    paddingLeft: scale.pixelSizeHorizontal(5),
+    color: colors.error,
+  },
 });
