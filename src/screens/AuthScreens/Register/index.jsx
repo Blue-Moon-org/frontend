@@ -39,11 +39,12 @@ export const Register = () => {
     password: "",
     confirmPassword: "",
     error: registerData?.error?.message,
-    accountType: "buyer",
+    accountType: "Buyer",
   });
 
   const dispatch = useDispatch();
   const registerData = useSelector((state) => state.registerState);
+  console.warn(registerData.loading);
 
   const submitBuyersAccount = () => {
     if (buyersState.firstName === "" && buyersState.lastName === "") {
@@ -62,14 +63,10 @@ export const Register = () => {
         ...buyersState,
         error: "Address must be filled",
       });
-    } else if (
-      /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
-        buyersState.phoneNumber
-      ) === false
-    ) {
+    } else if (buyersState.phoneNumber === "") {
       updateBuyersState({
         ...buyersState,
-        error: "Phone number must be in international format (e.g +234)",
+        error: "Phone number not valid",
       });
     } else if (
       buyersState.password === "" &&
@@ -94,7 +91,7 @@ export const Register = () => {
         ...buyersState,
         error: null,
       });
-      dispatch(userRegistration(designersState, navigate));
+      dispatch(userRegistration(buyersState, navigate));
     }
   };
 
@@ -110,7 +107,7 @@ export const Register = () => {
     password: "",
     confirmPassword: "",
     error: registerData?.error?.message,
-    accountType: "designer",
+    accountType: "Designer",
   });
 
   const submitDesignersAccount = () => {
@@ -129,14 +126,10 @@ export const Register = () => {
         ...designersState,
         error: "Address must be filled",
       });
-    } else if (
-      /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
-        designersState.phoneNumber
-      ) === false
-    ) {
+    } else if (designersState.phoneNumber === "") {
       updateDesignersState({
         ...designersState,
-        error: "Phone number must be in international format (e.g +234)",
+        error: "Phone number not valid",
       });
     } else if (
       designersState.password === "" &&
@@ -180,6 +173,7 @@ export const Register = () => {
         {data.map((item, index) => {
           return (
             <TouchableOpacity
+              disabled={registerData.loading}
               activeOpacity={0.8}
               style={[
                 styles.options,
@@ -199,6 +193,7 @@ export const Register = () => {
                   {
                     color:
                       item.id === accountId ? colors.mainPrimary : colors.grey1,
+                    opacity: registerData.loading ? 0.6 : 1,
                     paddingLeft:
                       item.id === 1
                         ? scale.pixelSizeHorizontal(8)

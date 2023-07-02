@@ -3,15 +3,15 @@ import request from "./request";
 export const fetchGetRequestInit = async (
   endPoint,
   body,
-  contentType,
-  token
+  contentType
+  // token
 ) => {
   const response = await request.post(endPoint, body, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      // Authorization: token ? `Bearer ${token}` : "",
       "Content-Type": contentType,
     },
   });
 
-  return response;
+  return { response };
 };

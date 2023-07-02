@@ -88,7 +88,6 @@ export const EmailVerification = () => {
         ...otpState,
         error: null,
       });
-      navigate("PhoneNoVerification");
     }
   };
 
@@ -97,6 +96,52 @@ export const EmailVerification = () => {
     inputRef?.current?.focus();
   };
 
+  const [timerState, updateTimerState] = useState({
+    timeLeft: null,
+    targetTime: null,
+    activeResend: false,
+  });
+
+  let resendTimerInterval;
+
+  const calculateTimeLeft = (finalTime) => {
+    const difference = finalTime - +new Date();
+    if (difference > 0) {
+      updateTimerState({
+        ...timerState,
+        timeLeft: Math.round(difference / 1000),
+      });
+    } else {
+      updateTimerState({
+        ...timerState,
+        timeLeft: null,
+        activeResend: true,
+      });
+      clearInterval(resendTimerInterval);
+    }
+  };
+
+  const triggerTimer = (targetTimeSeconds = 59) => {
+    updateTimerState({
+      ...timerState,
+      activeResend: false,
+      targetTime: targetTimeSeconds,
+    });
+    const finalTime = +new Date() + targetTimeSeconds * 1000;
+
+    resendTimerInterval = setInterval(
+      () => (calculateTimeLeft(finalTime), 1000)
+    );
+  };
+
+  useEffect(() => {
+    triggerTimer();
+
+    return () => {
+      clearInterval(resendTimerInterval);
+    };
+  }, []);
+  // console.warn(timerState.timeLeft);
   return (
     <SafeAreaView style={SharedStyles.container}>
       <Pressable
@@ -159,16 +204,28 @@ export const EmailVerification = () => {
 
         <View style={styles.btnContainer}>
           <Button
+            onPress={() => triggerTimer()}
             textStyle={[styles.timeBtnText, Fontscales.labelSmallRegular]}
-            containerStyle={styles.timeBtnContainer}
-            title={"Resend in 54s"}
+            containerStyle={[
+              styles.timeBtnContainer,
+              {
+                opacity: timerState.timeLeft > 0 ? 0.5 : 1,
+              },
+            ]}
+            disabled={data.loading || timerState.timeLeft ? true : false}
+            title={
+              timerState.timeLeft
+                ? `Resend in ${timerState.timeLeft} s`
+                : "Resend"
+            }
           />
 
           <Button
             onPress={() => verifyHandler()}
             textStyle={[styles.verifyBtnText, Fontscales.labelSmallRegular]}
             containerStyle={styles.VerifyBtnContainer}
-            title={"Verify"}
+            title={data.loading ? "Verifying" : "Verify"}
+            disabled={data.loading ? true : false}
           />
         </View>
       </Pressable>

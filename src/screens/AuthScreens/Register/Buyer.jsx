@@ -34,7 +34,7 @@ export const Buyer = ({
               <TextInput
                 textInputStyle={{}}
                 //  inputState={}
-                // editable={}
+                editable={!registerData.loading}
                 onChangeText={(text) =>
                   updateBuyersState({
                     ...buyersState,
@@ -55,7 +55,7 @@ export const Buyer = ({
                 textInputStyle={{}}
                 autoComplete={"name-family"}
                 //    inputState={}
-                //   editable={}
+                editable={!registerData.loading}
                 onChangeText={(text) =>
                   updateBuyersState({
                     ...buyersState,
@@ -73,7 +73,7 @@ export const Buyer = ({
           <TextInput
             textInputStyle={[styles.inputSpace]}
             //    inputState={}
-            //   editable={}
+            editable={!registerData.loading}
             onChangeText={(text) => {
               updateBuyersState({
                 ...buyersState,
@@ -91,7 +91,7 @@ export const Buyer = ({
           <TextInput
             textInputStyle={[styles.inputSpace]}
             //    inputState={}
-            //   editable={}
+            editable={!registerData.loading}
             onChangeText={(text) =>
               updateBuyersState({
                 ...buyersState,
@@ -108,15 +108,16 @@ export const Buyer = ({
           <TextInput
             textInputStyle={[styles.inputSpace]}
             //    inputState={}
-            //   editable={}
+            editable={!registerData.loading}
             onChangeText={(text) =>
               updateBuyersState({
                 ...buyersState,
                 phoneNumber: text,
               })
             }
+            maxLength={11}
             keyboardType={"phone-pad"}
-            placeholder={"+XXX XXX XXXX XXX"}
+            placeholder={"0XX XX XXX XXX"}
             textContentType={"telephoneNumber"}
             value={buyersState.phoneNumber}
             autoComplete={"tel-device"}
@@ -129,7 +130,7 @@ export const Buyer = ({
                 <TextInput
                   textInputStyle={styles.textInputStyle}
                   //    inputState={}
-                  //   editable={}
+                  editable={!registerData.loading}
                   onChangeText={(text) => {
                     const textReplace = text.replace(/ +/g, "");
                     updateBuyersState({
@@ -166,7 +167,7 @@ export const Buyer = ({
                   textInputStyle={styles.textInputStyle}
                   autoComplete={"password"}
                   //    inputState={}
-                  //   editable={}
+                  editable={!registerData.loading}
                   onChangeText={(text) => {
                     const textReplace = text.replace(/ +/g, "");
                     updateBuyersState({
@@ -199,6 +200,7 @@ export const Buyer = ({
 
           <View style={styles.checkText}>
             <MaterialCommunityIcons
+              disabled={registerData.loading}
               name={
                 !buyersState.policy
                   ? "checkbox-blank-outline"
@@ -243,7 +245,7 @@ export const Buyer = ({
           >
             <Button
               textStyle={styles.btnTextStyle}
-              title={"Register"}
+              title={registerData.loading ? "Loading" : "Register"}
               containerStyle={styles.btnContainer}
               onPress={() => submitBuyersAccount()}
             />

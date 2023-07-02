@@ -35,7 +35,7 @@ export const Designer = ({
               <TextInput
                 textInputStyle={{}}
                 //    inputState={}
-                //   editable={}
+                editable={!registerData.loading}
                 onChangeText={(text) =>
                   updateDesignersState({ ...designersState, fullName: text })
                 }
@@ -53,7 +53,7 @@ export const Designer = ({
                 textInputStyle={{}}
                 autoComplete={"username"}
                 //    inputState={}
-                //   editable={}
+                editable={!registerData.loading}
                 onChangeText={(text) =>
                   updateDesignersState({ ...designersState, brandName: text })
                 }
@@ -68,7 +68,7 @@ export const Designer = ({
           <TextInput
             textInputStyle={[styles.inputSpace]}
             //    inputState={}
-            //   editable={}
+            editable={!registerData.loading}
             onChangeText={(text) =>
               updateDesignersState({ ...designersState, email: text })
             }
@@ -76,13 +76,14 @@ export const Designer = ({
             textContentType={"emailAddress"}
             value={designersState.email}
             autoComplete={"email"}
-            keyboardType={"email-address"}          />
+            keyboardType={"email-address"}
+          />
 
           <Text text={"Address"} textStyle={styles.label} />
           <TextInput
             textInputStyle={[styles.inputSpace]}
             //    inputState={}
-            //   editable={}
+            editable={!registerData.loading}
             onChangeText={(text) =>
               updateDesignersState({ ...designersState, address: text })
             }
@@ -98,12 +99,13 @@ export const Designer = ({
               <TextInput
                 textInputStyle={{}}
                 //    inputState={}
-                //   editable={}
+                editable={!registerData.loading}
                 onChangeText={(text) =>
                   updateDesignersState({ ...designersState, phoneNumber: text })
                 }
+                maxLength={11}
                 autoComplete={"tel-device"}
-                placeholder={"+XXX XXX XXXX XXX"}
+                placeholder={"0XX XX XXX XXX"}
                 value={designersState.phoneNumber}
                 textContentType={"telephoneNumber"}
               />
@@ -114,7 +116,7 @@ export const Designer = ({
               <TextInput
                 textInputStyle={{}}
                 //    inputState={}
-                //   editable={}
+                editable={!registerData.loading}
                 onChangeText={(text) =>
                   updateDesignersState({
                     ...designersState,
@@ -136,7 +138,7 @@ export const Designer = ({
                 <TextInput
                   textInputStyle={styles.textInputStyle}
                   //    inputState={}
-                  //   editable={}
+                  editable={!registerData.loading}
                   onChangeText={(text) =>
                     updateDesignersState({
                       ...designersState,
@@ -174,7 +176,7 @@ export const Designer = ({
                   textInputStyle={styles.textInputStyle}
                   autoComplete={"name-family"}
                   //    inputState={}
-                  //   editable={}
+                  editable={!registerData.loading}
                   onChangeText={(text) =>
                     updateDesignersState({
                       ...designersState,
@@ -208,6 +210,7 @@ export const Designer = ({
 
           <View style={styles.checkText}>
             <MaterialCommunityIcons
+              disabled={registerData.loading}
               name={
                 !designersState.policy
                   ? "checkbox-blank-outline"
@@ -254,7 +257,7 @@ export const Designer = ({
           >
             <Button
               textStyle={styles.btnTextStyle}
-              title={"Add Specialties"}
+              title={registerData.loading ? "loading" : "Add Specialties"}
               containerStyle={styles.btnContainer}
               onPress={() => submitDesignersAccount()}
             />
