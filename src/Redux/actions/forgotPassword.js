@@ -25,6 +25,7 @@ export const forgotPassword = (state, navigate) => async (dispatch) => {
       navigate("ForgotPasswordVerification", state.email);
     })
     .catch((err) => {
+      console.warn(err);
       dispatch({
         type: actionTypesForgotPassword.USER_FORGOTPASSWORD_ERROR,
         payload: err,

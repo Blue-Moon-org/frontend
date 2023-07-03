@@ -8,7 +8,7 @@ const Stacks = () => {
   return (
     <Stack.Navigator
       initialRouteName="BottomStack"
-      screenOptions={{ headerShown: true }}
+      screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="BottomStack" component={BottomTabStack} />
     </Stack.Navigator>

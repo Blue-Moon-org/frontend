@@ -12,10 +12,13 @@ export const userLogin = (body, navigate) => async (dispatch) => {
     password: body.password,
   })
     .then((res) => {
+      console.warn(res);
       dispatch({ type: actionTypesLogin.USER_LOGIN_SUCCESS, payload: res });
       navigate("Stacks");
     })
     .catch((err) => {
+      console.warn(err);
+
       dispatch({ type: actionTypesLogin.USER_LOGIN_ERROR, payload: err });
     });
 };

@@ -9,7 +9,10 @@ import { Button, Text, TextInput } from "../../../components/common";
 import { colors } from "../../../constants/colorpallette";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { forgotPasswordVerification, resendEmailOtp } from "../../../Redux/actions";
+import {
+  forgotPasswordVerification,
+  resendEmailOtp,
+} from "../../../Redux/actions";
 import { emailVerify } from "../../../Redux/actions";
 
 export const ForgotPasswordVerification = () => {
@@ -83,7 +86,7 @@ export const ForgotPasswordVerification = () => {
 
   const dispatch = useDispatch();
 
-  const data = useSelector((state) => state.forgotPasswordVerification);
+  const data = useSelector((state) => state.emailVerify);
 
   const verifyHandler = () => {
     if (otpState.codeReady === false) {
