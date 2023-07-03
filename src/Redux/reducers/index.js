@@ -1,15 +1,13 @@
 import { combineReducers } from "redux";
 import { loginReducer } from "./loginReducer";
-import {
-  registerReducer,
-  emailVerifyReducer,
-  phoneNoVerifyReducer,
-} from "./registerReducers";
+import { registerReducer, emailVerifyReducer } from "./registerReducers";
 import {
   forgotPasswordReducer,
   forgotPasswordResetReducer,
-  forgotPasswordVerificationReducer,
 } from "./forgotPasswordReducers";
+import { resendPhoneNoOtpReducer } from "./resendPhoneNoOtpReducer";
+import { resendEmailOtpReducer } from "./resendEmailOtpReducer";
+import { phoneNoVerifyReducer } from "./phoneVerifyReducer";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -17,6 +15,7 @@ export const reducers = combineReducers({
   emailVerify: emailVerifyReducer,
   phoneNoVerify: phoneNoVerifyReducer,
   forgotPassword: forgotPasswordReducer,
-  forgotPasswordVerification: forgotPasswordVerificationReducer,
   forgotPasswordReset: forgotPasswordResetReducer,
+  resendPhoneNoOtp: resendPhoneNoOtpReducer,
+  resendEmailOtp: resendEmailOtpReducer,
 });

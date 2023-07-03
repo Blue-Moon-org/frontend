@@ -44,39 +44,7 @@ export const forgotPasswordReducer = (
   }
 };
 
-export const forgotPasswordVerificationReducer = (
-  state = initialState,
-  { type, payload }
-) => {
-  switch (type) {
-    case actionTypesForgotPasswordVerification.USER_FORGOTPASSWORDVERIFICATION_LOADING:
-      return {
-        ...state,
-        data: null,
-        loading: true,
-        error: "",
-      };
 
-    case actionTypesForgotPasswordVerification.USER_FORGOTPASSWORDVERIFICATION_SUCCESS:
-      return {
-        ...state,
-        data: payload,
-        loading: false,
-        error: "",
-      };
-
-    case actionTypesForgotPasswordVerification.USER_FORGOTPASSWORDVERIFICATION_ERROR:
-      return {
-        ...state,
-        data: null,
-        loading: false,
-        error: payload,
-      };
-
-    default:
-      return state;
-  }
-};
 
 export const forgotPasswordResetReducer = (
   state = initialState,

@@ -44,7 +44,6 @@ export const Register = () => {
 
   const dispatch = useDispatch();
   const registerData = useSelector((state) => state.registerState);
-  console.warn(registerData.loading);
 
   const submitBuyersAccount = () => {
     if (buyersState.firstName === "" && buyersState.lastName === "") {
@@ -52,7 +51,6 @@ export const Register = () => {
         ...buyersState,
         error: "Name fields cannot be blank",
       });
-      navigate("EmailVerification");
     } else if (/^\S+@\S+\.\S+$/.test(buyersState.email) === false) {
       updateBuyersState({
         ...buyersState,

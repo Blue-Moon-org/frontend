@@ -7,15 +7,16 @@ import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Button, Text, TextInput } from "../../../components/common";
 import { colors } from "../../../constants/colorpallette";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { forgotPasswordVerification } from "../../../Redux/actions";
+import { forgotPasswordVerification, resendEmailOtp } from "../../../Redux/actions";
+import { emailVerify } from "../../../Redux/actions";
 
 export const ForgotPasswordVerification = () => {
   const [otpState, updateOtpState] = useState({
     code: "",
     codeReady: false,
-    codeMaxLength: 5,
+    codeMaxLength: 6,
     inputFocus: false,
     error: "",
   });
@@ -33,6 +34,8 @@ export const ForgotPasswordVerification = () => {
 
     return () => updateOtpState({ ...otpState, codeReady: false });
   }, [otpState.code]);
+
+  const route = useRoute();
 
   const eachDigit = new Array(otpState.codeMaxLength).fill(0);
 
@@ -89,12 +92,63 @@ export const ForgotPasswordVerification = () => {
         error: "Inavlid code",
       });
     } else {
-      dispatch(forgotPasswordVerification(otpState, navigate));
+      dispatch(emailVerify(otpState, route.params, "changePassword", navigate));
       updateOtpState({
         ...otpState,
         error: "",
       });
     }
+  };
+
+  const [timerState, updateTimerState] = useState({
+    timeLeft: null,
+    targetTime: null,
+    activeResend: false,
+  });
+
+  let resendTimerInterval;
+
+  const calculateTimeLeft = (finalTime) => {
+    const difference = finalTime - +new Date();
+    if (difference > 0) {
+      updateTimerState({
+        ...timerState,
+        timeLeft: Math.round(difference / 1000),
+      });
+    } else {
+      updateTimerState({
+        ...timerState,
+        timeLeft: null,
+        activeResend: true,
+      });
+      clearInterval(resendTimerInterval);
+    }
+  };
+
+  const triggerTimer = (targetTimeSeconds = 59) => {
+    updateTimerState({
+      ...timerState,
+      activeResend: false,
+      targetTime: targetTimeSeconds,
+    });
+    const finalTime = +new Date() + targetTimeSeconds * 1000;
+
+    resendTimerInterval = setInterval(
+      () => (calculateTimeLeft(finalTime), 1000)
+    );
+  };
+
+  useEffect(() => {
+    triggerTimer();
+
+    return () => {
+      clearInterval(resendTimerInterval);
+    };
+  }, []);
+
+  const resendOtpHandler = () => {
+    dispatch(resendEmailOtp(route.params, navigate));
+    triggerTimer();
   };
 
   return (
@@ -159,16 +213,27 @@ export const ForgotPasswordVerification = () => {
 
         <View style={styles.btnContainer}>
           <Button
+            onPress={() => resendOtpHandler()}
             textStyle={[styles.timeBtnText, Fontscales.labelSmallRegular]}
-            containerStyle={styles.timeBtnContainer}
-            title={"Resend in 54s"}
+            containerStyle={[
+              styles.timeBtnContainer,
+              {
+                opacity: timerState.timeLeft > 0 ? 0.5 : 1,
+              },
+            ]}
+            title={
+              timerState.timeLeft
+                ? `Resend in ${timerState.timeLeft} s`
+                : "Resend"
+            }
           />
 
           <Button
             onPress={() => verifyHandler()}
             textStyle={[styles.verifyBtnText, Fontscales.labelSmallRegular]}
             containerStyle={styles.VerifyBtnContainer}
-            title={"Verify"}
+            title={data.loading ? "Verifying" : "Verify"}
+            disabled={data.loading ? true : false}
           />
         </View>
       </Pressable>

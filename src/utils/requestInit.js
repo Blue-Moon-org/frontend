@@ -15,3 +15,19 @@ export const fetchGetRequestInit = async (
 
   return { response };
 };
+
+export const fetchPatchRequestInit = async (
+  endPoint,
+  body,
+  contentType
+  // token
+) => {
+  const response = await request.patch(endPoint, body, {
+    headers: {
+      // Authorization: token ? `Bearer ${token}` : "",
+      "Content-Type": contentType,
+    },
+  });
+
+  return { response };
+};

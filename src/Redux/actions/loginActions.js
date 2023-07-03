@@ -7,10 +7,13 @@ export const userLogin = (body, navigate) => async (dispatch) => {
     type: actionTypesLogin.USER_LOGIN_LOADING,
   });
 
-  await fetchGetRequestInit(`/login`, body)
+  await fetchGetRequestInit(`/core/login/`, {
+    email: body.email,
+    password: body.password,
+  })
     .then((res) => {
       dispatch({ type: actionTypesLogin.USER_LOGIN_SUCCESS, payload: res });
-      // navigate("Home")
+      navigate("Stacks");
     })
     .catch((err) => {
       dispatch({ type: actionTypesLogin.USER_LOGIN_ERROR, payload: err });

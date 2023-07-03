@@ -7,20 +7,22 @@ import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Button, Text, TextInput } from "../../../components/common";
 import { colors } from "../../../constants/colorpallette";
-import { useNavigation } from "@react-navigation/native";
-import { emailVerify } from "../../../Redux/actions";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { emailVerify, resendEmailOtp } from "../../../Redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 
 export const EmailVerification = () => {
   const [otpState, updateOtpState] = useState({
     code: "",
     codeReady: false,
-    codeMaxLength: 5,
+    codeMaxLength: 6,
     inputFocus: false,
     error: null,
   });
 
   const { navigate } = useNavigation();
+
+  const route = useRoute();
 
   useEffect(() => {
     updateOtpState(
@@ -83,7 +85,7 @@ export const EmailVerification = () => {
         error: "Inavlid code",
       });
     } else {
-      dispatch(emailVerify(otpState, navigate));
+      dispatch(emailVerify(otpState, route.params.email, " ", navigate));
       updateOtpState({
         ...otpState,
         error: null,
@@ -141,7 +143,13 @@ export const EmailVerification = () => {
       clearInterval(resendTimerInterval);
     };
   }, []);
-  // console.warn(timerState.timeLeft);
+
+
+  const resendOtpHandler = () => {
+    dispatch(resendEmailOtp(route.params?.email, navigate));
+    triggerTimer();
+  };
+
   return (
     <SafeAreaView style={SharedStyles.container}>
       <Pressable
@@ -164,7 +172,7 @@ export const EmailVerification = () => {
         <View style={styles.titleText}>
           <Text
             textStyle={[Fontscales.headingLargeBold, styles.headerText]}
-            text={"Email \nVerification "}
+            text={"Email \nVerification"}
           />
           <Text
             textStyle={[styles.subText, Fontscales.paragraphSmallMedium]}
@@ -204,7 +212,7 @@ export const EmailVerification = () => {
 
         <View style={styles.btnContainer}>
           <Button
-            onPress={() => triggerTimer()}
+            onPress={() => resendOtpHandler()}
             textStyle={[styles.timeBtnText, Fontscales.labelSmallRegular]}
             containerStyle={[
               styles.timeBtnContainer,

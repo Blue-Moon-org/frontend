@@ -34,59 +34,65 @@ export const userRegistration = (body, navigate) => async (dispatch) => {
         type: actionTypesRegister.USER_REGISTER_SUCCESS,
         payload: res.response.data,
       });
-      console.warn(res);
-      navigate("EmailVerification");
+      navigate("EmailVerification", { email: res.response.data.email });
     })
     .catch((err) => {
-      console.warn(err.message);
       dispatch({ type: actionTypesRegister.USER_REGISTER_ERROR, payload: err });
     });
 };
 
-export const emailVerify = (state, navigate) => async (dispatch) => {
-  // const { navigate } = useNavigation();
-  // 4 endpoint, body, content-type, token
-  dispatch({
-    type: actionTypesEmailVerify.USER_EMAILVERIFY_LOADING,
-  });
-
-  await fetchGetRequestInit(`/core/verify-email/`, {
-    otp: state.code,
-  })
-    .then((res) => {
-      dispatch({
-        type: actionTypesEmailVerify.USER_EMAILVERIFY_SUCCESS,
-        payload: res,
-      });
-      navigate("PhoneNoVerification");
-    })
-    .catch((err) => {
-      dispatch({
-        type: actionTypesEmailVerify.USER_EMAILVERIFY_ERROR,
-        payload: err,
-      });
+export const emailVerify =
+  (state, email, para, navigate) => async (dispatch) => {
+    // const { navigate } = useNavigation();
+    // 4 endpoint, body, content-type, token
+    dispatch({
+      type: actionTypesEmailVerify.USER_EMAILVERIFY_LOADING,
     });
-};
 
-export const phoneNoVerify = (state, navigate) => async (dispatch) => {
-  // const { navigate } = useNavigation();
-  // 4 endpoint, body, content-type, token
-  dispatch({
-    type: actionTypesPhoneNoVerify.USER_PHONENOVERIFY_LOADING,
-  });
 
-  await fetchGetRequestInit(`/phoneNumberVerify`, state)
-    .then((res) => {
-      dispatch({
-        type: actionTypesPhoneNoVerify.USER_PHONENOVERIFY_SUCCESS,
-        payload: res,
-      });
-      // navigate("Login");
+    await fetchGetRequestInit(`/core/verify-email/`, {
+      email: email,
+      otp: state.code,
     })
-    .catch((err) => {
-      dispatch({
-        type: actionTypesPhoneNoVerify.USER_PHONENOVERIFY_ERROR,
-        payload: err,
+      .then((res) => {
+        dispatch({
+          type: actionTypesEmailVerify.USER_EMAILVERIFY_SUCCESS,
+          payload: res,
+        });
+
+        para === "login"
+          ? navigate("Login", email)
+          : para === "changePassword"
+          ? navigate("ResetPassword", email)
+          : navigate("PhoneNoVerification", email);
+      })
+      .catch((err) => {
+        dispatch({
+          type: actionTypesEmailVerify.USER_EMAILVERIFY_ERROR,
+          payload: err,
+        });
       });
-    });
-};
+  };
+
+// export const phoneNoVerify = (state, navigate) => async (dispatch) => {
+//   // const { navigate } = useNavigation();
+//   // 4 endpoint, body, content-type, token
+//   dispatch({
+//     type: actionTypesPhoneNoVerify.USER_PHONENOVERIFY_LOADING,
+//   });
+
+//   await fetchGetRequestInit(`/phoneNumberVerify`, state)
+//     .then((res) => {
+//       dispatch({
+//         type: actionTypesPhoneNoVerify.USER_PHONENOVERIFY_SUCCESS,
+//         payload: res,
+//       });
+//       // navigate("Login");
+//     })
+//     .catch((err) => {
+//       dispatch({
+//         type: actionTypesPhoneNoVerify.USER_PHONENOVERIFY_ERROR,
+//         payload: err,
+//       });
+//     });
+// };

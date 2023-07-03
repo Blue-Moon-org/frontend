@@ -3,7 +3,10 @@ import {
   actionTypesForgotPasswordReset,
   actionTypesForgotPassword,
 } from "../constants/actionTypes";
-import { fetchGetRequestInit } from "../../utils/requestInit";
+import {
+  fetchGetRequestInit,
+  fetchPatchRequestInit,
+} from "../../utils/requestInit";
 
 export const forgotPassword = (state, navigate) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
@@ -11,13 +14,15 @@ export const forgotPassword = (state, navigate) => async (dispatch) => {
     type: actionTypesForgotPassword.USER_FORGOTPASSWORD_LOADING,
   });
 
-  await fetchGetRequestInit(`/forgotPassword`, state)
+  await fetchGetRequestInit(`/core/forgot-password/`, {
+    email: state.email,
+  })
     .then((res) => {
       dispatch({
         type: actionTypesForgotPassword.USER_FORGOTPASSWORD_SUCCESS,
         payload: res,
       });
-      navigate("ForgotPasswordVerification");
+      navigate("ForgotPasswordVerification", state.email);
     })
     .catch((err) => {
       dispatch({
@@ -27,47 +32,28 @@ export const forgotPassword = (state, navigate) => async (dispatch) => {
     });
 };
 
-export const forgotPasswordVerification =
-  (state, navigate) => async (dispatch) => {
+export const forgotPasswordReset =
+  (state, email, navigate) => async (dispatch) => {
     // 4; endpoint, body, content-type, token
     dispatch({
-      type: actionTypesForgotPasswordVerification.USER_FORGOTPASSWORDVERIFICATION_LOADING,
+      type: actionTypesForgotPasswordReset.USER_FORGOTPASSWORDRESET_LOADING,
     });
 
-    await fetchGetRequestInit(`/forgotPassword`, state)
+    await fetchPatchRequestInit(`/core/set-new-password/`, {
+      email: email,
+      password: state.password,
+    })
       .then((res) => {
         dispatch({
-          type: actionTypesForgotPasswordVerification.USER_FORGOTPASSWORDVERIFICATION_SUCCESS,
+          type: actionTypesForgotPasswordReset.USER_FORGOTPASSWORDRESET_SUCCESS,
           payload: res,
         });
-        navigate("ResetPassword");
+        navigate("Login");
       })
       .catch((err) => {
         dispatch({
-          type: actionTypesForgotPasswordVerification.USER_FORGOTPASSWORDVERIFICATION_ERROR,
+          type: actionTypesForgotPasswordReset.USER_FORGOTPASSWORDRESET_ERROR,
           payload: err,
         });
       });
   };
-
-export const forgotPasswordReset = (state, navigate) => async (dispatch) => {
-  // 4; endpoint, body, content-type, token
-  dispatch({
-    type: actionTypesForgotPasswordReset.USER_FORGOTPASSWORDRESET_LOADING,
-  });
-
-  await fetchGetRequestInit(`/forgotPassword`, state)
-    .then((res) => {
-      dispatch({
-        type: actionTypesForgotPasswordReset.USER_FORGOTPASSWORDRESET_SUCCESS,
-        payload: res,
-      });
-      navigate("Login");
-    })
-    .catch((err) => {
-      dispatch({
-        type: actionTypesForgotPasswordReset.USER_FORGOTPASSWORDRESET_ERROR,
-        payload: err,
-      });
-    });
-};

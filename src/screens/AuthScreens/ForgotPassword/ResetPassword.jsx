@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, TextInput, Button } from "../../../components/common";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { colors } from "../../../constants/colorpallette";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { scale } from "../../../utils/scale";
@@ -25,6 +25,8 @@ export const ResetPassword = () => {
 
   const data = useSelector((state) => state.forgotPasswordReset);
 
+  const route = useRoute();
+
   const submitHandler = () => {
     if (newPassword.password === "") {
       UpdateNewPassword({
@@ -42,7 +44,7 @@ export const ResetPassword = () => {
         error: "Password does not match ",
       });
     } else {
-      dispatch(forgotPasswordReset(newPassword, navigate));
+      dispatch(forgotPasswordReset(newPassword, route.params, navigate));
       UpdateNewPassword({
         ...newPassword,
         error: "",
@@ -136,7 +138,7 @@ export const ResetPassword = () => {
         <View style={styles.errContainer}>
           <Text
             textStyle={styles.errorText}
-            text={newPassword.error ?? data.error.message}
+            text={newPassword.error ?? data.error}
           />
         </View>
 
@@ -145,7 +147,7 @@ export const ResetPassword = () => {
             onPress={() => submitHandler()}
             textStyle={styles.btnTextStyle}
             containerStyle={styles.innerContainer}
-            title={"Submit"}
+            title={data.loading ? "Loading" : "Submit"}
           />
         </View>
       </Pressable>

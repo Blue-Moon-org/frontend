@@ -1,21 +1,23 @@
 import {
   userRegistration,
   emailVerify,
-  phoneNoVerify,
 } from "./registerActions";
 import { userLogin } from "./loginActions";
 import {
   forgotPassword,
   forgotPasswordReset,
-  forgotPasswordVerification,
 } from "./forgotPassword";
+import { resendPhoneOtp } from "./resendPhoneOtp";
+import { resendEmailOtp } from "./resendEmailOtp";
+import { phoneVerify } from "./phoneVerify";
 
 export {
   userLogin,
   userRegistration,
   emailVerify,
-  phoneNoVerify,
   forgotPassword,
   forgotPasswordReset,
-  forgotPasswordVerification,
+  resendEmailOtp,
+  resendPhoneOtp,
+  phoneVerify,
 };
