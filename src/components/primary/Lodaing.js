@@ -2,7 +2,6 @@ import { View } from "react-native";
 import React from "react";
 import { Image } from "expo-image";
 import { load } from "../../constants/gif";
-import { Text } from "../common";
 
 export const Lodaing = () => {
   return (

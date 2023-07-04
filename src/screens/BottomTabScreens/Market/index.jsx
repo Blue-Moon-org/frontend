@@ -1,11 +1,13 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { AppHeader } from "../../../components/primary";
+import { SharedStyles } from "../../../styles";
 
 export const Market = () => {
   return (
-    <SafeAreaView>
-      <Text>Market'</Text>
-    </SafeAreaView>
+    <View style={SharedStyles.container}>
+      <AppHeader />
+      <Text>Market</Text>
+    </View>
   );
 };

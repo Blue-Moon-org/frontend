@@ -1,7 +1,7 @@
 import React from "react";
 import { Chat, Find, Home, Market, Profile } from "../screens/BottomTabScreens";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import { colors } from "../constants/colorpallette";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { scale } from "../utils/scale";
@@ -22,24 +22,26 @@ export const BottomTabStack = () => {
         tabBarActiveTintColor: colors.mainPrimary,
         tabBarAllowFontScaling: true,
         tabBarHideOnKeyboard: true,
-        tabBarInactiveTintColor: colors.blackText,
+        tabBarInactiveTintColor: "#37374055",
         tabBarLabelStyle: {},
-
         tabBarStyle: {
           shadowOffset: {
             width: 0,
             height: 12,
           },
           shadowOpacity: 0.58,
-          shadowRadius: 16.0,
-          elevation: 24,
+          shadowRadius: Platform.OS === "android" ? 16.0 : 10.0,
+          elevation: Platform.OS === "android" ? 12 : 10,
           borderTopLeftRadius: scale.fontPixel(21),
           borderTopRightRadius: scale.fontPixel(21),
           backgroundColor: "#fff",
           position: "absolute",
           bottom: 0,
           width: "100%",
-          height: scale.heightPixel(92),
+          height:
+            Platform.OS === "ios"
+              ? scale.heightPixel(92)
+              : scale.heightPixel(75),
           zIndex: 0,
         },
       }}
@@ -50,7 +52,14 @@ export const BottomTabStack = () => {
           tabBarLabel: ({ color, focused }) => (
             <Text
               text={"Home"}
-              textStyle={[Fontscales.labelSmallMedium, { color: color }]}
+              textStyle={[
+                Fontscales.labelSmallMedium,
+                {
+                  color: color,
+                  paddingBottom:
+                    Platform.OS === "android" ? scale.pixelSizeVertical(5) : 0,
+                },
+              ]}
             />
           ),
           tabBarIcon: ({ color, focused }) => (
@@ -88,7 +97,14 @@ export const BottomTabStack = () => {
           tabBarLabel: ({ color, focused }) => (
             <Text
               text={"Market"}
-              textStyle={[Fontscales.labelSmallMedium, { color: color }]}
+              textStyle={[
+                Fontscales.labelSmallMedium,
+                {
+                  color: color,
+                  paddingBottom:
+                    Platform.OS === "android" ? scale.pixelSizeVertical(5) : 0,
+                },
+              ]}
             />
           ),
           tabBarIcon: ({ color, focused }) => (
@@ -126,7 +142,14 @@ export const BottomTabStack = () => {
           tabBarLabel: ({ color, focused }) => (
             <Text
               text={"Find"}
-              textStyle={[Fontscales.labelSmallMedium, { color: color }]}
+              textStyle={[
+                Fontscales.labelSmallMedium,
+                {
+                  color: color,
+                  paddingBottom:
+                    Platform.OS === "android" ? scale.pixelSizeVertical(5) : 0,
+                },
+              ]}
             />
           ),
           tabBarIcon: ({ color, focused }) => (
@@ -164,7 +187,14 @@ export const BottomTabStack = () => {
           tabBarLabel: ({ color, focused }) => (
             <Text
               text={"Chat"}
-              textStyle={[Fontscales.labelSmallMedium, { color: color }]}
+              textStyle={[
+                Fontscales.labelSmallMedium,
+                {
+                  color: color,
+                  paddingBottom:
+                    Platform.OS === "android" ? scale.pixelSizeVertical(5) : 0,
+                },
+              ]}
             />
           ),
           tabBarIcon: ({ color, focused }) => (
@@ -202,7 +232,14 @@ export const BottomTabStack = () => {
           tabBarLabel: ({ color, focused }) => (
             <Text
               text={"Profile"}
-              textStyle={[Fontscales.labelSmallMedium, { color: color }]}
+              textStyle={[
+                Fontscales.labelSmallMedium,
+                {
+                  color: color,
+                  paddingBottom:
+                    Platform.OS === "android" ? scale.pixelSizeVertical(5) : 0,
+                },
+              ]}
             />
           ),
           tabBarIcon: ({ color, focused }) => (

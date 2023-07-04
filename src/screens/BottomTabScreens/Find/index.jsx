@@ -1,11 +1,8 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { AppHeader } from "../../../components/primary";
+import { scale } from "../../../utils/scale";
 
 export const Find = () => {
-  return (
-    <SafeAreaView>
-      <Text>Find</Text>
-    </SafeAreaView>
-  );
+  return <View>{/* <AppHeader /> */}</View>;
 };
