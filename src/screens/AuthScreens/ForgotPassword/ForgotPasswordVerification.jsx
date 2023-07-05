@@ -14,6 +14,7 @@ import {
   resendEmailOtp,
 } from "../../../Redux/actions";
 import { emailVerify } from "../../../Redux/actions";
+import { Lodaing } from "../../../components/primary";
 
 export const ForgotPasswordVerification = () => {
   const [otpState, updateOtpState] = useState({
@@ -155,93 +156,94 @@ export const ForgotPasswordVerification = () => {
   };
 
   return (
-    <SafeAreaView style={SharedStyles.container}>
-      <Pressable
-        style={{
-          height: "100%",
-        }}
-        onPress={() => {
-          Keyboard.dismiss();
-        }}
-      >
-        <View style={styles.imageContainer}>
-          <Image
-            contentFit="contain"
-            style={styles.image}
-            source={images.email}
-            cachePolicy={"memory-disk"}
-          />
-        </View>
+    <>
+      {data.loading ? <Lodaing /> : null}
+      <SafeAreaView style={SharedStyles.container}>
+        <Pressable
+          style={{
+            height: "100%",
+          }}
+          onPress={() => {
+            Keyboard.dismiss();
+          }}
+        >
+          <View style={styles.imageContainer}>
+            <Image
+              contentFit="contain"
+              style={styles.image}
+              source={images.email}
+              cachePolicy={"memory-disk"}
+            />
+          </View>
 
-        <View style={styles.titleText}>
-          <Text
-            textStyle={[Fontscales.headingLargeBold, styles.headerText]}
-            text={"Email \nVerification "}
-          />
-          <Text
-            textStyle={[styles.subText, Fontscales.paragraphSmallMedium]}
-            text={"Enter the verification code sent to your mail"}
-          />
-        </View>
+          <View style={styles.titleText}>
+            <Text
+              textStyle={[Fontscales.headingLargeBold, styles.headerText]}
+              text={"Email \nVerification "}
+            />
+            <Text
+              textStyle={[styles.subText, Fontscales.paragraphSmallMedium]}
+              text={"Enter the verification code sent to your mail"}
+            />
+          </View>
 
-        <View style={styles.otpContainer}>
-          <Pressable
-            onPress={() => onpress()}
-            style={styles.pressableContainer}
-          >
-            {eachDigit.map(eachInputDigit)}
-          </Pressable>
-          <TextInput
-            value={otpState.code}
-            onChangeText={(text) => {
-              let onlyNums = text.replace(/[^0-9]/g, "");
-              updateOtpState({ ...otpState, code: onlyNums });
-            }}
-            maxLength={otpState.codeMaxLength}
-            keyboardType={"number-pad"}
-            textContentType={"oneTimeCode"}
-            onBlur={() => handleBlur()}
-            refs={inputRef}
-            textInputStyle={styles.textInputStyleHidden}
-            autoFocus={true}
-          />
-        </View>
+          <View style={styles.otpContainer}>
+            <Pressable
+              onPress={() => onpress()}
+              style={styles.pressableContainer}
+            >
+              {eachDigit.map(eachInputDigit)}
+            </Pressable>
+            <TextInput
+              value={otpState.code}
+              onChangeText={(text) => {
+                let onlyNums = text.replace(/[^0-9]/g, "");
+                updateOtpState({ ...otpState, code: onlyNums });
+              }}
+              maxLength={otpState.codeMaxLength}
+              keyboardType={"number-pad"}
+              textContentType={"oneTimeCode"}
+              onBlur={() => handleBlur()}
+              refs={inputRef}
+              textInputStyle={styles.textInputStyleHidden}
+              autoFocus={true}
+            />
+          </View>
 
-        <View style={styles.errContainer}>
-          <Text
-            textStyle={styles.errorText}
-            text={otpState.error ?? data.error.message}
-          />
-        </View>
+          <View style={styles.errContainer}>
+            <Text
+              textStyle={styles.errorText}
+              text={otpState.error ?? data.error.message}
+            />
+          </View>
 
-        <View style={styles.btnContainer}>
-          <Button
-            onPress={() => resendOtpHandler()}
-            textStyle={[styles.timeBtnText, Fontscales.labelSmallRegular]}
-            containerStyle={[
-              styles.timeBtnContainer,
-              {
-                opacity: timerState.timeLeft > 0 ? 0.5 : 1,
-              },
-            ]}
-            title={
-              timerState.timeLeft
-                ? `Resend in ${timerState.timeLeft} s`
-                : "Resend"
-            }
-          />
+          <View style={styles.btnContainer}>
+            <Button
+              onPress={() => resendOtpHandler()}
+              textStyle={[styles.timeBtnText, Fontscales.labelSmallRegular]}
+              containerStyle={[
+                styles.timeBtnContainer,
+                {
+                  opacity: timerState.timeLeft > 0 ? 0.5 : 1,
+                },
+              ]}
+              title={
+                timerState.timeLeft
+                  ? `Resend in ${timerState.timeLeft} s`
+                  : "Resend"
+              }
+            />
 
-          <Button
-            onPress={() => verifyHandler()}
-            textStyle={[styles.verifyBtnText, Fontscales.labelSmallRegular]}
-            containerStyle={styles.VerifyBtnContainer}
-            title={data.loading ? "Verifying" : "Verify"}
-            disabled={data.loading ? true : false}
-          />
-        </View>
-      </Pressable>
-    </SafeAreaView>
+            <Button
+              onPress={() => verifyHandler()}
+              textStyle={[styles.verifyBtnText, Fontscales.labelSmallRegular]}
+              containerStyle={styles.VerifyBtnContainer}
+              title={data.loading ? "Verifying" : "Verify"}
+              disabled={data.loading ? true : false}
+            />
+          </View>
+        </Pressable>
+      </SafeAreaView>
+    </>
   );
 };
-
-// ForgotPasswordVerification;

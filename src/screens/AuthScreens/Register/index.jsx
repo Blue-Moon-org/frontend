@@ -11,6 +11,7 @@ import { Designer } from "./Designer";
 import { useDispatch, useSelector } from "react-redux";
 import { userRegistration } from "../../../Redux/actions";
 import { useNavigation } from "@react-navigation/native";
+import { Lodaing } from "../../../components/primary";
 
 export const Register = () => {
   const [accountId, updateAccountId] = useState(1);
@@ -157,68 +158,73 @@ export const Register = () => {
   };
 
   return (
-    <SafeAreaView style={[SharedStyles.container]}>
-      <Text
-        textStyle={[styles.headerText, Fontscales.headingLargeBold]}
-        text={"Register for an \nAccount"}
-      />
-      <Text
-        textStyle={[styles.subText, Fontscales.paragraphSmallMedium]}
-        text={"Create a buyer’s or designer’s account"}
-      />
+    <>
+      {registerData.loading ? <Lodaing /> : null}
+      <SafeAreaView style={[SharedStyles.container]}>
+        <Text
+          textStyle={[styles.headerText, Fontscales.headingLargeBold]}
+          text={"Register for an \nAccount"}
+        />
+        <Text
+          textStyle={[styles.subText, Fontscales.paragraphSmallMedium]}
+          text={"Create a buyer’s or designer’s account"}
+        />
 
-      <View style={styles.headerOptionContainer}>
-        {data.map((item, index) => {
-          return (
-            <TouchableOpacity
-              disabled={registerData.loading}
-              activeOpacity={0.8}
-              style={[
-                styles.options,
-                {
-                  borderColor:
-                    item.id === accountId ? colors.mainPrimary : colors.grey2,
-                },
-              ]}
-              onPress={() => updateAccountId(item.id)}
-              key={item.id}
-            >
-              <Text
-                numberOfLines={1}
-                ellipsizeMode={"tail"}
-                textStyle={[
-                  styles.optionsText,
+        <View style={styles.headerOptionContainer}>
+          {data.map((item, index) => {
+            return (
+              <TouchableOpacity
+                disabled={registerData.loading}
+                activeOpacity={0.8}
+                style={[
+                  styles.options,
                   {
-                    color:
-                      item.id === accountId ? colors.mainPrimary : colors.grey1,
-                    opacity: registerData.loading ? 0.6 : 1,
-                    paddingLeft:
-                      item.id === 1
-                        ? scale.pixelSizeHorizontal(8)
-                        : scale.pixelSizeHorizontal(5),
+                    borderColor:
+                      item.id === accountId ? colors.mainPrimary : colors.grey2,
                   },
                 ]}
-                text={item.name}
-              />
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-      {accountId === 1 ? (
-        <Buyer
-          buyersState={buyersState}
-          updateBuyersState={updateBuyersState}
-          submitBuyersAccount={submitBuyersAccount}
-          registerData={registerData}
-        />
-      ) : (
-        <Designer
-          designersState={designersState}
-          updateDesignersState={updateDesignersState}
-          submitDesignersAccount={submitDesignersAccount}
-          registerData={registerData}
-        />
-      )}
-    </SafeAreaView>
+                onPress={() => updateAccountId(item.id)}
+                key={item.id}
+              >
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode={"tail"}
+                  textStyle={[
+                    styles.optionsText,
+                    {
+                      color:
+                        item.id === accountId
+                          ? colors.mainPrimary
+                          : colors.grey1,
+                      opacity: registerData.loading ? 0.6 : 1,
+                      paddingLeft:
+                        item.id === 1
+                          ? scale.pixelSizeHorizontal(8)
+                          : scale.pixelSizeHorizontal(5),
+                    },
+                  ]}
+                  text={item.name}
+                />
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+        {accountId === 1 ? (
+          <Buyer
+            buyersState={buyersState}
+            updateBuyersState={updateBuyersState}
+            submitBuyersAccount={submitBuyersAccount}
+            registerData={registerData}
+          />
+        ) : (
+          <Designer
+            designersState={designersState}
+            updateDesignersState={updateDesignersState}
+            submitDesignersAccount={submitDesignersAccount}
+            registerData={registerData}
+          />
+        )}
+      </SafeAreaView>
+    </>
   );
 };

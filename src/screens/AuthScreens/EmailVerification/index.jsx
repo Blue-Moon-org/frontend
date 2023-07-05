@@ -10,6 +10,7 @@ import { colors } from "../../../constants/colorpallette";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { emailVerify, resendEmailOtp } from "../../../Redux/actions";
 import { useDispatch, useSelector } from "react-redux";
+import { Lodaing } from "../../../components/primary";
 
 export const EmailVerification = () => {
   const [otpState, updateOtpState] = useState({
@@ -144,99 +145,101 @@ export const EmailVerification = () => {
     };
   }, []);
 
-
   const resendOtpHandler = () => {
     dispatch(resendEmailOtp(route.params?.email, navigate));
     triggerTimer();
   };
 
   return (
-    <SafeAreaView style={SharedStyles.container}>
-      <Pressable
-        style={{
-          height: "100%",
-        }}
-        onPress={() => {
-          Keyboard.dismiss();
-        }}
-      >
-        <View style={styles.imageContainer}>
-          <Image
-            contentFit="contain"
-            style={styles.image}
-            source={images.email}
-            cachePolicy={"memory-disk"}
-          />
-        </View>
+    <>
+      {data.loading ? <Lodaing /> : null}
+      <SafeAreaView style={SharedStyles.container}>
+        <Pressable
+          style={{
+            height: "100%",
+          }}
+          onPress={() => {
+            Keyboard.dismiss();
+          }}
+        >
+          <View style={styles.imageContainer}>
+            <Image
+              contentFit="contain"
+              style={styles.image}
+              source={images.email}
+              cachePolicy={"memory-disk"}
+            />
+          </View>
 
-        <View style={styles.titleText}>
-          <Text
-            textStyle={[Fontscales.headingLargeBold, styles.headerText]}
-            text={"Email \nVerification"}
-          />
-          <Text
-            textStyle={[styles.subText, Fontscales.paragraphSmallMedium]}
-            text={"Enter the verification code sent to your mail"}
-          />
-        </View>
+          <View style={styles.titleText}>
+            <Text
+              textStyle={[Fontscales.headingLargeBold, styles.headerText]}
+              text={"Email \nVerification"}
+            />
+            <Text
+              textStyle={[styles.subText, Fontscales.paragraphSmallMedium]}
+              text={"Enter the verification code sent to your mail"}
+            />
+          </View>
 
-        <View style={styles.otpContainer}>
-          <Pressable
-            onPress={() => onpress()}
-            style={styles.pressableContainer}
-          >
-            {eachDigit.map(eachInputDigit)}
-          </Pressable>
-          <TextInput
-            value={otpState.code}
-            onChangeText={(text) => {
-              let onlyNums = text.replace(/[^0-9]/g, "");
-              updateOtpState({ ...otpState, code: onlyNums });
-            }}
-            maxLength={otpState.codeMaxLength}
-            keyboardType={"number-pad"}
-            textContentType={"oneTimeCode"}
-            onBlur={() => handleBlur()}
-            refs={inputRef}
-            textInputStyle={styles.textInputStyle}
-            autoFocus={true}
-          />
-        </View>
+          <View style={styles.otpContainer}>
+            <Pressable
+              onPress={() => onpress()}
+              style={styles.pressableContainer}
+            >
+              {eachDigit.map(eachInputDigit)}
+            </Pressable>
+            <TextInput
+              value={otpState.code}
+              onChangeText={(text) => {
+                let onlyNums = text.replace(/[^0-9]/g, "");
+                updateOtpState({ ...otpState, code: onlyNums });
+              }}
+              maxLength={otpState.codeMaxLength}
+              keyboardType={"number-pad"}
+              textContentType={"oneTimeCode"}
+              onBlur={() => handleBlur()}
+              refs={inputRef}
+              textInputStyle={styles.textInputStyle}
+              autoFocus={true}
+            />
+          </View>
 
-        <View style={styles.errContainer}>
-          <Text
-            textStyle={styles.errorText}
-            text={otpState.error ?? data?.error?.message}
-          />
-        </View>
+          <View style={styles.errContainer}>
+            <Text
+              textStyle={styles.errorText}
+              text={otpState.error ?? data?.error?.message}
+            />
+          </View>
 
-        <View style={styles.btnContainer}>
-          <Button
-            onPress={() => resendOtpHandler()}
-            textStyle={[styles.timeBtnText, Fontscales.labelSmallRegular]}
-            containerStyle={[
-              styles.timeBtnContainer,
-              {
-                opacity: timerState.timeLeft > 0 ? 0.5 : 1,
-              },
-            ]}
-            disabled={data.loading || timerState.timeLeft ? true : false}
-            title={
-              timerState.timeLeft
-                ? `Resend in ${timerState.timeLeft} s`
-                : "Resend"
-            }
-          />
+          <View style={styles.btnContainer}>
+            <Button
+              onPress={() => resendOtpHandler()}
+              textStyle={[styles.timeBtnText, Fontscales.labelSmallRegular]}
+              containerStyle={[
+                styles.timeBtnContainer,
+                {
+                  opacity: timerState.timeLeft > 0 ? 0.5 : 1,
+                },
+              ]}
+              disabled={data.loading || timerState.timeLeft ? true : false}
+              title={
+                timerState.timeLeft
+                  ? `Resend in ${timerState.timeLeft} s`
+                  : "Resend"
+              }
+            />
 
-          <Button
-            onPress={() => verifyHandler()}
-            textStyle={[styles.verifyBtnText, Fontscales.labelSmallRegular]}
-            containerStyle={styles.VerifyBtnContainer}
-            title={data.loading ? "Verifying" : "Verify"}
-            disabled={data.loading ? true : false}
-          />
-        </View>
-      </Pressable>
-    </SafeAreaView>
+            <Button
+              onPress={() => verifyHandler()}
+              textStyle={[styles.verifyBtnText, Fontscales.labelSmallRegular]}
+              containerStyle={styles.VerifyBtnContainer}
+              title={data.loading ? "Verifying" : "Verify"}
+              disabled={data.loading ? true : false}
+            />
+          </View>
+        </Pressable>
+      </SafeAreaView>
+    </>
   );
 };

@@ -29,13 +29,204 @@ export const dataSenator = {
   id: 1,
 };
 
-export const dataSuits = {
+export const dataSuits = [
+    {
   id: 1,
-};
+  imageUrl:
+    "https://img.freepik.com/free-vector/mans-suit-realistic-composition-with-smart-costume-with-white-shirt-tie-jacket_1284-54345.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+  name: "",
+  subText: "",
+  like: true,
+},
+    {
+  id:2,
+  imageUrl:
+    "https://img.freepik.com/free-vector/mans-suit-realistic-composition-with-smart-costume-with-white-shirt-tie-jacket_1284-54345.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+  name: "",
+  subText: "",
+  like: true,
+},
+    {
+  id: 3,
+  imageUrl:
+    "https://img.freepik.com/free-vector/mans-suit-realistic-composition-with-smart-costume-with-white-shirt-tie-jacket_1284-54345.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+  name: "",
+  subText: "",
+  like: true,
+},
+    {
+  id: 4,
+  imageUrl:
+    "https://img.freepik.com/free-vector/mans-suit-realistic-composition-with-smart-costume-with-white-shirt-tie-jacket_1284-54345.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+  name: "",
+  subText: "",
+  like: true,
+},
+    {
+  id: 5,
+  imageUrl:
+    "https://img.freepik.com/free-vector/mans-suit-realistic-composition-with-smart-costume-with-white-shirt-tie-jacket_1284-54345.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+  name: "",
+  subText: "",
+  like: true,
+},
+    {
+  id: 6,
+  imageUrl:
+    "https://img.freepik.com/free-vector/mans-suit-realistic-composition-with-smart-costume-with-white-shirt-tie-jacket_1284-54345.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+  name: "",
+  subText: "",
+  like: true,
+},
+    {
+  id: 7,
+  imageUrl:
+    "https://img.freepik.com/free-vector/mans-suit-realistic-composition-with-smart-costume-with-white-shirt-tie-jacket_1284-54345.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+  name: "",
+  subText: "",
+  like: true,
+},
+    {
+  id: 8,
+  imageUrl:
+    "https://img.freepik.com/free-vector/mans-suit-realistic-composition-with-smart-costume-with-white-shirt-tie-jacket_1284-54345.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+  name: "",
+  subText: "",
+  like: true,
+},
+    {
+  id: 9,
+  imageUrl:
+    "https://img.freepik.com/free-vector/mans-suit-realistic-composition-with-smart-costume-with-white-shirt-tie-jacket_1284-54345.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+  name: "",
+  subText: "",
+  like: true,
+},
+    {
+  id: 10,
+  imageUrl:
+    "https://img.freepik.com/free-vector/mans-suit-realistic-composition-with-smart-costume-with-white-shirt-tie-jacket_1284-54345.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+  name: "",
+  subText: "",
+  like: true,
+},
+    {
+  id: 11,
+  imageUrl:
+    "https://img.freepik.com/free-vector/mans-suit-realistic-composition-with-smart-costume-with-white-shirt-tie-jacket_1284-54345.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+  name: "",
+  subText: "",
+  like: true,
+},
+    {
+  id: 12,
+  imageUrl:
+    "https://img.freepik.com/free-vector/mans-suit-realistic-composition-with-smart-costume-with-white-shirt-tie-jacket_1284-54345.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+  name: "",
+  subText: "",
+  like: true,
+},
+]
 
-export const dataFits = {
-  id: 1,
-};
+export const dataFits = [
+  {
+    id: 1,
+    imageUrl:
+      "https://img.freepik.com/free-photo/shirt-mockup-concept-with-plain-clothing_23-2149448792.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+    name: "Fit Shirt",
+    subText: "question drew control at wooden railroad stay shaking letter send afraid flame jet fine somebody writer cattle walk slide trouble our add dream cave",
+    like: true,
+  },
+  {
+    id: 2,
+    imageUrl:
+      "https://img.freepik.com/free-psd/white-t-shirt-front-mockup_23-292935585.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+    name: "Fit Shirt",
+    subText: "chose catch load many step warn organized negative slope apartment cattle tall plant some common war fine fence bag pride raw habit chicken rising",
+    like: false,
+  },
+  {
+    id: 3,
+    imageUrl:
+      "https://img.freepik.com/premium-psd/male-tshirt-mockup-front-back-view_643585-8.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+    name: "Fit Shirt",
+    subText: "baby help blow shall tears nearly prize problem adult today proper surrounded aside climb advice mirror pie substance reach essential meal planning magic raise",
+    like: false,
+  },
+  {
+    id: 4,
+    imageUrl:
+      "https://img.freepik.com/free-psd/mens-tri-blend-crew-tee-mockup_126278-130.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+    name: "Fit Shirt",
+    subText: "car happen smoke supply storm struggle jar record variety completely friend friendly extra let number thick these led dried stared swimming daughter rod place",
+    like: false,
+  },
+  {
+    id: 5,
+    imageUrl:
+      "https://img.freepik.com/free-psd/white-polo-shirt-mockup-template-isolated-front-view_176382-1090.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+    name: "Fit Shirt",
+    subText: "below honor major getting function kill battle form hand tried series distance make audience ate story combination brick shadow next know captured route cat",
+    like: false,
+  },
+  {
+    id: 6,
+    imageUrl:
+      "https://img.freepik.com/free-photo/shirt-mockup-concept-with-plain-clothing_23-2149448793.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+    name: "Fit Shirt",
+    subText: "end gun sale best definition contrast straight purpose meat sugar flat every length examine warn promised center knife magnet example sense sold moon eleven",
+    like: true,
+  },
+  {
+    id: 7,
+    imageUrl:
+      "https://img.freepik.com/free-photo/shirt-mockup-concept-with-plain-clothing_23-2149448748.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+    name: "Fit Shirt",
+    subText: "political score length softly zero fifty largest garden understanding bat relationship shinning mass grass life salt body does follow every missing crew cookies favorite",
+    like: false,
+  },
+  {
+    id: 8,
+    imageUrl:
+      "https://img.freepik.com/free-photo/graphic-tshirt-trendy-design-mockup-presented-wooden-hanger_460848-14045.jpg?size=626&ext=jpg&ga=GA1.1.70578014.1688424585&semt=sph",
+    name: "Fit Shirt",
+    subText: "fair friendly steam put radio missing lips fear live pocket lot daughter again simplest bark five too courage vast breathing driving major nervous future",
+    like: true,
+  },
+  {
+    id: 9,
+
+    imageUrl:
+      "https://img.freepik.com/free-photo/front-view-smiley-woman-pointing-herself_23-2148946299.jpg?size=626&ext=jpg&ga=GA1.1.70578014.1688424585&semt=sph",
+    name: "Fit Shirt",
+    subText: "degree north map cookies surface whistle drink wash another weight truck discussion band pain baby piano remain barn able satellites orbit ready liquid particular",
+    like: true,
+  },
+  {
+    id: 10,
+    imageUrl:
+      "https://img.freepik.com/free-psd/white-t-shirt-mock-up_1310-233.jpg?w=2000&t=st=1688511415~exp=1688512015~hmac=5774917633f02efd3160f560165f2341425efdedb16b087e23e22e74c1ec4fd4",
+    name: "Fit Shirt",
+    subText: "near spirit progress loss egg promised thus or table youth favorite heard house touch began spite individual better neighbor running married situation nearest upon",
+    like: false,
+  },
+  {
+    id: 11,
+    imageUrl:
+      "https://img.freepik.com/free-photo/clothing-rack-with-floral-hawaiian-shirts-hangers-hat_23-2149366019.jpg?size=626&ext=jpg&ga=GA1.1.70578014.1688424585&semt=sph",
+    name: "Fit Shirt",
+    subText: "mill am oil rain pipe mood comfortable lonely yes ought notice chose customs student stronger strange loose thou word former leaf lead income provide",
+    like: true,
+  },
+  {
+    id: 12,
+    imageUrl:
+      "https://img.freepik.com/free-vector/front-t-shirt-with-panda-face-pattern_1308-63747.jpg?size=626&ext=jpg&ga=GA1.1.70578014.1688424585&semt=sph",
+    name: "Fit Shirt",
+    subText: "silk board require wall fair pole official balance famous daily scale if loud pride that garage dinner accident path exercise describe crew strip rich",
+    like: false,
+  },
+];
 
 export const dataAnkara = [
   {

@@ -7,6 +7,7 @@ import { Fontscales, SharedStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPassword } from "../../../Redux/actions";
+import { Lodaing } from "../../../components/primary";
 
 export const ForgotPassword = () => {
   const { navigate } = useNavigation();
@@ -41,52 +42,55 @@ export const ForgotPassword = () => {
   };
 
   return (
-    <SafeAreaView style={SharedStyles.container}>
-      <Pressable style={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
-        <Text
-          textStyle={[Fontscales.headingLargeBold, styles.headerText]}
-          text={"Reset \nPassword"}
-        />
-        <Text
-          textStyle={[styles.subText, Fontscales.paragraphSmallMedium]}
-          text={"Enter the email registered with the account"}
-        />
-
-        <Text text={"Email"} textStyle={styles.label} />
-        <TextInput
-          autoFocus={true}
-          textInputStyle={[styles.inputSpace]}
-          //    inputState={}
-          //   editable={}
-          onChangeText={(text) => {
-            updateState({
-              ...state,
-              email: text,
-            });
-          }}
-          placeholder={"example@newmail.com"}
-          textContentType={"emailAddress"}
-          value={state.email}
-          autoComplete={"email"}
-          keyboardType={"email-address"}
-        />
-
-        <View style={styles.errContainer}>
+    <>
+      {data.loading ? <Lodaing /> : null}
+      <SafeAreaView style={SharedStyles.container}>
+        <Pressable style={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
           <Text
-            textStyle={styles.errorText}
-            text={state.error ?? data.error.message}
+            textStyle={[Fontscales.headingLargeBold, styles.headerText]}
+            text={"Reset \nPassword"}
           />
-        </View>
+          <Text
+            textStyle={[styles.subText, Fontscales.paragraphSmallMedium]}
+            text={"Enter the email registered with the account"}
+          />
 
-        <View style={styles.outterContainer}>
-          <Button
-            onPress={() => continueHandler()}
-            textStyle={styles.btnTextStyle}
-            containerStyle={styles.innerContainer}
-            title={"Continue"}
+          <Text text={"Email"} textStyle={styles.label} />
+          <TextInput
+            autoFocus={true}
+            textInputStyle={[styles.inputSpace]}
+            //    inputState={}
+            //   editable={}
+            onChangeText={(text) => {
+              updateState({
+                ...state,
+                email: text,
+              });
+            }}
+            placeholder={"example@newmail.com"}
+            textContentType={"emailAddress"}
+            value={state.email}
+            autoComplete={"email"}
+            keyboardType={"email-address"}
           />
-        </View>
-      </Pressable>
-    </SafeAreaView>
+
+          <View style={styles.errContainer}>
+            <Text
+              textStyle={styles.errorText}
+              text={state.error ?? data.error.message}
+            />
+          </View>
+
+          <View style={styles.outterContainer}>
+            <Button
+              onPress={() => continueHandler()}
+              textStyle={styles.btnTextStyle}
+              containerStyle={styles.innerContainer}
+              title={"Continue"}
+            />
+          </View>
+        </Pressable>
+      </SafeAreaView>
+    </>
   );
 };
