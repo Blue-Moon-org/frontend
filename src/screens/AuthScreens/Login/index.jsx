@@ -8,7 +8,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { scale } from "../../../utils/scale";
 import { colors } from "../../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
-import { UseSelector, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../../../Redux/actions";
 import { Lodaing } from "../../../components/primary";
 
@@ -81,7 +81,7 @@ export const Login = () => {
                 });
               }}
               keyboardType={"email-address"}
-              placeholder={"example@newmail.com"}
+              placeholder={"Example@newmail.com"}
               textContentType={"emailAddress"}
               value={state.email}
               autoComplete={"email"}

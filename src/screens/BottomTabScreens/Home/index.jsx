@@ -14,6 +14,7 @@ import { Fits } from "./Fits";
 import { Suits } from "./Suits";
 import { Senator } from "./Senator";
 import { All } from "./All";
+import { Feather } from "@expo/vector-icons";
 
 export const Home = () => {
   const { setOptions, navigate, goBack, setParams, isFocused } =
@@ -67,20 +68,25 @@ export const Home = () => {
           );
         })}
       </View>
-      {
-        type === "All" ? (
-          <All />
-        ) : type === "Senator" ? (
-          <Senator />
-        ) : type === "Suits" ? (
-          <Suits />
-        ) : type === "Fit" ? (
-          <Fits />
-        ) : (
-          <Ankara />
-        )
-        // type === "All" ? <Text text={"All"}/> : type === "All" ? <Text text={"Others"}/> : type === "All" ? type === "All"? <Text text={"Others"}/> :<Text text={"Others"}/>
-      }
+      <View>
+        {
+          type === "All" ? (
+            <All />
+          ) : type === "Senator" ? (
+            <Senator />
+          ) : type === "Suits" ? (
+            <Suits />
+          ) : type === "Fit" ? (
+            <Fits />
+          ) : (
+            <Ankara />
+          )
+          // type === "All" ? <Text text={"All"}/> : type === "All" ? <Text text={"Others"}/> : type === "All" ? type === "All"? <Text text={"Others"}/> :<Text text={"Others"}/>
+        }
+        <TouchableOpacity activeOpacity={0.8} style={styles.plusSign}>
+          <Feather name="plus" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

@@ -9,7 +9,7 @@ export const StackContainer = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Auth" component={AuthStack} />
+        {/* <Stack.Screen name="Auth" component={AuthStack} /> */}
         <Stack.Screen name="Stacks" component={Stacks} />
       </Stack.Navigator>
     </NavigationContainer>

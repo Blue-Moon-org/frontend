@@ -72,7 +72,7 @@ export const Designer = ({
             onChangeText={(text) =>
               updateDesignersState({ ...designersState, email: text })
             }
-            placeholder={"example@newmail.com"}
+            placeholder={"Example@newmail.com"}
             textContentType={"emailAddress"}
             value={designersState.email}
             autoComplete={"email"}

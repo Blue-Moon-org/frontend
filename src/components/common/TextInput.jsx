@@ -59,6 +59,7 @@ export const TextInput = ({
       autoComplete={autoComplete}
       ref={refs}
       autoFocus={autoFocus}
+      autoCapitalize="words"
       style={[
         styles.textInputStyle,
         textInputStyle,
