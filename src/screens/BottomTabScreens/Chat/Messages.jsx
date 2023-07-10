@@ -1,4 +1,4 @@
-import { FlatList, View } from "react-native";
+import { FlatList, Platform, View } from "react-native";
 import React from "react";
 import { Text } from "../../../components/common";
 import { Fontscales } from "../../../styles";
@@ -10,34 +10,63 @@ import { styles } from "./styles";
 export const Messages = () => {
   const renderMessages = ({ item, index }) => {
     return (
-      <View>
-        <View>
+      <View style={styles.messageContainer}>
+        <View style={styles.profilePictureContainer}>
           <Image
             source={{ uri: item.profilePicture }}
             style={styles.profilePicture}
             contentFit="cover"
             cachePolicy={"memory-disk"}
-            
           />
         </View>
-        <View></View>
-        <View></View>
+        <View style={styles.messagesContainer}>
+          <Text
+            text={item.name}
+            textStyle={[
+              Fontscales.paragraphMediumRegular,
+              { marginBottom: scale.pixelSizeVertical(4) },
+            ]}
+          />
+          <Text
+            ellipsizeMode={"tail"}
+            numberOfLines={2}
+            text={item.text}
+            textStyle={styles.message}
+          />
+        </View>
+        <View style={styles.timeContainer}>
+          <Text text={"25 mins"} textStyle={styles.timeAgo} />
+          <View style={styles.noOfMessagesContainer}>
+            <Text text={"2"} textStyle={styles.text} />
+          </View>
+        </View>
       </View>
     );
   };
   return (
     <View>
-      <Text text={"Messages"} textStyle={[Fontscales.labelLargeRegular]} />
-
-      <FlatList
-        data={messagesData}
-        renderItem={renderMessages}
-        showsVerticalScrollIndicator={false}
-        key={(item, index) => item.id}
-        contentContainerStyle={{
-          marginVertical: scale.pixelSizeVertical(15),
-        }}
+      <Text
+        text={"Messages"}
+        textStyle={[Fontscales.labelLargeRegular, styles.messageText]}
       />
+      <View
+        style={{
+          height:
+            Platform.OS === "ios"
+              ? scale.height - scale.heightPixel(345)
+              : scale.height - scale.heightPixel(310),
+        }}
+      >
+        <FlatList
+          data={messagesData}
+          renderItem={renderMessages}
+          showsVerticalScrollIndicator={false}
+          key={(item, index) => item.id}
+          contentContainerStyle={{
+            marginVertical: scale.pixelSizeVertical(15),
+          }}
+        />
+      </View>
     </View>
   );
 };

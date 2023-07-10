@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     width: "70%",
     flexDirection: "row",
     backgroundColor: colors.grey2,
-    height: "80%",
+    height: "70%",
     alignItems: "center",
     paddingLeft: scale.pixelSizeHorizontal(10),
     borderRadius: scale.fontPixel(10),
