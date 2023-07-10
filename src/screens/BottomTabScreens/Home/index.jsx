@@ -25,11 +25,11 @@ export const Home = () => {
   return (
     <View style={SharedStyles.container}>
       <AppHeader />
+      <Text
+        text={"Featured"}
+        textStyle={[styles.featuredText, Fontscales.labelSmallMedium]}
+      />
       <View style={styles.featuredContainer}>
-        <Text
-          text={"Featured"}
-          textStyle={[styles.featuredText, Fontscales.labelSmallMedium]}
-        />
         <Feature />
       </View>
 

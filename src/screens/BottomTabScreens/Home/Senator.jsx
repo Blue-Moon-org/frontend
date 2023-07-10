@@ -49,7 +49,7 @@ export const Senator = () => {
         height:
           Platform.OS === "ios"
             ? scale.height - scale.heightPixel(430)
-            : scale.height - scale.heightPixel(398),
+            : scale.height - scale.heightPixel(390),
       }}
     >
       <FlatList

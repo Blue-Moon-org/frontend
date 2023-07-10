@@ -4,7 +4,10 @@ import { colors } from "../../../constants/colorpallette";
 
 export const styles = StyleSheet.create({
   featuredContainer: {
-    marginTop: scale.pixelSizeVertical(5),
+    marginTop: scale.pixelSizeVertical(1),
+  },
+  featuredText: {
+    // marginTop: scale.pixelSizeVertical(10),
   },
   itemsContainer: {
     flexDirection: "row",

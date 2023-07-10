@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         : scale.pixelSizeVertical(10),
   },
   imageConatiner: {
-    height: Platform.OS === "ios" ? "80%" : "80%",
+    height: Platform.OS === "ios" ? "76%" : "76%",
     width: "13%",
     borderRadius: scale.fontPixel(12),
   },
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     width: "70%",
     flexDirection: "row",
     backgroundColor: colors.grey2,
-    height: "85%",
+    height: "80%",
     alignItems: "center",
     paddingLeft: scale.pixelSizeHorizontal(10),
     borderRadius: scale.fontPixel(10),

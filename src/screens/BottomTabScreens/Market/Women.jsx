@@ -1,6 +1,6 @@
 import { View, FlatList, Platform } from "react-native";
 import React from "react";
-import { dataAnkara } from "./data";
+import { dataFits } from "../Home/data";
 import { Text } from "../../../components/common";
 import { scale } from "../../../utils/scale";
 import { Image } from "expo-image";
@@ -8,7 +8,7 @@ import { colors } from "../../../constants/colorpallette";
 import { AntDesign } from "@expo/vector-icons";
 import { styles } from "./styles";
 
-export const Ankara = () => {
+export const Women = () => {
   const renderItem = ({ item, index, separator }) => {
     return (
       <View style={styles.itemContainer}>
@@ -48,23 +48,21 @@ export const Ankara = () => {
       style={{
         height:
           Platform.OS === "ios"
-            ? scale.height - scale.heightPixel(430)
-            : scale.height - scale.heightPixel(390),
+            ? scale.height - scale.heightPixel(398)
+            : scale.height - scale.heightPixel(368),
       }}
     >
       <FlatList
         showsVerticalScrollIndicator={false}
         numColumns={3}
-        data={dataAnkara}
+        data={dataFits}
         renderItem={renderItem}
         columnWrapperStyle={{ justifyContent: "space-between" }}
         keyExtractor={(item, index) => item.id}
         contentContainerStyle={{
           marginTop: scale.pixelSizeVertical(10),
-          // width: "100%",
         }}
       />
-      {/* <View style={{ height: scale.heightPixel(30) }} /> */}
     </View>
   );
 };

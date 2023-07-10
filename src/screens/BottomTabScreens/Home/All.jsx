@@ -11,12 +11,8 @@ import { styles } from "./styles";
 export const All = () => {
   const renderItem = ({ item, index, separator }) => {
     return (
-      <View
-        style={styles.itemContainer}
-      >
-        <View
-          style={styles.innerContainer}
-        >
+      <View style={styles.itemContainer}>
+        <View style={styles.innerContainer}>
           <Image
             source={{ uri: item.imageUrl }}
             contentFit="cover"
@@ -30,9 +26,7 @@ export const All = () => {
             style={styles.likeIcon}
           />
         </View>
-        <View
-          style={styles.bottomContainer}
-        >
+        <View style={styles.bottomContainer}>
           <Text
             textStyle={styles.text}
             ellipsizeMode={"tail"}
@@ -55,7 +49,7 @@ export const All = () => {
         height:
           Platform.OS === "ios"
             ? scale.height - scale.heightPixel(430)
-            : scale.height - scale.heightPixel(400),
+            : scale.height - scale.heightPixel(390),
       }}
     >
       <FlatList
