@@ -1,5 +1,12 @@
 import React from "react";
-import { Chat, Find, Home, Market, Profile } from "../screens/BottomTabScreens";
+import {
+  Chat,
+  Find,
+  Home,
+  Market,
+  Profile,
+  BuyerProfile,
+} from "../screens/BottomTabScreens";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { Platform, View } from "react-native";
 import { colors } from "../constants/colorpallette";
@@ -269,7 +276,7 @@ export const BottomTabStack = () => {
           tabBarAccessibilityLabel: "home",
         }}
         name="Profile"
-        component={Profile}
+        component={1 + 1 === 2 ? BuyerProfile : Profile}
       />
     </Tab.Navigator>
   );

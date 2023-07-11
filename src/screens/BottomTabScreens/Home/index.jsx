@@ -81,7 +81,6 @@ export const Home = () => {
           ) : (
             <Ankara />
           )
-          // type === "All" ? <Text text={"All"}/> : type === "All" ? <Text text={"Others"}/> : type === "All" ? type === "All"? <Text text={"Others"}/> :<Text text={"Others"}/>
         }
         <TouchableOpacity activeOpacity={0.8} style={styles.plusSign}>
           <Feather name="plus" size={24} color="white" />
