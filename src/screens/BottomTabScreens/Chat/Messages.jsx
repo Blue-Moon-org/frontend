@@ -53,8 +53,8 @@ export const Messages = () => {
         style={{
           height:
             Platform.OS === "ios"
-              ? scale.height - scale.heightPixel(355)
-              : scale.height - scale.heightPixel(320),
+              ? scale.height - scale.heightPixel(345)
+              : scale.height - scale.heightPixel(280),
         }}
       >
         <FlatList

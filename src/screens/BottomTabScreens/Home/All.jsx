@@ -49,7 +49,7 @@ export const All = () => {
         height:
           Platform.OS === "ios"
             ? scale.height - scale.heightPixel(430)
-            : scale.height - scale.heightPixel(390),
+            : scale.height - scale.heightPixel(360),
       }}
     >
       <FlatList

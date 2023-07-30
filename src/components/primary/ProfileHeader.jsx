@@ -36,7 +36,7 @@ export const ProfileHeader = ({ buyer }) => {
           </BaseText>
         </View>
         <View style={styles.iconImage}>
-          {buyer && (
+          {!buyer && (
             <Ionicons name="settings-outline" size={24} color="black" />
           )}
           <View style={styles.imageContainer}>

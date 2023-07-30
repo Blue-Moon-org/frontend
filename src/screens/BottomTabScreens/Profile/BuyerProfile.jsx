@@ -8,7 +8,7 @@ import { SharedStyles } from "../../../styles";
 export const BuyerProfile = () => {
   return (
     <SafeAreaView style={SharedStyles.container}>
-      <ProfileHeader />
+      <ProfileHeader buyer={true} />
     </SafeAreaView>
   );
 };
