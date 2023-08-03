@@ -41,10 +41,6 @@ export const styles = StyleSheet.create({
     borderRadius: scale.fontPixel(10),
     marginBottom: scale.pixelSizeVertical(20),
     backgroundColor: colors.mainPrimary,
-  },
-  innerContainer: {
-    height: "73%",
-    width: "100%",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -54,6 +50,10 @@ export const styles = StyleSheet.create({
     shadowRadius: 4.65,
 
     elevation: 8,
+  },
+  innerContainer: {
+    height: "73%",
+    width: "100%",
   },
   image: {
     height: "100%",
@@ -82,5 +82,16 @@ export const styles = StyleSheet.create({
     color: "white",
     marginBottom: scale.pixelSizeVertical(5),
     fontFamily: "Outfit_500Medium",
+  },
+  btn: {
+    flexDirection: "row",
+    marginVertical: scale.pixelSizeVertical(8),
+    alignItems: "center",
+  },
+  container: {
+    backgroundColor: colors.grey2,
+    marginVertical: scale.pixelSizeVertical(10),
+    borderRadius: scale.fontPixel(15),
+    paddingHorizontal: scale.pixelSizeHorizontal(8),
   },
 });

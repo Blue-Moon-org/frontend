@@ -49,6 +49,8 @@ export const Men = () => {
         height:
           Platform.OS === "ios"
             ? scale.height - scale.heightPixel(398)
+            : scale.height < 715
+            ? scale.height - scale.heightPixel(385)
             : scale.height - scale.heightPixel(335),
       }}
     >

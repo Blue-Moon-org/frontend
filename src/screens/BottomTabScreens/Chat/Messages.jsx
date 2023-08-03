@@ -54,6 +54,8 @@ export const Messages = () => {
           height:
             Platform.OS === "ios"
               ? scale.height - scale.heightPixel(345)
+              : scale.height < 715
+              ? scale.height - scale.heightPixel(335)
               : scale.height - scale.heightPixel(280),
         }}
       >

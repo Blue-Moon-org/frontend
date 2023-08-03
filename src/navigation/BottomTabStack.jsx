@@ -276,7 +276,7 @@ export const BottomTabStack = () => {
           tabBarAccessibilityLabel: "home",
         }}
         name="Profile"
-        component={1 + 2 === 2 ? BuyerProfile : Profile}
+        component={1 + 2 === 1 ? BuyerProfile : Profile}
       />
     </Tab.Navigator>
   );

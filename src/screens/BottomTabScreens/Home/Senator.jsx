@@ -1,17 +1,27 @@
-import { View, FlatList, Platform } from "react-native";
+import { View, FlatList, Platform, TouchableOpacity } from "react-native";
 import React from "react";
 import { dataSenator } from "./data";
 import { Text } from "../../../components/common";
 import { scale } from "../../../utils/scale";
 import { Image } from "expo-image";
-import { colors } from "../../../constants/colorpallette";
 import { AntDesign } from "@expo/vector-icons";
 import { styles } from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 export const Senator = () => {
+  const { navigate } = useNavigation();
   const renderItem = ({ item, index, separator }) => {
+    const _detailHandler = () => {
+      navigate("RootStack", {
+        screen: "PostDetail",
+      });
+    };
     return (
-      <View style={styles.itemContainer}>
+      <TouchableOpacity
+        onPress={() => _detailHandler()}
+        activeOpacity={0.8}
+        style={styles.itemContainer}
+      >
         <View style={styles.innerContainer}>
           <Image
             source={{ uri: item.imageUrl }}
@@ -22,7 +32,7 @@ export const Senator = () => {
           <AntDesign
             name={item.like ? "heart" : "hearto"}
             size={scale.fontPixel(18)}
-            color={colors.mainPrimary}
+            color={"white"}
             style={styles.likeIcon}
           />
         </View>
@@ -40,7 +50,7 @@ export const Senator = () => {
             numberOfLines={2}
           />
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
   return (
@@ -49,6 +59,8 @@ export const Senator = () => {
         height:
           Platform.OS === "ios"
             ? scale.height - scale.heightPixel(430)
+            : scale.height < 715
+            ? scale.height - scale.heightPixel(415)
             : scale.height - scale.heightPixel(360),
       }}
     >

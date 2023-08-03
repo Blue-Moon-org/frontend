@@ -12,7 +12,7 @@ export const ProfileHeader = ({ buyer }) => {
   const { goBack } = useNavigation();
   return (
     <>
-      {!buyer && (
+      {buyer && (
         <MaterialIcons
           style={styles.icon}
           name="keyboard-backspace"
@@ -31,7 +31,7 @@ export const ProfileHeader = ({ buyer }) => {
             Balla Daniella -
             <Text
               textStyle={{ color: colors.mainPrimary }}
-              text={1 + 1 === 3 ? " Designer" : " Seller"}
+              text={buyer ? " Buyer" : " Seller"}
             />
           </BaseText>
         </View>

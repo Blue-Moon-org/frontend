@@ -82,7 +82,7 @@ export const Fontscales = StyleSheet.create({
     fontWeight: "400",
     fontFamily: "Outfit_400Regular",
   },
-  paragraphLargeRegular: {
+  paragraphLargeMedium: {
     fontSize: scale.size.h2,
     lineHeight: scale.lineSize.lh2,
     fontWeight: "500",

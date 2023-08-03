@@ -7,8 +7,6 @@ import store from "./Redux/store";
 export default function App() {
   const { isFontReady } = useFont();
 
- 
-
   return isFontReady ? (
     <Provider store={store}>
       <StackContainer />

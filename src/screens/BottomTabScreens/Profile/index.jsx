@@ -16,7 +16,7 @@ export const Profile = () => {
   const [type, updateType] = useState("Posts");
   return (
     <SafeAreaView style={SharedStyles.container}>
-      <ProfileHeader />
+      <ProfileHeader buyer={false} />
       <View style={styles.background} />
       <View style={styles.background2} />
       <View style={styles.headerOptionContainer}>

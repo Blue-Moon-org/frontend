@@ -48,7 +48,7 @@ export const Posts = () => {
       style={{
         height:
           Platform.OS === "ios"
-            ? scale.height - scale.heightPixel(525)
+            ? scale.height - scale.heightPixel(495)
             : scale.height - scale.heightPixel(460),
       }}
     >
