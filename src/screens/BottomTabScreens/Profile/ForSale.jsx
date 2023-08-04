@@ -22,7 +22,7 @@ export const ForSale = () => {
           <AntDesign
             name={item.like ? "heart" : "hearto"}
             size={scale.fontPixel(18)}
-            color={colors.mainPrimary}
+            color={"white"}
             style={styles.likeIcon}
           />
         </View>
@@ -48,7 +48,7 @@ export const ForSale = () => {
       style={{
         height:
           Platform.OS === "ios"
-            ? scale.height - scale.heightPixel(490)
+            ? scale.height - scale.heightPixel(495)
             : scale.height - scale.heightPixel(460),
       }}
     >

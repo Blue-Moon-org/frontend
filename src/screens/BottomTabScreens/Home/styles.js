@@ -48,6 +48,7 @@ export const styles = StyleSheet.create({
     bottom: scale.pixelSizeVertical(15),
     borderRadius: scale.fontPixel(10),
   },
+
   itemContainer: {
     width: "30%",
     height: scale.heightPixel(182),

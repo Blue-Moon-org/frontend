@@ -4,8 +4,7 @@ import { dataAnkara } from "../Home/data";
 import { Text } from "../../../components/common";
 import { scale } from "../../../utils/scale";
 import { Image } from "expo-image";
-import { colors } from "../../../constants/colorpallette";
-import { AntDesign } from "@expo/vector-icons";
+import {  Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles";
 
 export const Men = () => {
@@ -19,10 +18,10 @@ export const Men = () => {
             cachePolicy={"memory-disk"}
             style={styles.image}
           />
-          <AntDesign
-            name={item.like ? "heart" : "hearto"}
+          <Ionicons
+            name={item.like ? "cart" : "cart-outline"}
             size={scale.fontPixel(18)}
-            color={colors.mainPrimary}
+            color={"white"}
             style={styles.likeIcon}
           />
         </View>

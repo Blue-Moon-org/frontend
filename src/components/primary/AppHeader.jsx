@@ -8,8 +8,10 @@ import { scale } from "../../utils/scale";
 import { colors } from "../../constants/colorpallette";
 import { Fontscales } from "../../styles";
 import Constants from "expo-constants";
+import { useNavigation } from "@react-navigation/native";
 
 export const AppHeader = () => {
+  const { navigate } = useNavigation();
   return (
     <View style={styles.mainContainer}>
       <View
@@ -36,7 +38,6 @@ export const AppHeader = () => {
             style={styles.icon}
           />
           <TextInput
-            // inlineImageLeft=""
             style={[styles.textInput, Fontscales.labelSmallRegular]}
             placeholder="Search for anything"
           />
@@ -50,6 +51,11 @@ export const AppHeader = () => {
             name="cart-outline"
             size={scale.fontPixel(30)}
             color="black"
+            onPress={() =>
+              navigate("RootStack", {
+                screen: "Cart",
+              })
+            }
           />
         </View>
       </View>

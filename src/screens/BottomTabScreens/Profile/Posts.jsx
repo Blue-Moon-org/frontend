@@ -22,7 +22,7 @@ export const Posts = () => {
           <AntDesign
             name={item.like ? "heart" : "hearto"}
             size={scale.fontPixel(18)}
-            color={colors.mainPrimary}
+            color={"white"}
             style={styles.likeIcon}
           />
         </View>

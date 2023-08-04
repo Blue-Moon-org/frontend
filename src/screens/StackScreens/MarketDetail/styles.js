@@ -4,7 +4,7 @@ import { colors } from "../../../constants/colorpallette";
 
 export const styles = StyleSheet.create({
   detailContainer: {
-    height: scale.heightPixel(530),
+    height: scale.heightPixel(400),
     marginTop: scale.pixelSizeVertical(15),
     backgroundColor: colors.grey2,
     padding: scale.pixelSizeVertical(16),
@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   },
   imagesContainer: {
     flexDirection: "row",
-    height: "60%",
+    height: "70%",
     justifyContent: "space-between",
   },
   mainImageContainer: {
@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     height: "10%",
-    marginTop: "3%",
+    marginTop: "4%",
   },
   userProfileContainer: {
     height: "100%",
@@ -56,53 +56,28 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     maxWidth: "40%",
+    backgroundColor: colors.mainPrimary,
+    justifyContent: "center",
+    paddingHorizontal: scale.pixelSizeHorizontal(12),
+    paddingVertical: scale.pixelSizeVertical(6),
+    borderRadius: scale.fontPixel(4),
+  },
+  cartText: {
+    fontSize: scale.fontPixel(10),
+    color: "white",
+    fontFamily: "Outfit_500Medium",
+    marginLeft: scale.pixelSizeHorizontal(5),
   },
   userProfile: {
     width: "100%",
     height: "100%",
     borderRadius: scale.fontPixel(4),
   },
-  iconTextContainer: {
-    marginRight: scale.pixelSizeHorizontal(8),
-    flexDirection: "row",
-  },
-  likeShareText: {
-    fontFamily: "Outfit_400Regular",
-    fontSize: scale.fontPixel(12),
-    fontWeight: 400,
-    lineHeight: scale.fontPixel(15),
-    marginLeft: scale.pixelSizeHorizontal(6),
-  },
+
   aboutContainer: {
-    marginTop: "3%",
-  },
-  inputSendContainer: {
-    backgroundColor: "#DBDBDB",
-    flexDirection: "row",
-    height: scale.heightPixel(32),
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: scale.pixelSizeHorizontal(10),
     marginTop: "4%",
   },
-  input: {
-    height: "100%",
-    width: "90%",
-    fontFamily: "Outfit_400Regular",
-    fontSize: scale.fontPixel(12),
-    lineHeight: scale.fontPixel(15),
-    marginLeft: scale.pixelSizeHorizontal(6),
-  },
-  comment: {
-    fontFamily: "Outfit_400Regular",
-    fontSize: scale.fontPixel(12),
-    fontWeight: 400,
-    lineHeight: scale.fontPixel(15),
-    marginLeft: scale.pixelSizeHorizontal(6),
-    color: colors.mainPrimary,
-    textAlign: "right",
-    marginTop: "3%",
-  },
+
   seeMoreContainer: {
     marginTop: scale.pixelSizeVertical(16),
     paddingBottom: scale.pixelSizeVertical(40),

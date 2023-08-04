@@ -1,15 +1,15 @@
-import { View, TextInput } from "react-native";
+import { View, TextInput, TouchableOpacity } from "react-native";
 import React from "react";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Image } from "expo-image";
 import { KeyBoardAvoidingWrapper, Text } from "../../../components/common";
-import { AntDesign, Feather } from "@expo/vector-icons";
+import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
 import { dataFits } from "../../BottomTabScreens/Home/data";
 
-export const PostDetail = () => {
+export const MarketDetail = () => {
   return (
     <View style={SharedStyles.container}>
       <KeyBoardAvoidingWrapper>
@@ -82,39 +82,22 @@ export const PostDetail = () => {
                 </View>
               </View>
 
-              <View style={styles.reactionIcons}>
-                <View style={styles.iconTextContainer}>
-                  <AntDesign
-                    name="hearto"
-                    size={scale.fontPixel(16)}
-                    color={colors.blackText}
-                  />
-                  <Text
-                    text={"24k"}
-                    numberOfLines={1}
-                    ellipsizeMode={"tail"}
-                    textStyle={styles.likeShareText}
-                  />
-                </View>
-                <View style={styles.iconTextContainer}>
-                  <Feather
-                    name="send"
-                    size={scale.fontPixel(16)}
-                    color={colors.blackText}
-                  />
-                  <Text
-                    text={"24k"}
-                    numberOfLines={1}
-                    ellipsizeMode={"tail"}
-                    textStyle={styles.likeShareText}
-                  />
-                </View>
-                <AntDesign
-                  name="staro"
-                  size={scale.fontPixel(16)}
-                  color={colors.blackText}
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={styles.reactionIcons}
+              >
+                <Ionicons
+                  name="cart-outline"
+                  color={"white"}
+                  size={scale.fontPixel(20)}
                 />
-              </View>
+                <Text
+                  text={"Add to cart"}
+                  textStyle={styles.cartText}
+                  numberOfLines={1}
+                  ellipsizeMode={"tail"}
+                />
+              </TouchableOpacity>
             </View>
             <View style={styles.aboutContainer}>
               <Text
@@ -132,27 +115,6 @@ export const PostDetail = () => {
                 ellipsizeMode={"tail"}
               />
             </View>
-
-            <View style={styles.commentContainer}>
-              <View style={styles.inputSendContainer}>
-                <TextInput
-                  placeholder="Leave a comment"
-                  placeholderTextColor={colors.blackText}
-                  style={styles.input}
-                />
-                <Feather
-                  name="send"
-                  size={scale.fontPixel(16)}
-                  color={colors.blackText}
-                />
-              </View>
-            </View>
-            <Text
-              ellipsizeMode={"tail"}
-              numberOfLines={1}
-              textStyle={styles.comment}
-              text={"view 165 comments"}
-            />
           </View>
           <View style={styles.seeMoreContainer}>
             <Text
