@@ -172,6 +172,11 @@ export const PhoneNoVerification = () => {
     <>
       {data.loading || dataEmailVerify.loading ? <Lodaing /> : null}
       <SafeAreaView style={SharedStyles.container}>
+        <Text
+          text={"Skip"}
+          onPress={() => navigate("Login")}
+          textStyle={[styles.skip, Fontscales.labelSmallRegular]}
+        />
         <Pressable
           style={{
             height: "100%",

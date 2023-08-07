@@ -57,12 +57,13 @@ export const Suits = () => {
   return (
     <View
       style={{
-        height:
-          Platform.OS === "ios"
-            ? scale.height - scale.heightPixel(430)
-            : scale.height < 715
-            ? scale.height - scale.heightPixel(415)
-            : scale.height - scale.heightPixel(360),
+        // height:
+        //   Platform.OS === "ios"
+        //     ? scale.height - scale.heightPixel(430)
+        //     : scale.height < 715
+        //     ? scale.height - scale.heightPixel(415)
+        //               : scale.height - scale.heightPixel(390),
+
       }}
     >
       <FlatList

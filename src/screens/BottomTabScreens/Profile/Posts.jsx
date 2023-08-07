@@ -49,7 +49,7 @@ export const Posts = () => {
         height:
           Platform.OS === "ios"
             ? scale.height - scale.heightPixel(495)
-            : scale.height - scale.heightPixel(460),
+            : scale.height - scale.heightPixel(450),
       }}
     >
       <FlatList

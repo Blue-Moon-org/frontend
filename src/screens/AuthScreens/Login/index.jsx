@@ -18,7 +18,7 @@ export const Login = () => {
     rememberMe: true,
     email: "",
     password: "",
-    error: "",
+    error: null,
   });
 
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ export const Login = () => {
     } else {
       updateState({
         ...state,
-        error: "",
+        error: null,
       });
       dispatch(userLogin(state, navigate));
     }
@@ -105,7 +105,7 @@ export const Login = () => {
                 textContentType={"password"}
                 value={state.password}
                 clearButtonMode={false}
-                secureTextEntry={!state.showPassword}
+                secureTextEntry={state.showPassword ? true : false}
               />
               <MaterialCommunityIcons
                 name={state.showPassword ? "eye-outline" : "eye-off-outline"}

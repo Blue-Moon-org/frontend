@@ -1,6 +1,6 @@
 import { Platform, StyleSheet, TextInput, View } from "react-native";
 import React from "react";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { Text } from "../common";
@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export const AppHeader = () => {
   const { navigate } = useNavigation();
-  return (
+  return Platform.OS === "ios" ? (
     <View style={styles.mainContainer}>
       <View
         style={[
@@ -60,6 +60,54 @@ export const AppHeader = () => {
         </View>
       </View>
     </View>
+  ) : (
+    <SafeAreaView style={styles.mainContainer}>
+      <View
+        style={[
+          styles.headerContainer,
+          // { paddingTop: Constants.statusBarHeight },
+        ]}
+      >
+        <View style={styles.imageConatiner}>
+          <Image
+            contentFit="cover"
+            style={styles.image}
+            cachePolicy={"memory-disk"}
+            source={{
+              uri: "https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?w=2000&t=st=1688497523~exp=1688498123~hmac=231d6292720e943c2a7e81a88bbb01be8748b8129b28e86495ab70df0f302c89",
+            }}
+          />
+        </View>
+        <View style={styles.textInputContainer}>
+          <Ionicons
+            name="search-outline"
+            size={scale.fontPixel(24)}
+            color={colors.blackText}
+            style={styles.icon}
+          />
+          <TextInput
+            style={[styles.textInput, Fontscales.labelSmallRegular]}
+            placeholder="Search for anything"
+          />
+        </View>
+
+        <View style={styles.iconContainer}>
+          <View style={styles.cartBargeContainer}>
+            <Text text={4} textStyle={styles.text} />
+          </View>
+          <Ionicons
+            name="cart-outline"
+            size={scale.fontPixel(30)}
+            color="black"
+            onPress={() =>
+              navigate("RootStack", {
+                screen: "Cart",
+              })
+            }
+          />
+        </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -67,7 +115,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: "white",
     height:
-      Platform.OS === "ios" ? scale.heightPixel(140) : scale.heightPixel(140),
+      Platform.OS === "ios" ? scale.heightPixel(140) : scale.heightPixel(120),
     borderBottomRightRadius: scale.fontPixel(20),
     borderBottomLeftRadius: scale.fontPixel(20),
   },

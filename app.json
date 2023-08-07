@@ -3,31 +3,38 @@
     "name": "Bluemoon",
     "slug": "Bluemoon",
     "version": "1.0.0",
+    "androidStatusBar": {
+      "backgroundColor": "#F19319",
+      "translucent": false
+    },
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "splash": {
       "image": "./src/assets/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#F19319"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.company.bluemoon"
+      "bundleIdentifier": "com.app.bluemoon"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-       "package": "com.company.bluemoon"
+      "package": "com.app.bluemoon"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
     },
-    "scheme":"Bluemoon"
+    "scheme": "Bluemoon",
+    "extra": {
+      "eas": {
+        "projectId": "7caece85-318e-479f-9422-c93a37833f20"
+      }
+    }
   }
 }

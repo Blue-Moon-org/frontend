@@ -45,27 +45,14 @@ export const Messages = () => {
   };
   return (
     <View>
-      <Text
-        text={"Messages"}
-        textStyle={[Fontscales.labelLargeRegular, styles.messageText]}
-      />
-      <View
-        style={{
-          height:
-            Platform.OS === "ios"
-              ? scale.height - scale.heightPixel(345)
-              : scale.height < 715
-              ? scale.height - scale.heightPixel(335)
-              : scale.height - scale.heightPixel(280),
-        }}
-      >
+      <View>
         <FlatList
           data={messagesData}
           renderItem={renderMessages}
           showsVerticalScrollIndicator={false}
           key={(item, index) => item.id}
           contentContainerStyle={{
-            marginVertical: scale.pixelSizeVertical(15),
+            marginTop: scale.pixelSizeVertical(10),
           }}
         />
       </View>

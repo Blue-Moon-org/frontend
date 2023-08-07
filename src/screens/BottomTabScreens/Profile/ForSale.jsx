@@ -4,7 +4,6 @@ import { dataSenator } from "../Home/data";
 import { Text } from "../../../components/common";
 import { scale } from "../../../utils/scale";
 import { Image } from "expo-image";
-import { colors } from "../../../constants/colorpallette";
 import { AntDesign } from "@expo/vector-icons";
 import { styles } from "./styles";
 
@@ -49,7 +48,7 @@ export const ForSale = () => {
         height:
           Platform.OS === "ios"
             ? scale.height - scale.heightPixel(495)
-            : scale.height - scale.heightPixel(460),
+            : scale.height - scale.heightPixel(450),
       }}
     >
       <FlatList
@@ -61,10 +60,8 @@ export const ForSale = () => {
         keyExtractor={(item, index) => item.id}
         contentContainerStyle={{
           marginTop: scale.pixelSizeVertical(10),
-          // width: "100%",
         }}
       />
-      {/* <View style={{ height: scale.heightPixel(30) }} /> */}
     </View>
   );
 };

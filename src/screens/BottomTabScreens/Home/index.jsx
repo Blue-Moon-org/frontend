@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, Platform } from "react-native";
 import React, { useState } from "react";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Text } from "../../../components/common";
@@ -15,73 +15,97 @@ import { Suits } from "./Suits";
 import { Senator } from "./Senator";
 import { All } from "./All";
 import { Feather } from "@expo/vector-icons";
+import Constants from "expo-constants";
 
 export const Home = () => {
-  const { setOptions, navigate, goBack, setParams, isFocused } =
-    useNavigation();
-
   const [type, updateType] = useState("All");
-
+  const add =
+    Platform.OS === "ios" && Constants.statusBarHeight < 30
+      ? scale.heightPixel(40)
+      : scale.heightPixel(1);
   return (
-    <View style={SharedStyles.container}>
-      <AppHeader />
-      <Text
-        text={"Featured"}
-        textStyle={[styles.featuredText, Fontscales.labelSmallMedium]}
-      />
-      <View style={styles.featuredContainer}>
-        <Feature />
-      </View>
+    <View style={[SharedStyles.container]}>
+      <View
+        style={{
+          height:
+            Platform.OS === "ios"
+              ? scale.heightPixel(289) + Constants.statusBarHeight + add
+              : scale.heightPixel(295) + Constants.statusBarHeight,
+          zIndex: 2,
+        }}
+      >
+        <AppHeader />
+        <Text
+          text={"Featured"}
+          textStyle={[styles.featuredText, Fontscales.labelSmallMedium]}
+        />
+        <View style={styles.featuredContainer}>
+          <Feature />
+        </View>
 
-      <View style={styles.headerOptionContainer}>
-        {topData.map((item, index) => {
-          return (
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={[
-                styles.options,
-                {
-                  borderColor:
-                    item.name === type ? colors.mainPrimary : colors.grey2,
-                },
-              ]}
-              onPress={() => updateType(item.name)}
-              key={item.id}
-            >
-              <Text
-                numberOfLines={1}
-                ellipsizeMode={"tail"}
-                textStyle={[
-                  styles.optionsText,
+        <View style={styles.headerOptionContainer}>
+          {topData.map((item, index) => {
+            return (
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={[
+                  styles.options,
                   {
-                    color:
-                      item.name === type ? colors.mainPrimary : colors.grey1,
-                    paddingLeft:
-                      item.name === type
-                        ? scale.pixelSizeHorizontal(5)
-                        : scale.pixelSizeHorizontal(5),
+                    borderColor:
+                      item.name === type ? colors.mainPrimary : colors.grey2,
                   },
                 ]}
-                text={item.name}
-              />
-            </TouchableOpacity>
-          );
-        })}
+                onPress={() => updateType(item.name)}
+                key={item.id}
+              >
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode={"tail"}
+                  textStyle={[
+                    styles.optionsText,
+                    {
+                      color:
+                        item.name === type ? colors.mainPrimary : colors.grey1,
+                      paddingLeft:
+                        item.name === type
+                          ? scale.pixelSizeHorizontal(5)
+                          : scale.pixelSizeHorizontal(5),
+                    },
+                  ]}
+                  text={item.name}
+                />
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </View>
-      <View>
-        {
-          type === "All" ? (
-            <All />
-          ) : type === "Senator" ? (
-            <Senator />
-          ) : type === "Suits" ? (
-            <Suits />
-          ) : type === "Fit" ? (
-            <Fits />
-          ) : (
-            <Ankara />
-          )
-        }
+
+      <View
+        style={{
+          // marginTop:
+          //   Platform.OS === "ios"
+          //     ? scale.pixelSizeVertical(20)
+          //     : scale.pixelSizeVertical(5),
+          height:
+            Platform.OS === "ios"
+              ? scale.height -
+                (scale.heightPixel(380) + Constants.statusBarHeight) -
+                add
+              : scale.height -
+                (scale.heightPixel(370) + Constants.statusBarHeight),
+        }}
+      >
+        {type === "All" ? (
+          <All />
+        ) : type === "Senator" ? (
+          <Senator />
+        ) : type === "Suits" ? (
+          <Suits />
+        ) : type === "Fit" ? (
+          <Fits />
+        ) : (
+          <Ankara />
+        )}
         <TouchableOpacity activeOpacity={0.8} style={styles.plusSign}>
           <Feather name="plus" size={24} color="white" />
         </TouchableOpacity>

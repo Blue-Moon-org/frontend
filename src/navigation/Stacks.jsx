@@ -11,7 +11,7 @@ const Stacks = () => {
       initialRouteName="BottomStack"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="BottomStack" component={BottomTabStack} />
+      <Stack.Screen name="BottomTabStack" component={BottomTabStack} />
       <Stack.Screen name="RootStack" component={RootStack} />
     </Stack.Navigator>
   );

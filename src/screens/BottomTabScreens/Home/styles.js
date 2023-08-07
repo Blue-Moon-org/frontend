@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     paddingBottom: scale.pixelSizeVertical(6),
   },
   plusSign: {
-    backgroundColor: colors.lightPrimary,
+    backgroundColor: colors.mainPrimary,
     position: "absolute",
     paddingVertical: scale.pixelSizeVertical(8),
     paddingHorizontal: scale.pixelSizeHorizontal(8),

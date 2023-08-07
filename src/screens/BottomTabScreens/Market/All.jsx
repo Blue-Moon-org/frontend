@@ -4,7 +4,7 @@ import { data } from "../Home/data";
 import { Text } from "../../../components/common";
 import { scale } from "../../../utils/scale";
 import { Image } from "expo-image";
-import {  Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 
@@ -56,14 +56,16 @@ export const All = () => {
   };
   return (
     <View
-      style={{
-        height:
-          Platform.OS === "ios"
-            ? scale.height - scale.heightPixel(398)
-            : scale.height < 715
-            ? scale.height - scale.heightPixel(385)
-            : scale.height - scale.heightPixel(335),
-      }}
+      style={
+        {
+          // height:
+          // Platform.OS === "ios"
+          //   ? scale.height - scale.heightPixel(398)
+          //   : scale.height < 715
+          //   ? scale.height - scale.heightPixel(385)
+          //   : scale.height - scale.heightPixel(370),
+        }
+      }
     >
       <FlatList
         showsVerticalScrollIndicator={false}
@@ -77,7 +79,6 @@ export const All = () => {
           // width: "100%",
         }}
       />
-      {/* <View style={{ height: scale.heightPixel(30) }} /> */}
     </View>
   );
 };

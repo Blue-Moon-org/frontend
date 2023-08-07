@@ -4,7 +4,6 @@ import { data } from "./data";
 import { Text } from "../../../components/common";
 import { scale } from "../../../utils/scale";
 import { Image } from "expo-image";
-import { colors } from "../../../constants/colorpallette";
 import { AntDesign } from "@expo/vector-icons";
 import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
@@ -13,7 +12,6 @@ export const All = () => {
   const { navigate } = useNavigation();
 
   const renderItem = ({ item, index, separator }) => {
-    
     const _detailHandler = () => {
       navigate("RootStack", {
         screen: "PostDetail",
@@ -59,14 +57,14 @@ export const All = () => {
   };
   return (
     <View
-      style={{
-        height:
-          Platform.OS === "ios"
-            ? scale.height - scale.heightPixel(430)
-            : scale.height < 715
-            ? scale.height - scale.heightPixel(415)
-            : scale.height - scale.heightPixel(360),
-      }}
+    // style={{
+    //   height:
+    //     Platform.OS === "ios"
+    //       ? scale.height - scale.heightPixel(430)
+    //       : scale.height < 717
+    //       ? scale.height - scale.heightPixel(415)
+    //       : scale.height - scale.heightPixel(390),
+    // }}
     >
       <FlatList
         showsVerticalScrollIndicator={false}
@@ -80,7 +78,7 @@ export const All = () => {
           // width: "100%",
         }}
       />
-      {/* <View style={{ height: scale.heightPixel(30) }} /> */}
+      {/* <View style={{ paddingBottom: scale.heightPixel(40) }} /> */}
     </View>
   );
 };

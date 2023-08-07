@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     borderRadius: scale.fontPixel(8),
   },
   messageText: {
-    marginBottom: scale.fontPixel(5),
+    marginBottom: scale.fontPixel(1),
   },
   image: {
     height: "100%",

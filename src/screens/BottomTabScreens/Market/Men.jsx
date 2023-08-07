@@ -1,16 +1,28 @@
-import { View, FlatList, Platform } from "react-native";
+import { View, FlatList, Platform, TouchableOpacity } from "react-native";
 import React from "react";
 import { dataAnkara } from "../Home/data";
 import { Text } from "../../../components/common";
 import { scale } from "../../../utils/scale";
 import { Image } from "expo-image";
-import {  Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 export const Men = () => {
+  const { navigate } = useNavigation();
   const renderItem = ({ item, index, separator }) => {
+    const detailHandler = () => {
+      navigate("RootStack", {
+        screen: "MarketDetail",
+      });
+    };
+
     return (
-      <View style={styles.itemContainer}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => detailHandler()}
+        style={styles.itemContainer}
+      >
         <View style={styles.innerContainer}>
           <Image
             source={{ uri: item.imageUrl }}
@@ -39,19 +51,21 @@ export const Men = () => {
             numberOfLines={2}
           />
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
   return (
     <View
-      style={{
-        height:
-          Platform.OS === "ios"
-            ? scale.height - scale.heightPixel(398)
-            : scale.height < 715
-            ? scale.height - scale.heightPixel(385)
-            : scale.height - scale.heightPixel(335),
-      }}
+      style={
+        {
+          // height:
+          //   Platform.OS === "ios"
+          // ? scale.height - scale.heightPixel(398)
+          // : scale.height < 715
+          // ? scale.height - scale.heightPixel(385)
+          // : scale.height - scale.heightPixel(370),
+        }
+      }
     >
       <FlatList
         showsVerticalScrollIndicator={false}

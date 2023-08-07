@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { scale } from "../../../utils/scale";
 import { colors } from "../../../constants/colorpallette";
+import Constants from "expo-constants";
 
 export const styles = StyleSheet.create({
   image: {
@@ -16,6 +17,12 @@ export const styles = StyleSheet.create({
     width: "100%",
     // borderColor: "red",
     // borderWidth: 1,
+  },
+  skip: {
+    position: "absolute",
+    top: scale.pixelSizeVertical(10),
+    right: scale.pixelSizeHorizontal(10),
+    marginTop: Constants.statusBarHeight,
   },
   titleText: {
     marginTop: scale.pixelSizeVertical(50),
