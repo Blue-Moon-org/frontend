@@ -1,6 +1,6 @@
 import { Dimensions, PixelRatio } from "react-native";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get("screen");
 
 // base dimensions for apple iphone 14 pro  w: 393, h: 852
 
@@ -49,7 +49,7 @@ const fontSize = {
   h3: normalize(16),
   h4: normalize(14),
   h5: normalize(12),
-}
+};
 
 const lineHeight = {
   lineHeight1: normalize(30),
@@ -76,11 +76,11 @@ export const scale = {
     h6: fontSize.h6,
     isSmallDevice: width <= 375,
   },
-  lineSize:{
+  lineSize: {
     lh1: lineHeight.lineHeight1,
     lh2: lineHeight.lineHeight2,
     lh3: lineHeight.lineHeight3,
     lh4: lineHeight.lineHeight4,
-    lh5: lineHeight.lineHeight5
-  }
+    lh5: lineHeight.lineHeight5,
+  },
 };

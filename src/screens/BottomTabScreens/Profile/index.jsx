@@ -16,18 +16,20 @@ import Constants from "expo-constants";
 export const Profile = () => {
   const [type, updateType] = useState("Posts");
 
-    const add =
-      Platform.OS === "ios" && Constants.statusBarHeight < 30
-        ? scale.heightPixel(40)
-        : scale.heightPixel(1);
+  const add =
+    Platform.OS === "ios" && Constants.statusBarHeight < 30
+      ? scale.heightPixel(40)
+      : scale.heightPixel(1);
   return (
     <SafeAreaView style={[SharedStyles.container]}>
       <View
         style={{
           height:
             Platform.OS === "ios"
-              ? scale.heightPixel(350) +add
-              : scale.heightPixel(350),
+              ? scale.heightPixel(350) + add
+              : scale.height * 0.411,
+          borderColor: "red",
+          borderWidth: 1,
           zIndex: 2,
         }}
       >
@@ -72,14 +74,12 @@ export const Profile = () => {
       </View>
 
       <View
-        style={
-          {
-            // height:
-            //   Platform.OS === "ios"
-            //     ? scale.height - scale.heightPixel(290)
-            //     : scale.height - scale.heightPixel(300),
-          }
-        }
+        style={{
+          height:
+            Platform.OS === "ios"
+              ? scale.heightPixel(290)
+              : scale.height * 0.449,
+        }}
       >
         {type === "Posts" ? (
           <Posts />

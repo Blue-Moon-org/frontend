@@ -29,7 +29,8 @@ export const Market = () => {
           height:
             Platform.OS === "ios"
               ? scale.heightPixel(255) + Constants.statusBarHeight + add
-              : scale.heightPixel(265) + Constants.statusBarHeight,
+              : scale.height * 0.31 + Constants.statusBarHeight,
+
           zIndex: 2,
         }}
       >
@@ -89,8 +90,7 @@ export const Market = () => {
               ? scale.height -
                 (scale.heightPixel(349) + Constants.statusBarHeight) -
                 add
-              : scale.height -
-                (scale.heightPixel(340) + Constants.statusBarHeight),
+              : scale.height * 0.5 + Constants.statusBarHeight,
           zIndex: 1,
         }}
       >

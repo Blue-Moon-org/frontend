@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
   icon: {},
   textInput: {
     paddingLeft: scale.pixelSizeHorizontal(8),
+    width: "100%",
   },
   icon: {},
 });

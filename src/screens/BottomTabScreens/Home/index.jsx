@@ -1,4 +1,4 @@
-import { TouchableOpacity, View, Platform } from "react-native";
+import { TouchableOpacity, View, Platform, Dimensions } from "react-native";
 import React, { useState } from "react";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Text } from "../../../components/common";
@@ -19,10 +19,12 @@ import Constants from "expo-constants";
 
 export const Home = () => {
   const [type, updateType] = useState("All");
+
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
       ? scale.heightPixel(40)
       : scale.heightPixel(1);
+
   return (
     <View style={[SharedStyles.container]}>
       <View
@@ -30,7 +32,8 @@ export const Home = () => {
           height:
             Platform.OS === "ios"
               ? scale.heightPixel(289) + Constants.statusBarHeight + add
-              : scale.heightPixel(295) + Constants.statusBarHeight,
+              : scale.height * 0.343 + Constants.statusBarHeight,
+
           zIndex: 2,
         }}
       >
@@ -82,17 +85,12 @@ export const Home = () => {
 
       <View
         style={{
-          // marginTop:
-          //   Platform.OS === "ios"
-          //     ? scale.pixelSizeVertical(20)
-          //     : scale.pixelSizeVertical(5),
           height:
             Platform.OS === "ios"
               ? scale.height -
                 (scale.heightPixel(380) + Constants.statusBarHeight) -
                 add
-              : scale.height -
-                (scale.heightPixel(370) + Constants.statusBarHeight),
+              : scale.height * 0.581 + Constants.statusBarHeight - 94,
         }}
       >
         {type === "All" ? (

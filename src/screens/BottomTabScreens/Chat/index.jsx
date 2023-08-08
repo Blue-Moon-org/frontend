@@ -11,7 +11,6 @@ import { Text } from "../../../components/common";
 import { Fontscales } from "../../../styles";
 
 export const Chat = () => {
-  console.warn(Constants.statusBarHeight);
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
       ? scale.heightPixel(40)
@@ -24,9 +23,9 @@ export const Chat = () => {
           height:
             Platform.OS === "ios"
               ? scale.heightPixel(210) + Constants.statusBarHeight + add
-              : scale.heightPixel(210) + Constants.statusBarHeight,
+              : scale.height * 0.24 + Constants.statusBarHeight,
+      
           zIndex: 2,
-          backgroundColor: "white",
         }}
       >
         <AppHeader />
@@ -44,9 +43,7 @@ export const Chat = () => {
               ? scale.height -
                 (scale.heightPixel(302) + Constants.statusBarHeight) -
                 add
-              : scale.height -
-                scale.heightPixel(342) +
-                Constants.statusBarHeight,
+              : scale.height * 0.57 + Constants.statusBarHeight,
         }}
       >
         <Messages />

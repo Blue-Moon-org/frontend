@@ -75,7 +75,7 @@ export const All = () => {
         columnWrapperStyle={{ justifyContent: "space-between" }}
         keyExtractor={(item, index) => item.id}
         contentContainerStyle={{
-          marginTop: scale.pixelSizeVertical(10),
+          marginTop: scale.pixelSizeVertical(5),
           // width: "100%",
         }}
       />

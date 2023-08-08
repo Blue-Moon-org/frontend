@@ -45,12 +45,14 @@ export const Posts = () => {
   };
   return (
     <View
-      style={{
-        height:
-          Platform.OS === "ios"
-            ? scale.height - scale.heightPixel(495)
-            : scale.height - scale.heightPixel(450),
-      }}
+      style={
+        {
+          // height:
+          //   Platform.OS === "ios"
+          //     ? scale.height - scale.heightPixel(495)
+          //     : scale.height - scale.heightPixel(450),
+        }
+      }
     >
       <FlatList
         showsVerticalScrollIndicator={false}
