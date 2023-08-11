@@ -24,7 +24,7 @@ export const Chat = () => {
             Platform.OS === "ios"
               ? scale.heightPixel(210) + Constants.statusBarHeight + add
               : scale.height * 0.24 + Constants.statusBarHeight,
-      
+
           zIndex: 2,
         }}
       >
@@ -43,7 +43,7 @@ export const Chat = () => {
               ? scale.height -
                 (scale.heightPixel(302) + Constants.statusBarHeight) -
                 add
-              : scale.height * 0.57 + Constants.statusBarHeight,
+              : scale.height * 0.58 + Constants.statusBarHeight,
         }}
       >
         <Messages />

@@ -5,13 +5,20 @@ import {
   MarketDetail,
   Cart,
   Checkout,
+  ActiveOrders,
+  OrderDetail,
+  Catalogue,
+  Order,
+  Sales,
 } from "../screens/StackScreens";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { scale } from "../utils/scale";
 import { Text } from "../components/common";
 import { Fontscales } from "../styles";
 import { colors } from "../constants/colorpallette";
+import { ProfileSettings } from "../screens/BottomTabScreens";
+import { TouchableOpacity, View } from "react-native";
 
 const Stack = createSharedElementStackNavigator();
 
@@ -116,6 +123,141 @@ export const RootStack = () => {
         }}
         name="Checkout"
         component={Checkout}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Active Orders",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+          headerRight: () => (
+            <Text
+              text={"Go to cart"}
+              textStyle={{
+                fontFamily: "Outfit_500Medium",
+                fontSize: scale.fontPixel(12),
+                fontWeight: "500",
+                color: colors.mainPrimary,
+                marginRight: scale.pixelSizeHorizontal(16),
+              }}
+              onPress={() => navigate("Cart")}
+            />
+          ),
+        }}
+        name="ActiveOrders"
+        component={ActiveOrders}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Catalogue",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => {}}
+              activeOpacity={0.8}
+              style={{
+                backgroundColor: colors.mainPrimary,
+                paddingVertical: scale.pixelSizeVertical(4),
+                paddingHorizontal: scale.pixelSizeHorizontal(4),
+                marginRight: scale.pixelSizeHorizontal(16),
+                borderRadius: scale.fontPixel(4),
+              }}
+            >
+              <AntDesign name="plus" size={scale.fontPixel(16)} color="white" />
+            </TouchableOpacity>
+          ),
+        }}
+        name="Catalogue"
+        component={Catalogue}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Active Orders",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="OrderDetail"
+        component={OrderDetail}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Completed sales",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="Sales"
+        component={Sales}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Completed orders",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="Order"
+        component={Order}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="ProfileSettings"
+        component={ProfileSettings}
       />
     </Stack.Navigator>
   );

@@ -8,11 +8,11 @@ import { Fontscales } from "../../styles";
 import { colors } from "../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
 
-export const ProfileHeader = ({ buyer }) => {
-  const { goBack } = useNavigation();
+export const ProfileHeader = ({ designer }) => {
+  const { goBack, navigate } = useNavigation();
   return (
     <>
-      {buyer && (
+      {!designer && (
         <MaterialIcons
           style={styles.icon}
           name="keyboard-backspace"
@@ -31,13 +31,22 @@ export const ProfileHeader = ({ buyer }) => {
             Balla Daniella -
             <Text
               textStyle={{ color: colors.mainPrimary }}
-              text={buyer ? " Buyer" : " Seller"}
+              text={!designer ? " Buyer" : " Designer"}
             />
           </BaseText>
         </View>
         <View style={styles.iconImage}>
-          {!buyer && (
-            <Ionicons name="settings-outline" size={24} color="black" />
+          {designer && (
+            <Ionicons
+              name="settings-outline"
+              onPress={() =>
+                navigate("RootStack", {
+                  screen: "ProfileSettings",
+                })
+              }
+              size={24}
+              color="black"
+            />
           )}
           <View style={styles.imageContainer}>
             <Image

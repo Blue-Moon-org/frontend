@@ -2,5 +2,20 @@ import { PostDetail } from "./PostDetail/PostDetail";
 import { MarketDetail } from "./MarketDetail";
 import { Cart } from "./Cart";
 import { Checkout } from "./Checkout";
+import { ActiveOrders } from "./ActiveOrders";
+import { OrderDetail } from "./ActiveOrders/OrderDetail";
+import { Catalogue } from "./Catalogue";
+import { Sales } from "./CompletedTransactions/Sales";
+import { Order } from "./CompletedTransactions/Order";
 
-export { PostDetail, MarketDetail, Cart, Checkout };
+export {
+  PostDetail,
+  MarketDetail,
+  Cart,
+  Checkout,
+  ActiveOrders,
+  OrderDetail,
+  Catalogue,
+  Sales,
+  Order,
+};

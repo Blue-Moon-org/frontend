@@ -28,12 +28,10 @@ export const Profile = () => {
             Platform.OS === "ios"
               ? scale.heightPixel(350) + add
               : scale.height * 0.411,
-          borderColor: "red",
-          borderWidth: 1,
           zIndex: 2,
         }}
       >
-        <ProfileHeader buyer={false} />
+        <ProfileHeader designer={true} />
         <View style={styles.background} />
         <View style={styles.background2} />
         <View style={styles.headerOptionContainer}>
@@ -77,8 +75,8 @@ export const Profile = () => {
         style={{
           height:
             Platform.OS === "ios"
-              ? scale.heightPixel(290)
-              : scale.height * 0.449,
+              ? scale.height - scale.heightPixel(500) - add
+              : scale.height * 0.45,
         }}
       >
         {type === "Posts" ? (

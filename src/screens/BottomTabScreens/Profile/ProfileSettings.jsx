@@ -1,23 +1,24 @@
-import { TouchableOpacity, View, ScrollView } from "react-native";
+import { View, ScrollView, TouchableOpacity } from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { ProfileHeader } from "../../../components/primary";
-import { styles } from "./styles";
-import { Fontscales, SharedStyles } from "../../../styles";
-import { Text } from "../../../components/common";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { SharedStyles, Fontscales } from "../../../styles";
 import {
   AntDesign,
   MaterialCommunityIcons,
   Ionicons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
-import { scale } from "../../../utils/scale";
+import { Text } from "../../../components/common";
 import { useNavigation } from "@react-navigation/native";
+import { scale } from "../../../utils/scale";
+import { styles } from "./styles";
 
-export const BuyerProfile = () => {
+export const ProfileSettings = () => {
   const { navigate } = useNavigation();
+
   return (
-    <SafeAreaView style={[SharedStyles.container]}>
+    <SafeAreaView style={SharedStyles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader designer={false} />
         <Text text={"Profile"} textStyle={[Fontscales.labelSmallMedium]} />
@@ -53,7 +54,7 @@ export const BuyerProfile = () => {
                 Fontscales.labelSmallMedium,
                 { marginLeft: scale.pixelSizeHorizontal(10) },
               ]}
-              text={"Cart"}
+              text={"Business information"}
             />
           </TouchableOpacity>
 
@@ -81,10 +82,14 @@ export const BuyerProfile = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-          onPress={()=> navigate("RootStack",{
-            screen: "Order"
-          })}
-          style={styles.btn} activeOpacity={0.7}>
+            onPress={() =>
+              navigate("RootStack", {
+                screen: "Sales",
+              })
+            }
+            style={styles.btn}
+            activeOpacity={0.7}
+          >
             <Ionicons
               name="checkmark-done-circle-outline"
               size={scale.fontPixel(20)}
@@ -95,18 +100,26 @@ export const BuyerProfile = () => {
                 Fontscales.labelSmallMedium,
                 { marginLeft: scale.pixelSizeHorizontal(10) },
               ]}
-              text={"Completed purchases"}
+              text={"Completed sales"}
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
+          <TouchableOpacity
+            onPress={() =>
+              navigate("RootStack", {
+                screen: "Catalogue",
+              })
+            }
+            style={styles.btn}
+            activeOpacity={0.7}
+          >
             <AntDesign name="staro" size={scale.fontPixel(20)} color="black" />
             <Text
               textStyle={[
                 Fontscales.labelSmallMedium,
                 { marginLeft: scale.pixelSizeHorizontal(10) },
               ]}
-              text={"Favorites"}
+              text={"Catalogue"}
             />
           </TouchableOpacity>
         </View>
@@ -210,6 +223,7 @@ export const BuyerProfile = () => {
             />
           </TouchableOpacity>
         </View>
+
         <View
           style={{
             height: scale.pixelSizeVertical(80),

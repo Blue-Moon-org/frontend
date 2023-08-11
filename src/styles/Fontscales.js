@@ -116,7 +116,7 @@ export const Fontscales = StyleSheet.create({
     fontFamily: "Outfit_700Bold",
   },
 
-  labelMediumRegular: {
+  labelNormalRegular: {
     fontSize: scale.size.h4,
     lineHeight: scale.lineSize.lh4,
     fontWeight: "400",
@@ -141,7 +141,7 @@ export const Fontscales = StyleSheet.create({
     fontWeight: "400",
     fontFamily: "Outfit_400Regular",
   },
-  labelLargeRegular: {
+  labelLargeMedium: {
     fontSize: scale.size.h3,
     lineHeight: scale.lineSize.lh3,
     fontWeight: "500",

@@ -9,7 +9,6 @@ import { Feather } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
 
-
 const data = [
   {
     id: 1,
@@ -134,7 +133,7 @@ export const Cart = () => {
           />
         </View>
         <Button
-          // onPress={() => navigate("Checkout")}
+          onPress={() => navigate("Checkout")}
           containerStyle={styles.btnContainer}
           textStyle={[
             Fontscales.labelSmallRegular,

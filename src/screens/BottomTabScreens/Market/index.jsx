@@ -90,7 +90,7 @@ export const Market = () => {
               ? scale.height -
                 (scale.heightPixel(349) + Constants.statusBarHeight) -
                 add
-              : scale.height * 0.5 + Constants.statusBarHeight,
+              : scale.height * 0.512 + Constants.statusBarHeight,
           zIndex: 1,
         }}
       >
