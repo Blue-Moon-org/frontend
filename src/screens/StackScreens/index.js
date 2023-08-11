@@ -7,6 +7,9 @@ import { OrderDetail } from "./ActiveOrders/OrderDetail";
 import { Catalogue } from "./Catalogue";
 import { Sales } from "./CompletedTransactions/Sales";
 import { Order } from "./CompletedTransactions/Order";
+import { SaleDetail } from "./CompletedTransactions/SaleDetail";
+import { OrderDetails } from "./CompletedTransactions/OrderDetails";
+import { Favorites } from "./Favorites";
 
 export {
   PostDetail,
@@ -18,4 +21,7 @@ export {
   Catalogue,
   Sales,
   Order,
+  SaleDetail,
+  OrderDetails,
+  Favorites
 };

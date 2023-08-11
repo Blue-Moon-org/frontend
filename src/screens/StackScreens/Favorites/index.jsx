@@ -1,32 +1,23 @@
-import { FlatList, View, TouchableOpacity, Platform } from "react-native";
+import { FlatList, View } from "react-native";
 import React from "react";
-import { styles } from "./styles";
 import { SharedStyles, Fontscales } from "../../../styles";
 import { Text } from "../../../components/common";
-import { order } from "./data";
+import { data } from "./data";
 import { Image } from "expo-image";
-import { useNavigation } from "@react-navigation/native";
+import Constants from "expo-constants";
+import { Ionicons } from "@expo/vector-icons";
+import { styles } from "./styles";
 import { scale } from "../../../utils/scale";
 import { colors } from "../../../constants/colorpallette";
-import { Ionicons } from "@expo/vector-icons";
 
-export const Order = () => {
-  const { navigate } = useNavigation();
-  const render = ({ item, index }) => {
+export const Favorites = () => {
+  const renderItem = ({ item, index }) => {
     return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={() => {
-          navigate("OrderDetails", {
-            item: item,
-          });
-        }}
-        style={styles.eachContainer}
-      >
+      <View style={styles.eachContainer}>
         <View style={styles.imageContainer}>
           <Image
             cachePolicy={"memory-disk"}
-            source={{ uri: item.productImage }}
+            source={{ uri: item.imageUrl }}
             contentFit="cover"
             style={styles.image}
           />
@@ -38,7 +29,7 @@ export const Order = () => {
                 numberOfLines={1}
                 ellipsizeMode={"tail"}
                 textStyle={Fontscales.headingSmallMedium}
-                text={item.productName}
+                text={item.title}
               />
               <Text
                 numberOfLines={1}
@@ -47,55 +38,43 @@ export const Order = () => {
                   fontFamily: "Outfit_400Regular",
                   fontSize: scale.fontPixel(10),
                 }}
-                text={item.designer}
+                text={item.brandName}
               />
             </View>
             <Text
               textStyle={Fontscales.labelSmallRegular}
-              text={`Arrived on ${item.dateArrived}`}
+              text={`Price : ${item.price}`}
             />
           </View>
           <View style={styles.iconTextContainer}>
             <Ionicons
-              name="chevron-forward"
+              name="heart-sharp"
               size={scale.fontPixel(20)}
               color={colors.mainPrimary}
             />
-            <Text
-              numberOfLines={1}
-              ellipsizeMode={"tail"}
-              textStyle={[
-                Fontscales.labelLargeRegular,
-                {
-                  color: colors.mainPrimary,
-                },
-              ]}
-              text={item.orderId}
-            />
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   };
 
   return (
-    <View
-      style={[
-        SharedStyles.container,
-        {
+    <View style={SharedStyles.container}>
+      <View
+        style={{
           paddingBottom:
-            Platform.OS === "ios"
+            Constants.statusBarHeight > 30
               ? scale.pixelSizeVertical(30)
               : scale.pixelSizeVertical(1),
-        },
-      ]}
-    >
-      <FlatList
-        data={order}
-        renderItem={render}
-        contentContainerStyle={{}}
-        showsVerticalScrollIndicator={false}
-      />
+        }}
+      >
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{}}
+        />
+      </View>
     </View>
   );
 };

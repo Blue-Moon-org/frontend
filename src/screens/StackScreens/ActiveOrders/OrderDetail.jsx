@@ -1,5 +1,5 @@
-import { TouchableOpacity, View } from "react-native";
-import React from "react";
+import { TouchableOpacity, View, Alert } from "react-native";
+import React, { useState } from "react";
 import { Text } from "../../../components/common";
 import { styles } from "./styles";
 import { SharedStyles } from "../../../styles";
@@ -22,6 +22,22 @@ export const OrderDetail = () => {
   setOptions({
     title: `Order ${params.orderId}`,
   });
+
+  const [reach, setReach] = useState(1);
+
+  const alert = () =>
+    Alert.alert(
+      "Tracking Order",
+      "Are you sure the package has reached this location?",
+      [
+        {
+          text: "No",
+          onPress: () => {},
+          style: "cancel",
+        },
+        { text: "Yes", onPress: () => setReach(reach + 1) },
+      ]
+    );
 
   return (
     <View style={SharedStyles.container}>
@@ -79,44 +95,102 @@ export const OrderDetail = () => {
 
       <View style={styles.mainStepContainer}>
         <View style={styles.stepsContainer}>
-          <View style={styles.topBottomContainer}>
+          <TouchableOpacity
+            disabled={reach >= 1 ? true : false}
+            onPress={() => alert()}
+            activeOpacity={0.8}
+            style={[
+              styles.topBottomContainer,
+              {
+                backgroundColor: reach >= 1 ? colors.mainPrimary : colors.grey2,
+              },
+            ]}
+          >
             <MaterialCommunityIcons
               name="cart-check"
               size={scale.fontPixel(18)}
               color="white"
             />
-          </View>
-          <View style={styles.line1} />
+          </TouchableOpacity>
           <View
+            style={[
+              styles.line1,
+              {
+                backgroundColor: reach > 1 ? colors.mainPrimary : colors.grey2,
+              },
+            ]}
+          />
+          <TouchableOpacity
+            disabled={reach >= 2 ? true : false}
+            activeOpacity={0.8}
+            onPress={() => alert()}
             style={{
-              backgroundColor: colors.mainPrimary,
+              backgroundColor: reach >= 2 ? colors.mainPrimary : colors.grey2,
               height: 16,
               width: 16,
               borderRadius: 4,
             }}
-          ></View>
-          <View style={styles.line1} />
+          />
           <View
+            style={[
+              styles.line1,
+              {
+                backgroundColor: reach > 2 ? colors.mainPrimary : colors.grey2,
+              },
+            ]}
+          />
+          <TouchableOpacity
+            disabled={reach >= 3 ? true : false}
+            activeOpacity={0.8}
+            onPress={() => alert()}
             style={{
-              backgroundColor: colors.mainPrimary,
+              backgroundColor: reach >= 3 ? colors.mainPrimary : colors.grey2,
               height: 16,
               width: 16,
               borderRadius: 4,
             }}
-          ></View>
-          <View style={styles.line1} />
+          />
           <View
+            style={[
+              styles.line1,
+              {
+                backgroundColor: reach > 3 ? colors.mainPrimary : colors.grey2,
+              },
+            ]}
+          />
+          <TouchableOpacity
+            disabled={reach >= 4 ? true : false}
+            activeOpacity={0.8}
+            onPress={() => alert()}
             style={{
-              backgroundColor: colors.mainPrimary,
+              backgroundColor: reach >= 4 ? colors.mainPrimary : colors.grey2,
               height: 16,
               width: 16,
               borderRadius: 4,
             }}
-          ></View>
-          <View style={styles.line1} />
-          <View style={styles.topBottomContainer}>
+          />
+          <View
+            style={[
+              styles.line1,
+              {
+                backgroundColor: reach > 4 ? colors.mainPrimary : colors.grey2,
+              },
+            ]}
+          />
+          <TouchableOpacity
+            disabled={reach >= 5 ? true : false}
+            activeOpacity={0.8}
+            onPress={() => alert()}
+            style={[
+              styles.topBottomContainer,
+              {
+                backgroundColor:
+                  reach === 5 ? colors.mainPrimary : colors.grey2,
+              },
+            ]}
+          >
             <AntDesign name="home" size={scale.fontPixel(18)} color="white" />
-          </View>
+          </TouchableOpacity>
         </View>
 
         <View

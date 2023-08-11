@@ -81,10 +81,14 @@ export const BuyerProfile = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-          onPress={()=> navigate("RootStack",{
-            screen: "Order"
-          })}
-          style={styles.btn} activeOpacity={0.7}>
+            onPress={() =>
+              navigate("RootStack", {
+                screen: "Order",
+              })
+            }
+            style={styles.btn}
+            activeOpacity={0.7}
+          >
             <Ionicons
               name="checkmark-done-circle-outline"
               size={scale.fontPixel(20)}
@@ -99,7 +103,15 @@ export const BuyerProfile = () => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
+          <TouchableOpacity
+            onPress={() =>
+              navigate("RootStack", {
+                screen: "Favorites",
+              })
+            }
+            style={styles.btn}
+            activeOpacity={0.7}
+          >
             <AntDesign name="staro" size={scale.fontPixel(20)} color="black" />
             <Text
               textStyle={[

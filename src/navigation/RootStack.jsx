@@ -10,6 +10,9 @@ import {
   Catalogue,
   Order,
   Sales,
+  SaleDetail,
+  OrderDetails,
+  Favorites,
 } from "../screens/StackScreens";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -18,7 +21,7 @@ import { Text } from "../components/common";
 import { Fontscales } from "../styles";
 import { colors } from "../constants/colorpallette";
 import { ProfileSettings } from "../screens/BottomTabScreens";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 const Stack = createSharedElementStackNavigator();
 
@@ -133,7 +136,7 @@ export const RootStack = () => {
           headerTitleStyle: Fontscales.paragraphLargeMedium,
           headerLeft: () => (
             <MaterialCommunityIcons
-              onPress={() => goBack()}
+              onPress={() => navigate("ProfileSettings")}
               style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
               name="keyboard-backspace"
               size={scale.fontPixel(24)}
@@ -201,7 +204,7 @@ export const RootStack = () => {
           headerTitleStyle: Fontscales.paragraphLargeMedium,
           headerLeft: () => (
             <MaterialCommunityIcons
-              onPress={() => goBack()}
+              onPress={() => navigate("ActiveOrders")}
               style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
               name="keyboard-backspace"
               size={scale.fontPixel(24)}
@@ -215,13 +218,51 @@ export const RootStack = () => {
       <Stack.Screen
         options={{
           headerShown: true,
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => navigate("Sales")}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="SaleDetail"
+        component={SaleDetail}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => navigate("Order")}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="OrderDetails"
+        component={OrderDetails}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
           title: "Completed sales",
           headerTitleAlign: "left",
           headerTitleAllowFontScaling: true,
           headerTitleStyle: Fontscales.paragraphLargeMedium,
           headerLeft: () => (
             <MaterialCommunityIcons
-              onPress={() => goBack()}
+              onPress={() => navigate("ProfileSettings")}
               style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
               name="keyboard-backspace"
               size={scale.fontPixel(24)}
@@ -251,6 +292,26 @@ export const RootStack = () => {
         }}
         name="Order"
         component={Order}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Favorites ♥︎",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="Favorites"
+        component={Favorites}
       />
       <Stack.Screen
         options={{

@@ -110,7 +110,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   topBottomContainer: {
-    backgroundColor: colors.mainPrimary,
+    // backgroundColor: colors.mainPrimary,
     height: scale.heightPixel(30),
     width: scale.widthPixel(30),
     borderRadius: scale.fontPixel(8),
@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   line1: {
-    backgroundColor: colors.mainPrimary,
+    // backgroundColor: colors.mainPrimary,
     height: scale.heightPixel(28),
     width: scale.widthPixel(4),
   },
