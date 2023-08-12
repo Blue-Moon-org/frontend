@@ -17,7 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 export const BuyerProfile = () => {
   const { navigate } = useNavigation();
   return (
-    <SafeAreaView style={[SharedStyles.container]}>
+    <View style={[SharedStyles.container]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader designer={false} />
         <Text text={"Profile"} textStyle={[Fontscales.labelSmallMedium]} />
@@ -228,6 +228,6 @@ export const BuyerProfile = () => {
           }}
         />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };

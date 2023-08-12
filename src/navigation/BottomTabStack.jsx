@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Chat,
   Find,
@@ -8,7 +8,7 @@ import {
   BuyerProfile,
 } from "../screens/BottomTabScreens";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
-import { Platform, View } from "react-native";
+import { Platform, View, TouchableOpacity } from "react-native";
 import { colors } from "../constants/colorpallette";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { scale } from "../utils/scale";
@@ -17,6 +17,7 @@ import { Fontscales } from "../styles";
 
 const Tab = createBottomTabNavigator();
 export const BottomTabStack = () => {
+  const [active, setActive] = useState(false);
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -235,7 +236,8 @@ export const BottomTabStack = () => {
       />
       <Tab.Screen
         options={{
-          title: "Profile",
+          headerShown: true,
+          title: "",
           tabBarLabel: ({ color, focused }) => (
             <Text
               text={"Profile"}
@@ -273,10 +275,25 @@ export const BottomTabStack = () => {
               />
             </View>
           ),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => setActive(!active)}
+              activeOpacity={0.8}
+              style={{
+                backgroundColor: colors.mainPrimary,
+                paddingVertical: scale.pixelSizeVertical(4),
+                paddingHorizontal: scale.pixelSizeHorizontal(4),
+                marginRight: scale.pixelSizeHorizontal(16),
+                borderRadius: scale.fontPixel(4),
+              }}
+            >
+              <AntDesign name="plus" size={scale.fontPixel(16)} color="white" />
+            </TouchableOpacity>
+          ),
           tabBarAccessibilityLabel: "home",
         }}
         name="Profile"
-        component={1 + 2 === 3 ? BuyerProfile : Profile}
+        component={active ? BuyerProfile : Profile}
       />
     </Tab.Navigator>
   );

@@ -10,6 +10,7 @@ import { Order } from "./CompletedTransactions/Order";
 import { SaleDetail } from "./CompletedTransactions/SaleDetail";
 import { OrderDetails } from "./CompletedTransactions/OrderDetails";
 import { Favorites } from "./Favorites";
+import { Search } from "./Search";
 
 export {
   PostDetail,
@@ -23,5 +24,6 @@ export {
   Order,
   SaleDetail,
   OrderDetails,
-  Favorites
+  Favorites,
+  Search,
 };

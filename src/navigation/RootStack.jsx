@@ -13,6 +13,7 @@ import {
   SaleDetail,
   OrderDetails,
   Favorites,
+  Search,
 } from "../screens/StackScreens";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -312,6 +313,26 @@ export const RootStack = () => {
         }}
         name="Favorites"
         component={Favorites}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Search",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="Search"
+        component={Search}
       />
       <Stack.Screen
         options={{

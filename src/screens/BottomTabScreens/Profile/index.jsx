@@ -21,7 +21,7 @@ export const Profile = () => {
       ? scale.heightPixel(40)
       : scale.heightPixel(1);
   return (
-    <SafeAreaView style={[SharedStyles.container]}>
+    <View style={[SharedStyles.container]}>
       <View
         style={{
           height:
@@ -87,6 +87,6 @@ export const Profile = () => {
           <Liked />
         )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };

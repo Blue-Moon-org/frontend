@@ -38,6 +38,12 @@ export const AppHeader = () => {
             style={styles.icon}
           />
           <TextInput
+            returnKeyType="search"
+            onSubmitEditing={() =>
+              navigate("RootStack", {
+                screen: "Search",
+              })
+            }
             style={[styles.textInput, Fontscales.labelSmallRegular]}
             placeholder="Search for anything"
           />
@@ -86,6 +92,12 @@ export const AppHeader = () => {
             style={styles.icon}
           />
           <TextInput
+            returnKeyType="search"
+            onSubmitEditing={() =>
+              navigate("RootStack", {
+                screen: "Search",
+              })
+            }
             style={[styles.textInput, Fontscales.labelSmallRegular]}
             placeholder="Search for anything"
           />
