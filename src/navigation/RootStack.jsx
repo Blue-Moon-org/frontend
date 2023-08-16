@@ -14,6 +14,7 @@ import {
   OrderDetails,
   Favorites,
   Search,
+  Chat,
 } from "../screens/StackScreens";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -340,6 +341,13 @@ export const RootStack = () => {
         }}
         name="ProfileSettings"
         component={ProfileSettings}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="Chat"
+        component={Chat}
       />
     </Stack.Navigator>
   );

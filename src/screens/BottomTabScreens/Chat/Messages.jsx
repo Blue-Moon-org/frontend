@@ -1,4 +1,4 @@
-import { FlatList, Platform, View } from "react-native";
+import { FlatList, Platform, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Text } from "../../../components/common";
 import { Fontscales } from "../../../styles";
@@ -6,11 +6,21 @@ import { messagesData } from "./data";
 import { scale } from "../../../utils/scale";
 import { Image } from "expo-image";
 import { styles } from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 export const Messages = () => {
+  const { navigate } = useNavigation();
   const renderMessages = ({ item, index }) => {
     return (
-      <View style={styles.messageContainer}>
+      <TouchableOpacity
+        activeOpacity={0.9}
+        onPress={() =>
+          navigate("RootStack", {
+            screen: "Chat",
+          })
+        }
+        style={styles.messageContainer}
+      >
         <View style={styles.profilePictureContainer}>
           <Image
             source={{ uri: item.profilePicture }}
@@ -40,7 +50,7 @@ export const Messages = () => {
             <Text text={"2"} textStyle={styles.text} />
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
   return (

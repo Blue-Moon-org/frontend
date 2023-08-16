@@ -11,6 +11,7 @@ import { SaleDetail } from "./CompletedTransactions/SaleDetail";
 import { OrderDetails } from "./CompletedTransactions/OrderDetails";
 import { Favorites } from "./Favorites";
 import { Search } from "./Search";
+import { Chat } from "./Chat";
 
 export {
   PostDetail,
@@ -26,4 +27,5 @@ export {
   OrderDetails,
   Favorites,
   Search,
+  Chat,
 };

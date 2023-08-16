@@ -64,3 +64,26 @@ export const othersSearchResultData = [
     title: "Bermuda",
   },
 ];
+
+export const searchFilterData = [
+  {
+    id: 1,
+    name: "Designers",
+  },
+  {
+    id: 2,
+    name: "Styles",
+  },
+  {
+    id: 3,
+    name: "Seller",
+  },
+  {
+    id: 4,
+    name: "Posts",
+  },
+  {
+    id: 5,
+    name: "Market",
+  },
+];
