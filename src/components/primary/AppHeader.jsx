@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: "white",
     height:
-      Platform.OS === "ios" ? scale.heightPixel(140) : scale.heightPixel(120),
+      Platform.OS === "ios" ? scale.heightPixel(130) : scale.heightPixel(110),
     borderBottomRightRadius: scale.fontPixel(20),
     borderBottomLeftRadius: scale.fontPixel(20),
   },
@@ -143,12 +143,12 @@ const styles = StyleSheet.create({
   imageConatiner: {
     height: Platform.OS === "ios" ? "76%" : "76%",
     width: "13%",
-    borderRadius: scale.fontPixel(12),
+    borderRadius: scale.fontPixel(8),
   },
   image: {
     height: "100%",
     width: "100%",
-    borderRadius: scale.fontPixel(12),
+    borderRadius: scale.fontPixel(8),
   },
   iconContainer: {
     justifyContent: "center",
