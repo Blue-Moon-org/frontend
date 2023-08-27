@@ -25,6 +25,8 @@ export const Home = () => {
       ? scale.heightPixel(40)
       : scale.heightPixel(1);
 
+  const { navigate } = useNavigation();
+
   return (
     <View style={[SharedStyles.container]}>
       <View
@@ -104,7 +106,15 @@ export const Home = () => {
         ) : (
           <Ankara />
         )}
-        <TouchableOpacity activeOpacity={0.8} style={styles.plusSign}>
+        <TouchableOpacity
+          onPress={() =>
+            navigate("RootStack", {
+              screen: "PostCreate",
+            })
+          }
+          activeOpacity={0.8}
+          style={styles.plusSign}
+        >
           <Feather name="plus" size={24} color="white" />
         </TouchableOpacity>
       </View>

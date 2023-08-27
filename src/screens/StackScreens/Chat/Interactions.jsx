@@ -7,7 +7,10 @@ import { styles } from "./styles";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
 
-export const Interactions = () => {
+export const Interactions = ({
+  isMeasurementModalActive,
+  setIsMeasurementModalActive,
+}) => {
   const [height, updateHeight] = useState(scale.heightPixel(40));
   return (
     <View style={styles.interactionTabs}>
@@ -18,11 +21,21 @@ export const Interactions = () => {
           color={colors.mainPrimary}
         />
       </Pressable>
-      <Pressable style={styles.rulerPenImageContainer}>
+      <Pressable
+        onPress={() => setIsMeasurementModalActive(!isMeasurementModalActive)}
+        style={[
+          styles.rulerPenImageContainer,
+          {
+            backgroundColor: isMeasurementModalActive
+              ? colors.mainPrimary
+              : "transparent",
+          },
+        ]}
+      >
         <FontAwesome5
           name="pencil-ruler"
           size={scale.fontPixel(20)}
-          color={colors.mainPrimary}
+          color={isMeasurementModalActive ? "white" : colors.mainPrimary}
         />
       </Pressable>
 
@@ -32,17 +45,20 @@ export const Interactions = () => {
           {
             height:
               height < scale.heightPixel(40) ? scale.heightPixel(40) : height,
+            maxHeight: scale.pixelSizeVertical(60),
           },
         ]}
       >
         <TextInput
-          multiline={true}
+          // editable={isMeasurementModalActive ? false : true}
+          multiline={isMeasurementModalActive ? false : true}
           placeholder="Message"
           style={[
             styles.textInput,
             {
               height:
                 height < scale.heightPixel(40) ? scale.heightPixel(40) : height,
+              maxHeight: scale.pixelSizeVertical(60),
             },
           ]}
           onContentSizeChange={(e) =>

@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: Platform.OS === "android" ? 0.5 : 0.18,
+    shadowOpacity: Platform.OS === "android" ? 0.6 : 0.22,
     shadowRadius: 1.0,
     elevation: 5,
   },

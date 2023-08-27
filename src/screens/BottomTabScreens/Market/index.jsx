@@ -14,6 +14,7 @@ import { Men } from "./Men";
 import { Women } from "./Women";
 import { Children } from "./Children";
 import Constants from "expo-constants";
+import { useNavigation } from "@react-navigation/native";
 
 export const Market = () => {
   const [type, updateType] = useState("All");
@@ -21,6 +22,8 @@ export const Market = () => {
     Platform.OS === "ios" && Constants.statusBarHeight < 30
       ? scale.heightPixel(40)
       : scale.heightPixel(1);
+
+  const { navigate } = useNavigation();
 
   return (
     <View style={SharedStyles.container}>
@@ -77,7 +80,15 @@ export const Market = () => {
             })}
           </View>
           <View>
-            <TouchableOpacity activeOpacity={0.8} style={styles.plusSign}>
+            <TouchableOpacity
+              onPress={() =>
+                navigate("RootStack", {
+                  screen: "MarketCreate",
+                })
+              }
+              activeOpacity={0.8}
+              style={styles.plusSign}
+            >
               <Feather name="plus" size={scale.fontPixel(20)} color="white" />
             </TouchableOpacity>
           </View>

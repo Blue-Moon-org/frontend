@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: "white",
     height:
-      Platform.OS === "ios" ? scale.heightPixel(130) : scale.heightPixel(110),
+      Platform.OS === "ios" ? scale.heightPixel(140) : scale.heightPixel(110),
     borderBottomRightRadius: scale.fontPixel(20),
     borderBottomLeftRadius: scale.fontPixel(20),
   },

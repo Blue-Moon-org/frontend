@@ -15,6 +15,8 @@ import {
   Favorites,
   Search,
   Chat,
+  MarketCreate,
+  PostCreate,
 } from "../screens/StackScreens";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -334,6 +336,46 @@ export const RootStack = () => {
         }}
         name="Search"
         component={Search}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Create Market",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="MarketCreate"
+        component={MarketCreate}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Create Post",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="PostCreate"
+        component={PostCreate}
       />
       <Stack.Screen
         options={{

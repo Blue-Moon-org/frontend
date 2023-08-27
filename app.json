@@ -3,10 +3,6 @@
     "name": "Bluemoon",
     "slug": "Bluemoon",
     "version": "1.0.0",
-    "androidStatusBar": {
-      "backgroundColor": "#F19319",
-      "translucent": true
-    },
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -18,13 +14,16 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.app.bluemoon"
+      "bundleIdentifier": "com.app.bluemoon",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "googleServicesFile": "./google-services.json"
       },
+      "plugins": ["@react-native-google-signin/google-signin"],
       "package": "com.app.bluemoon"
     },
     "web": {

@@ -12,6 +12,8 @@ import { OrderDetails } from "./CompletedTransactions/OrderDetails";
 import { Favorites } from "./Favorites";
 import { Search } from "./Search";
 import { Chat } from "./Chat";
+import { PostCreate } from "./CreatePost/PostCreate";
+import { MarketCreate } from "./CreatePost/MarketCreate";
 
 export {
   PostDetail,
@@ -28,4 +30,6 @@ export {
   Favorites,
   Search,
   Chat,
+  PostCreate,
+  MarketCreate,
 };
