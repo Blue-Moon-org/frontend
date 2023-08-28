@@ -6,15 +6,22 @@ export const styles = StyleSheet.create({
   background: {
     backgroundColor: colors.grey2,
     width: "100%",
-    height: scale.heightPixel(102),
+    height: scale.heightPixel(92),
     borderRadius: scale.fontPixel(9),
   },
   background2: {
-    backgroundColor: colors.grey2,
     width: "100%",
-    height: scale.heightPixel(80),
-    borderRadius: scale.fontPixel(9),
+    height: scale.heightPixel(85),
     marginTop: scale.pixelSizeVertical(10),
+    paddingHorizontal: scale.pixelSizeHorizontal(44),
+    flexDirection: "row",
+  },
+  leftSide: {
+    alignItems: "center",
+  },
+  ratingText: {
+    fontFamily: "Outfit_600SemiBold",
+    fontSize: scale.fontPixel(32),
   },
   headerOptionContainer: {
     marginTop: scale.pixelSizeVertical(20),
@@ -93,5 +100,17 @@ export const styles = StyleSheet.create({
     marginVertical: scale.pixelSizeVertical(10),
     borderRadius: scale.fontPixel(15),
     paddingHorizontal: scale.pixelSizeHorizontal(8),
+  },
+  review: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: scale.pixelSizeVertical(3),
+  },
+  reviewText: {
+    fontFamily: "Outfit_400Regular",
+    fontSize: scale.fontPixel(10),
+    marginRight: scale.fontPixel(5),
+    color: colors.mainPrimary,
   },
 });

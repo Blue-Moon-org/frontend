@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { scale } from "../../../utils/scale";
+import { colors } from "../../../constants/colorpallette";
 
 export const styles = StyleSheet.create({
   imagePickerContainer: {
@@ -34,5 +35,23 @@ export const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-between",
     flexWrap: "wrap",
+  },
+  btnContainer: {
+    alignSelf: "center",
+    marginTop: scale.pixelSizeVertical(35),
+    backgroundColor: colors.mainPrimary,
+    paddingVertical: scale.pixelSizeVertical(13),
+    paddingHorizontal: scale.pixelSizeHorizontal(30),
+    borderRadius: scale.fontPixel(5),
+  },
+  textAreaInput: {
+    borderRadius: scale.fontPixel(5),
+    paddingVertical: scale.pixelSizeVertical(4),
+    borderWidth: scale.widthPixel(1),
+    fontFamily: "Outfit_400Regular",
+    fontSize: scale.fontPixel(13),
+    paddingHorizontal: scale.pixelSizeHorizontal(16),
+    // paddingVertical: scale.pixelSizeVertical(14),
+    borderColor: "#F6D6AA",
   },
 });

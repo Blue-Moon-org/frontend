@@ -93,7 +93,7 @@ export const AppHeader = () => {
           />
           <TextInput
             returnKeyType="search"
-            onSubmitEditing={() =>
+            onFocus={() =>
               navigate("RootStack", {
                 screen: "Search",
               })

@@ -1,20 +1,15 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  TextInput,
-} from "react-native";
-import React from "react";
-import { SharedStyles } from "../../../styles";
+import { View, TouchableOpacity, TextInput as Input } from "react-native";
+import React, { useState } from "react";
+import { Fontscales, SharedStyles } from "../../../styles";
 import { styles } from "./styles";
 import { Ionicons } from "@expo/vector-icons";
 import { scale } from "../../../utils/scale";
 import { Image } from "expo-image";
-import { useKeyboardHeight } from "../../../customHooks";
-import { KeyBoardAvoidingWrapper } from "../../../components/common";
+import {
+  Button,
+  KeyBoardAvoidingWrapper,
+  TextInput,
+} from "../../../components/common";
 
 export const PostCreate = () => {
   const data = [
@@ -38,42 +33,42 @@ export const PostCreate = () => {
       image:
         "https://img.freepik.com/premium-photo/nigerian-tradional-dress-costume-formal-eventys_539365-2113.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
     },
-    {
-      id: 5,
-      image:
-        "https://img.freepik.com/premium-photo/nigerian-tradional-dress-costume-formal-eventys_539365-2113.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
-    },
-    {
-      id: 6,
-      image:
-        "https://img.freepik.com/premium-photo/nigerian-tradional-dress-costume-formal-eventys_539365-2113.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
-    },
-    {
-      id: 7,
-      image:
-        "https://img.freepik.com/premium-photo/nigerian-tradional-dress-costume-formal-eventys_539365-2113.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
-    },
-    {
-      id: 8,
-      image:
-        "https://img.freepik.com/premium-photo/nigerian-tradional-dress-costume-formal-eventys_539365-2113.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
-    },
-    {
-      id: 9,
-      image:
-        "https://img.freepik.com/premium-photo/nigerian-tradional-dress-costume-formal-eventys_539365-2113.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
-    },
-    {
-      id: 10,
-      image:
-        "https://img.freepik.com/premium-photo/nigerian-tradional-dress-costume-formal-eventys_539365-2113.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
-    },
+    // {
+    //   id: 5,
+    //   image:
+    //     "https://img.freepik.com/premium-photo/nigerian-tradional-dress-costume-formal-eventys_539365-2113.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+    // },
+    // {
+    //   id: 6,
+    //   image:
+    //     "https://img.freepik.com/premium-photo/nigerian-tradional-dress-costume-formal-eventys_539365-2113.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+    // },
+    // {
+    //   id: 7,
+    //   image:
+    //     "https://img.freepik.com/premium-photo/nigerian-tradional-dress-costume-formal-eventys_539365-2113.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+    // },
+    // {
+    //   id: 8,
+    //   image:
+    //     "https://img.freepik.com/premium-photo/nigerian-tradional-dress-costume-formal-eventys_539365-2113.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+    // },
+    // {
+    //   id: 9,
+    //   image:
+    //     "https://img.freepik.com/premium-photo/nigerian-tradional-dress-costume-formal-eventys_539365-2113.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+    // },
+    // {
+    //   id: 10,
+    //   image:
+    //     "https://img.freepik.com/premium-photo/nigerian-tradional-dress-costume-formal-eventys_539365-2113.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+    // },
   ];
+  const [height, updateHeight] = useState(scale.heightPixel(47));
 
-  const { keyboardHeight, show } = useKeyboardHeight();
   return (
     <View style={[SharedStyles.container, styles.container]}>
-      <KeyBoardAvoidingWrapper>
+      <KeyBoardAvoidingWrapper offset={scale.heightPixel(106)}>
         <>
           <View style={styles.mapItemsContainer}>
             {data.map((item, index) => {
@@ -83,6 +78,7 @@ export const PostCreate = () => {
                     <TouchableOpacity
                       style={styles.imagePickerContainer}
                       activeOpacity={0.8}
+                      key={index}
                     >
                       <Ionicons
                         name="add-outline"
@@ -91,7 +87,7 @@ export const PostCreate = () => {
                       />
                     </TouchableOpacity>
                   ) : (
-                    <View style={styles.imageContainer}>
+                    <View style={styles.imageContainer} key={index}>
                       <Image
                         source={item.image}
                         contentFit="cover"
@@ -104,16 +100,43 @@ export const PostCreate = () => {
               );
             })}
           </View>
-          {/* <KeyboardAvoidingView
-        style={{
-          paddingBottom:
-            Platform.OS === "ios" && show
-              ? scale.pixelSizeVertical(keyboardHeight - 20)
-              : scale.pixelSizeVertical(205),
-        }}
-      > */}
-          <TextInput />
-          <TextInput />
+          <TextInput
+            placeholder={"Add title"}
+            inputState={"create"}
+            style={styles.titleInput}
+            textInputStyle={{
+              marginBottom: scale.pixelSizeVertical(16),
+              marginTop: scale.pixelSizeVertical(40),
+            }}
+          />
+          <Input
+            placeholder={"Add caption"}
+            inputState={"create"}
+            style={[
+              styles.textAreaInput,
+              {
+                height:
+                  height < scale.heightPixel(47)
+                    ? scale.heightPixel(47)
+                    : height,
+                maxHeight: scale.pixelSizeVertical(90),
+              },
+            ]}
+            onContentSizeChange={(e) =>
+              updateHeight(e.nativeEvent.contentSize.height)
+            }
+            multiline={true}
+          />
+          <Button
+            title={"Post"}
+            textStyle={[
+              Fontscales.labelSmallRegular,
+              {
+                color: "white",
+              },
+            ]}
+            containerStyle={styles.btnContainer}
+          />
         </>
       </KeyBoardAvoidingWrapper>
     </View>

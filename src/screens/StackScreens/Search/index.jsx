@@ -21,7 +21,7 @@ export const Search = () => {
   const [filter, setFilter] = useState("");
   return (
     <View style={SharedStyles.container}>
-      <KeyBoardAvoidingWrapper>
+      <KeyBoardAvoidingWrapper offset={scale.heightPixel(105)}>
         <View>
           <View style={styles.textInputContainer}>
             <Ionicons

@@ -1,8 +1,11 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { scale } from "../../../utils/scale";
 import { colors } from "../../../constants/colorpallette";
 
 export const styles = StyleSheet.create({
+  container: {
+    paddingBottom: Platform.OS === "ios" ? scale.pixelSizeVertical(20) : 1,
+  },
   eachContainer: {
     height: scale.heightPixel(80),
     marginVertical: scale.pixelSizeVertical(8),
@@ -95,6 +98,7 @@ export const styles = StyleSheet.create({
     fontFamily: "Outfit_500Medium",
     fontSize: scale.fontPixel(10),
     color: colors.mainPrimary,
+    marginBottom: scale.pixelSizeVertical(10),
   },
   reportTex: {
     fontFamily: "Outfit_400Regular",
@@ -132,5 +136,22 @@ export const styles = StyleSheet.create({
     borderRadius: scale.fontPixel(4),
     marginTop: scale.pixelSizeVertical(24),
     justifyContent: "center",
+  },
+  ratingContainer: {
+    alignSelf: "center",
+    marginTop: scale.pixelSizeVertical(30),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  btnContainer: {
+    backgroundColor: colors.mainPrimary,
+    alignSelf: "center",
+    marginTop: scale.pixelSizeVertical(15),
+    paddingHorizontal: scale.pixelSizeHorizontal(30),
+    paddingVertical: scale.pixelSizeHorizontal(10),
+    borderRadius: scale.fontPixel(8),
+  },
+  textInput: {
+    marginTop: scale.pixelSizeVertical(15),
   },
 });

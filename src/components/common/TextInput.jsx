@@ -69,6 +69,8 @@ export const TextInput = ({
               ? "#00A520"
               : inputState === "error"
               ? "#E6353D"
+              : inputState === "create"
+              ? "#F6D6AA"
               : "#F0F0F0",
         },
       ]}

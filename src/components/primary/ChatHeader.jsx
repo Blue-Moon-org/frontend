@@ -6,8 +6,41 @@ import { Entypo, Ionicons } from "@expo/vector-icons";
 import { scale } from "../../utils/scale";
 import { colors } from "../../constants/colorpallette";
 import { Fontscales } from "../../styles";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
 
 export const ChatHeader = () => {
+  const data = [
+    {
+      id: 1,
+      title: "Block user",
+      pressAction: () => {},
+    },
+    {
+      id: 2,
+      title: "Clear chat",
+      pressAction: () => {},
+    },
+    {
+      id: 3,
+      title: "Report user",
+      pressAction: () => {},
+    },
+    {
+      id: 4,
+      title: "Mute notification",
+      pressAction: () => {},
+    },
+    {
+      id: 5,
+      title: "Disable calling",
+      pressAction: () => {},
+    },
+  ];
   return (
     <View style={styles.mainContainer}>
       <View style={styles.imageTextContainer}>
@@ -47,11 +80,47 @@ export const ChatHeader = () => {
           // }}
           style={styles.lineTextContainer}
         >
-          <Entypo
-            name="dots-three-vertical"
-            size={scale.fontPixel(24)}
-            color="black"
-          />
+          <Menu style={{}}>
+            <MenuTrigger
+              customStyles={{
+                triggerWrapper: {
+                  top: -1,
+                },
+              }}
+            >
+              <Entypo
+                name="dots-three-vertical"
+                size={scale.fontPixel(24)}
+                color="black"
+              />
+            </MenuTrigger>
+            <MenuOptions
+              style={{
+                backgroundColor: "white",
+                overflow: "hidden",
+                borderRadius: scale.fontPixel(8),
+              }}
+            >
+              {data.map((item, index) => {
+                return (
+                  <View
+                    key={item.id}
+                    style={{ marginVertical: scale.pixelSizeVertical(5) }}
+                  >
+                    <MenuOption onSelect={item.pressAction}>
+                      <Text
+                        textStyle={Fontscales.labelSmallRegular}
+                        text={item.title}
+                      />
+                    </MenuOption>
+                    {data.length === index + 1 ? null : (
+                      <View style={styles.divider} />
+                    )}
+                  </View>
+                );
+              })}
+            </MenuOptions>
+          </Menu>
         </Pressable>
       </View>
     </View>
@@ -107,5 +176,18 @@ const styles = StyleSheet.create({
   },
   lineTextContainer: {
     marginLeft: scale.fontPixel(10),
+  },
+  menuContainer: {
+    // flex: 1,
+    backgroundColor: "#f00",
+    // justifyContent: "center",
+    // alignItems: "center",
+    // padding: 30,
+    // flexDirection: "column",
+  },
+  divider: {
+    borderColor: colors.grey2,
+    marginHorizontal: scale.pixelSizeHorizontal(5),
+    borderTopWidth: 1,
   },
 });

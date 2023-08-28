@@ -10,8 +10,8 @@ import { scale } from "../../../utils/scale";
 import { Posts } from "./Posts";
 import { ForSale } from "./ForSale";
 import { Liked } from "./Liked";
-import { SafeAreaView } from "react-native-safe-area-context";
 import Constants from "expo-constants";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 
 export const Profile = () => {
   const [type, updateType] = useState("Posts");
@@ -20,6 +20,53 @@ export const Profile = () => {
     Platform.OS === "ios" && Constants.statusBarHeight < 30
       ? scale.heightPixel(40)
       : scale.heightPixel(1);
+
+  const STAR_COUNT = 5;
+
+  const Rating = (value) => {
+    const stars = Array.from({ length: STAR_COUNT }, () => (
+      <FontAwesome
+        style={{ paddingHorizontal: scale.pixelSizeHorizontal(1) }}
+        name="star-o"
+        size={scale.fontPixel(15)}
+        color={colors.mainPrimary}
+      />
+    ));
+    let i;
+    for (i = 0; i < value; i++) {
+      // this will loop Math.floor(value) times
+      stars[i] = (
+        <FontAwesome
+          style={{ paddingHorizontal: scale.pixelSizeHorizontal(1) }}
+          name="star"
+          size={scale.fontPixel(15)}
+          color={colors.mainPrimary}
+        />
+      );
+    }
+
+    if (value % 1 != 0)
+      // if value is a decimal, add a half star
+      stars[i - 1] = (
+        <FontAwesome
+          name="star-half-full"
+          style={{ paddingHorizontal: scale.pixelSizeHorizontal(1) }}
+          size={scale.fontPixel(15)}
+          color={colors.mainPrimary}
+        />
+      );
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          marginTop: scale.pixelSizeVertical(5),
+        }}
+      >
+        {stars}
+      </View>
+    );
+  };
+
   return (
     <View style={[SharedStyles.container]}>
       <View
@@ -33,7 +80,21 @@ export const Profile = () => {
       >
         <ProfileHeader designer={true} />
         <View style={styles.background} />
-        <View style={styles.background2} />
+        <View style={styles.background2}>
+          <View style={styles.leftSide}>
+            <Text text={"3.1"} textStyle={styles.ratingText} />
+            {Rating(3.1)}
+            <TouchableOpacity style={styles.review} activeOpacity={0.8}>
+              <Text text={`274 reviews`} textStyle={styles.reviewText} />
+              <Ionicons
+                name="ios-arrow-forward"
+                size={scale.fontPixel(16)}
+                color={colors.mainPrimary}
+              />
+            </TouchableOpacity>
+          </View>
+          <View>{Rating(3.1)}</View>
+        </View>
         <View style={styles.headerOptionContainer}>
           {topData.map((item, index) => {
             return (
