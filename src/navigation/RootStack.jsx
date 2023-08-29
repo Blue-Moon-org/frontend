@@ -17,6 +17,10 @@ import {
   Chat,
   MarketCreate,
   PostCreate,
+  BizInfo,
+  BizInfoEdit,
+  PersonalInfo,
+  PersonalInfoEdit,
 } from "../screens/StackScreens";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -390,6 +394,34 @@ export const RootStack = () => {
         }}
         name="Chat"
         component={Chat}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="BizInfo"
+        component={BizInfo}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="BizInfoEdit"
+        component={BizInfoEdit}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="PersonalInfo"
+        component={PersonalInfo}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="PersonalInfoEdit"
+        component={PersonalInfoEdit}
       />
     </Stack.Navigator>
   );

@@ -14,6 +14,10 @@ import { Search } from "./Search";
 import { Chat } from "./Chat";
 import { PostCreate } from "./CreatePost/PostCreate";
 import { MarketCreate } from "./CreatePost/MarketCreate";
+import { BizInfo } from "./BizInfo";
+import { BizInfoEdit } from "./BizInfo/BizInfoEdit";
+import { PersonalInfoEdit } from "./PersonalInfo/PersonalInfoEdit";
+import { PersonalInfo } from "./PersonalInfo";
 
 export {
   PostDetail,
@@ -32,4 +36,8 @@ export {
   Chat,
   PostCreate,
   MarketCreate,
+  BizInfo,
+  BizInfoEdit,
+  PersonalInfo,
+  PersonalInfoEdit,
 };
