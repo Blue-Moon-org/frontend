@@ -18,6 +18,10 @@ import { BizInfo } from "./BizInfo";
 import { BizInfoEdit } from "./BizInfo/BizInfoEdit";
 import { PersonalInfoEdit } from "./PersonalInfo/PersonalInfoEdit";
 import { PersonalInfo } from "./PersonalInfo";
+import { DesignerProfile } from "./DesignerProfile/Index";
+import { Comments } from "./Comment";
+import { Reviews } from "./Comment/Reviews";
+import { ImagePreview } from "./ImagePreview";
 
 export {
   PostDetail,
@@ -40,4 +44,8 @@ export {
   BizInfoEdit,
   PersonalInfo,
   PersonalInfoEdit,
+  DesignerProfile,
+  Comments,
+  ImagePreview,
+  Reviews,
 };

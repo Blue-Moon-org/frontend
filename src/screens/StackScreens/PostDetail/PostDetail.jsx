@@ -12,7 +12,7 @@ import { dataFits } from "../../BottomTabScreens/Home/data";
 export const PostDetail = () => {
   return (
     <View style={SharedStyles.container}>
-      <KeyBoardAvoidingWrapper>
+      <KeyBoardAvoidingWrapper offset={scale.heightPixel(105)}>
         <View>
           <View style={styles.detailContainer}>
             <View style={styles.imagesContainer}>

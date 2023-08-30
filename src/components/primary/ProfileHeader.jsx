@@ -8,7 +8,7 @@ import { Fontscales } from "../../styles";
 import { colors } from "../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
 
-export const ProfileHeader = ({ designer }) => {
+export const ProfileHeader = ({ designer, client }) => {
   const { goBack, navigate } = useNavigation();
   return (
     <>
@@ -46,6 +46,18 @@ export const ProfileHeader = ({ designer }) => {
               }
               size={24}
               color="black"
+            />
+          )}
+          {client && (
+            <Ionicons
+              name="chatbox-ellipses-outline"
+              size={scale.fontPixel(24)}
+              color={colors.mainPrimary}
+              onPress={() =>
+                navigate("BottomTabStack", {
+                  screen: "Chat",
+                })
+              }
             />
           )}
           <View style={styles.imageContainer}>

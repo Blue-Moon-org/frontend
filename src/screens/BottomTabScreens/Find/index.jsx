@@ -9,11 +9,14 @@ import { styles } from "./styles";
 import { coords } from "./coordData";
 import { colors } from "../../../constants/colorpallette";
 import { LocationCard } from "./LocationCard";
+import { useNavigation } from "@react-navigation/native";
 
 export const Find = () => {
   const [state, updateState] = useState({
     searchText: "",
   });
+
+  const { navigate } = useNavigation();
   return (
     <View>
       <FindHeader />
@@ -33,7 +36,9 @@ export const Find = () => {
               <Marker
                 key={index}
                 onPress={() => {
-                  console.warn("object");
+                  navigate("RootStack", {
+                    screen: "DesignerProfile",
+                  });
                 }}
                 coordinate={{ latitude: item.lat, longitude: item.lng }}
                 // title={item.placeName}

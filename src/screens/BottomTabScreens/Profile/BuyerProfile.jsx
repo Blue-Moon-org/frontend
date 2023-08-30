@@ -23,7 +23,15 @@ export const BuyerProfile = () => {
         <Text text={"Profile"} textStyle={[Fontscales.labelSmallMedium]} />
 
         <View style={styles.container}>
-          <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
+          <TouchableOpacity
+            onPress={() =>
+              navigate("RootStack", {
+                screen: "PersonalInfo",
+              })
+            }
+            style={styles.btn}
+            activeOpacity={0.7}
+          >
             <AntDesign name="user" size={scale.fontPixel(20)} color="black" />
             <Text
               textStyle={[

@@ -24,7 +24,11 @@ export const ProfileSettings = () => {
         <Text text={"Profile"} textStyle={[Fontscales.labelSmallMedium]} />
 
         <View style={styles.container}>
-          <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
+          <TouchableOpacity
+            onPress={() => navigate("PersonalInfo")}
+            style={styles.btn}
+            activeOpacity={0.7}
+          >
             <AntDesign name="user" size={scale.fontPixel(20)} color="black" />
             <Text
               textStyle={[
@@ -36,11 +40,7 @@ export const ProfileSettings = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() =>
-              navigate("RootStack", {
-                screen: "Cart",
-              })
-            }
+            onPress={() => navigate("BizInfo")}
             style={styles.btn}
             activeOpacity={0.7}
           >

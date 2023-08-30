@@ -21,6 +21,7 @@ import {
   BizInfoEdit,
   PersonalInfo,
   PersonalInfoEdit,
+  DesignerProfile,
 } from "../screens/StackScreens";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -422,6 +423,13 @@ export const RootStack = () => {
         }}
         name="PersonalInfoEdit"
         component={PersonalInfoEdit}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="DesignerProfile"
+        component={DesignerProfile}
       />
     </Stack.Navigator>
   );
