@@ -3,7 +3,7 @@ import {
   actionTypesEmailVerify,
   actionTypesPhoneNoVerify,
 } from "../constants/actionTypes";
-import { fetchGetRequestInit } from "../../utils/requestInit";
+import { fetchPostRequestInit } from "../../utils/requestInit";
 
 export const userRegistration = (body, navigate) => async (dispatch) => {
   // const { navigate } = useNavigation();
@@ -12,7 +12,7 @@ export const userRegistration = (body, navigate) => async (dispatch) => {
     type: actionTypesRegister.USER_REGISTER_LOADING,
   });
 
-  await fetchGetRequestInit(
+  await fetchPostRequestInit(
     `/core/register/`,
     {
       email: body.email,
@@ -50,7 +50,7 @@ export const emailVerify =
     });
 
 
-    await fetchGetRequestInit(`/core/verify-email/`, {
+    await fetchPostRequestInit(`/core/verify-email/`, {
       email: email,
       otp: state.code,
     })
@@ -81,7 +81,7 @@ export const emailVerify =
 //     type: actionTypesPhoneNoVerify.USER_PHONENOVERIFY_LOADING,
 //   });
 
-//   await fetchGetRequestInit(`/phoneNumberVerify`, state)
+//   await fetchPostRequestInit(`/phoneNumberVerify`, state)
 //     .then((res) => {
 //       dispatch({
 //         type: actionTypesPhoneNoVerify.USER_PHONENOVERIFY_SUCCESS,

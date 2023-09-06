@@ -13,9 +13,12 @@ import { Liked } from "../../BottomTabScreens/Profile/Liked";
 import Constants from "expo-constants";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 
 export const DesignerProfile = () => {
   const [type, updateType] = useState("Posts");
+
+  const { navigate } = useNavigation();
 
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
@@ -85,7 +88,11 @@ export const DesignerProfile = () => {
           <View style={styles.leftSide}>
             <Text text={"3.1"} textStyle={styles.ratingText} />
             {Rating(3.1)}
-            <TouchableOpacity style={styles.review} activeOpacity={0.8}>
+            <TouchableOpacity
+              onPress={() => navigate("Reviews")}
+              style={styles.review}
+              activeOpacity={0.8}
+            >
               <Text text={`274 reviews`} textStyle={styles.reviewText} />
               <Ionicons
                 name="ios-arrow-forward"

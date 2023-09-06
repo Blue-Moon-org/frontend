@@ -8,8 +8,10 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
 import { dataFits } from "../../BottomTabScreens/Home/data";
+import { useNavigation } from "@react-navigation/native";
 
 export const PostDetail = () => {
+  const { navigate } = useNavigation();
   return (
     <View style={SharedStyles.container}>
       <KeyBoardAvoidingWrapper offset={scale.heightPixel(105)}>
@@ -148,6 +150,7 @@ export const PostDetail = () => {
               </View>
             </View>
             <Text
+              onPress={() => navigate("Comments")}
               ellipsizeMode={"tail"}
               numberOfLines={1}
               textStyle={styles.comment}

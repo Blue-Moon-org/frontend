@@ -1,5 +1,5 @@
 import { actionTypesLogin } from "../constants/actionTypes";
-import { fetchGetRequestInit } from "../../utils/requestInit";
+import { fetchPostRequestInit } from "../../utils/requestInit";
 
 export const userLogin = (body, navigate) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
@@ -7,7 +7,7 @@ export const userLogin = (body, navigate) => async (dispatch) => {
     type: actionTypesLogin.USER_LOGIN_LOADING,
   });
 
-  await fetchGetRequestInit(`/core/login/`, {
+  await fetchPostRequestInit(`/core/login/`, {
     email: body.email,
     password: body.password,
   })

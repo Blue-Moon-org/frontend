@@ -8,6 +8,9 @@ import {
 import { resendPhoneNoOtpReducer } from "./resendPhoneNoOtpReducer";
 import { resendEmailOtpReducer } from "./resendEmailOtpReducer";
 import { phoneNoVerifyReducer } from "./phoneVerifyReducer";
+// Post
+import { fetchFeedsReducer } from "./Posts/Feeds";
+import { fetchLikeReducer } from "./Posts/Like";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -18,4 +21,6 @@ export const reducers = combineReducers({
   forgotPasswordReset: forgotPasswordResetReducer,
   resendPhoneNoOtp: resendPhoneNoOtpReducer,
   resendEmailOtp: resendEmailOtpReducer,
+  fetchFeeds: fetchFeedsReducer,
+  like: fetchLikeReducer,
 });

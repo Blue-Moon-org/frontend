@@ -10,7 +10,7 @@ export const Lodaing = () => {
         flex: 1,
         opacity: 1,
         position: "absolute",
-        zIndex: 100,
+        zIndex: 10000,
         left: 0,
         right: 0,
         bottom: 0,

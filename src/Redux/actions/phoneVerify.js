@@ -1,5 +1,5 @@
 import { actionTypesPhoneNoVerify } from "../constants/actionTypes";
-import { fetchGetRequestInit } from "../../utils/requestInit";
+import { fetchPostRequestInit } from "../../utils/requestInit";
 
 export const phoneVerify = (email) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
@@ -7,7 +7,7 @@ export const phoneVerify = (email) => async (dispatch) => {
     type: actionTypesPhoneNoVerify.USER_PHONENOVERIFY_LOADING,
   });
 
-  await fetchGetRequestInit(`/core/phone-verify/`, {
+  await fetchPostRequestInit(`/core/phone-verify/`, {
     email,
   })
     .then((res) => {

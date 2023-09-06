@@ -23,8 +23,6 @@ export const Login = () => {
 
   const dispatch = useDispatch();
 
-  const data = useSelector((state) => state.loginState);
-
   const loginData = useSelector((state) => state.loginState);
   const { navigate } = useNavigation();
 
@@ -32,7 +30,7 @@ export const Login = () => {
     if (state.email === "") {
       updateState({
         ...state,
-        error: "email field can not be enter",
+        error: "email field may not be blank",
       });
     } else if (/^\S+@\S+\.\S+$/.test(state.email) === false) {
       updateState({
@@ -42,7 +40,7 @@ export const Login = () => {
     } else if (state.password === "") {
       updateState({
         ...state,
-        error: "password field can not be enter",
+        error: "password field may not be blank",
       });
     } else {
       updateState({
@@ -55,7 +53,7 @@ export const Login = () => {
 
   return (
     <>
-      {data.loading ? <Lodaing /> : null}
+      {loginData.loading ? <Lodaing /> : null}
       <SafeAreaView style={[SharedStyles.container]}>
         <View style={{ height: "100%" }}>
           <Text

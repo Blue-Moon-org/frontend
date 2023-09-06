@@ -88,11 +88,11 @@ export const FindHeader = ({ state, updateState }) => {
           <View style={styles.textInputContainer}>
             <TextInput
               returnKeyType="search"
-              onSubmitEditing={() =>
-                navigate("RootStack", {
-                  screen: "Search",
-                })
-              }
+              // onSubmitEditing={() =>
+              //   navigate("RootStack", {
+              //     screen: "Search",
+              //   })
+              // }
               // onChangeText={(text) => {
               //   updateState({ ...state, searchText: text });
               // }}
@@ -101,7 +101,6 @@ export const FindHeader = ({ state, updateState }) => {
               placeholder="Enter a location"
             />
           </View>
-
           <View style={styles.iconContainer}>
             <View style={styles.cartBargeContainer}>
               <Text text={4} textStyle={styles.text} />

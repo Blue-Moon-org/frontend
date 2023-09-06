@@ -12,9 +12,12 @@ import { ForSale } from "./ForSale";
 import { Liked } from "./Liked";
 import Constants from "expo-constants";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 export const Profile = () => {
   const [type, updateType] = useState("Posts");
+
+  const { navigate } = useNavigation();
 
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
@@ -84,7 +87,15 @@ export const Profile = () => {
           <View style={styles.leftSide}>
             <Text text={"3.1"} textStyle={styles.ratingText} />
             {Rating(3.1)}
-            <TouchableOpacity style={styles.review} activeOpacity={0.8}>
+            <TouchableOpacity
+              onPress={() =>
+                navigate("RootStack", {
+                  screen: "Reviews",
+                })
+              }
+              style={styles.review}
+              activeOpacity={0.8}
+            >
               <Text text={`274 reviews`} textStyle={styles.reviewText} />
               <Ionicons
                 name="ios-arrow-forward"

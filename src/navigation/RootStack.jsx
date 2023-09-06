@@ -22,6 +22,9 @@ import {
   PersonalInfo,
   PersonalInfoEdit,
   DesignerProfile,
+  Comments,
+  ImagePreview,
+  Reviews,
 } from "../screens/StackScreens";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -384,6 +387,46 @@ export const RootStack = () => {
       />
       <Stack.Screen
         options={{
+          headerShown: true,
+          title: "Comment",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="Comments"
+        component={Comments}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Reviews",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="Reviews"
+        component={Reviews}
+      />
+      <Stack.Screen
+        options={{
           headerShown: false,
         }}
         name="ProfileSettings"
@@ -430,6 +473,13 @@ export const RootStack = () => {
         }}
         name="DesignerProfile"
         component={DesignerProfile}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="ImagePreview"
+        component={ImagePreview}
       />
     </Stack.Navigator>
   );

@@ -1,5 +1,5 @@
 import { actionTypesResendEmailOtp } from "../constants/actionTypes";
-import { fetchGetRequestInit } from "../../utils/requestInit";
+import { fetchPostRequestInit } from "../../utils/requestInit";
 
 export const resendEmailOtp = (email, navigate) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
@@ -7,7 +7,7 @@ export const resendEmailOtp = (email, navigate) => async (dispatch) => {
     type: actionTypesResendEmailOtp.RESENDEMAILOTP_LOADING,
   });
 
-  await fetchGetRequestInit(`/core/resend-otp/email/`, {
+  await fetchPostRequestInit(`/core/resend-otp/email/`, {
     email: email,
   })
     .then((res) => {

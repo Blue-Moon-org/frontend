@@ -36,6 +36,7 @@ export const All = () => {
             size={scale.fontPixel(18)}
             color={"white"}
             style={styles.likeIcon}
+            onPress={() => console.warn("object")}
           />
         </View>
         <View style={styles.bottomContainer}>

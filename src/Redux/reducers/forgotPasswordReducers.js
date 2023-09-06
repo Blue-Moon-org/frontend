@@ -1,7 +1,6 @@
 import {
   actionTypesForgotPassword,
   actionTypesForgotPasswordReset,
-  actionTypesForgotPasswordVerification,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -43,8 +42,6 @@ export const forgotPasswordReducer = (
       return state;
   }
 };
-
-
 
 export const forgotPasswordResetReducer = (
   state = initialState,

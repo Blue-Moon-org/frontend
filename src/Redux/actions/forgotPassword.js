@@ -4,7 +4,7 @@ import {
   actionTypesForgotPassword,
 } from "../constants/actionTypes";
 import {
-  fetchGetRequestInit,
+  fetchPostRequestInit,
   fetchPatchRequestInit,
 } from "../../utils/requestInit";
 
@@ -14,7 +14,7 @@ export const forgotPassword = (state, navigate) => async (dispatch) => {
     type: actionTypesForgotPassword.USER_FORGOTPASSWORD_LOADING,
   });
 
-  await fetchGetRequestInit(`/core/forgot-password/`, {
+  await fetchPostRequestInit(`/core/forgot-password/`, {
     email: state.email,
   })
     .then((res) => {
