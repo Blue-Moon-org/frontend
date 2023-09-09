@@ -11,6 +11,7 @@ import { phoneNoVerifyReducer } from "./phoneVerifyReducer";
 // Post
 import { fetchFeedsReducer } from "./Posts/Feeds";
 import { fetchLikeReducer } from "./Posts/Like";
+import { addCommentReducer } from "./Posts/AddComments";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -23,4 +24,5 @@ export const reducers = combineReducers({
   resendEmailOtp: resendEmailOtpReducer,
   fetchFeeds: fetchFeedsReducer,
   like: fetchLikeReducer,
+  comment: addCommentReducer,
 });

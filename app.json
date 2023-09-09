@@ -23,7 +23,19 @@
         "backgroundColor": "#ffffff",
         "googleServicesFile": "./google-services.json"
       },
-      "plugins": ["@react-native-google-signin/google-signin"],
+      "plugins": [
+        "@react-native-google-signin/google-signin",
+        [
+          "expo-image-picker",
+          {
+            "photosPermission": "Allow Blue moon to access your photos."
+          },
+          "expo-camera",
+          {
+            "cameraPermission": "Allow Blue moon to access your camera."
+          }
+        ]
+      ],
       "package": "com.app.bluemoon"
     },
     "web": {

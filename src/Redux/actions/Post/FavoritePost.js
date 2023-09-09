@@ -1,17 +1,17 @@
 import { fetchPostRequestInit } from "../../../utils/requestInit";
-import { actionTypesLike } from "../../constants/LikeTypes";
+import { actionTypesAddFavorite } from "../../constants/PostTypes";
 
 export const fetchLikes = (body, id, navigate) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
 
   dispatch({
-    type: actionTypesLike.LIKE_LOADING,
+    type: actionTypesAddFavorite.ADD_COMMENT_LOADING,
   });
 
-  await fetchPostRequestInit(`/post/like/${id}/`)
+  await fetchPostRequestInit(`/post/favorite/${id}/`)
     .then((res) => {
       dispatch({
-        type: actionTypesLike.LIKE_SUCCESS,
+        type: actionTypesAddFavorite.ADD_COMMENT_SUCCESS,
         payload: res,
       });
       //   navigate("ForgotPasswordVerification",);
@@ -19,7 +19,7 @@ export const fetchLikes = (body, id, navigate) => async (dispatch) => {
     .catch((err) => {
       console.warn(err);
       dispatch({
-        type: actionTypesLike.LIKE_ERROR,
+        type: actionTypesAddFavorite.ADD_COMMENT_ERROR,
         error: err,
       });
     });

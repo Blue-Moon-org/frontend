@@ -78,7 +78,7 @@ export const Register = () => {
     } else if (buyersState.password !== buyersState.confirmPassword) {
       updateBuyersState({
         ...buyersState,
-        error: "Passwords don't match",
+        error: "Passwords doesn't match",
       });
     } else if (buyersState.policy === false) {
       updateBuyersState({

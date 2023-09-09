@@ -1,19 +1,24 @@
-import { View, FlatList, Platform, TouchableOpacity } from "react-native";
+import { View, FlatList, TouchableOpacity } from "react-native";
 import React from "react";
-import { dataSenator } from "./data";
 import { Text } from "../../../components/common";
 import { scale } from "../../../utils/scale";
 import { Image } from "expo-image";
 import { AntDesign } from "@expo/vector-icons";
 import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
+import { baseURL } from "../../../utils/request";
+import { HomeListComponentEmpty } from "../../../components/primary";
 
-export const Senator = () => {
+export const Senator = ({ MenData, state }) => {
   const { navigate } = useNavigation();
+
   const renderItem = ({ item, index, separator }) => {
     const _detailHandler = () => {
       navigate("RootStack", {
         screen: "PostDetail",
+        params: {
+          item,
+        },
       });
     };
     return (
@@ -24,13 +29,13 @@ export const Senator = () => {
       >
         <View style={styles.innerContainer}>
           <Image
-            source={{ uri: item.imageUrl }}
+            source={{ uri: `${baseURL + item?.images[0]?.image}` }}
             contentFit="cover"
             cachePolicy={"memory-disk"}
             style={styles.image}
           />
           <AntDesign
-            name={item.like ? "heart" : "hearto"}
+            name={item.user_has_liked ? "heart" : "hearto"}
             size={scale.fontPixel(18)}
             color={"white"}
             style={styles.likeIcon}
@@ -41,10 +46,10 @@ export const Senator = () => {
             textStyle={styles.text}
             ellipsizeMode={"tail"}
             numberOfLines={1}
-            text={item.name}
+            text={item.title}
           />
           <Text
-            text={item.subText}
+            text={item.body}
             textStyle={styles.subText}
             ellipsizeMode={"tail"}
             numberOfLines={2}
@@ -54,29 +59,20 @@ export const Senator = () => {
     );
   };
   return (
-    <View
-      style={{
-        // height:
-        //   Platform.OS === "ios"
-        //     ? scale.height - scale.heightPixel(430)
-        //     : scale.height < 715
-        //     ? scale.height - scale.heightPixel(415)
-        //     : scale.height - scale.heightPixel(390),
-      }}
-    >
+    <View>
       <FlatList
         showsVerticalScrollIndicator={false}
         numColumns={3}
-        data={dataSenator}
+        data={MenData?.posts}
         renderItem={renderItem}
-        columnWrapperStyle={{ justifyContent: "space-between" }}
+        columnWrapperStyle={{ gap: scale.pixelSizeHorizontal(17) }}
         keyExtractor={(item, index) => item.id}
+        ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
         contentContainerStyle={{
           marginTop: scale.pixelSizeVertical(10),
           // width: "100%",
         }}
       />
-      {/* <View style={{ height: scale.heightPixel(30) }} /> */}
     </View>
   );
 };

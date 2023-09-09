@@ -36,14 +36,17 @@ export const Home = () => {
     let subscribe = true;
 
     if (subscribe) {
-      dispatch(fetchFeeds(navigate));
+      dispatch(fetchFeeds(type, navigate));
     }
 
     return () => (subscribe = false);
-  }, []);
+  }, [type]);
 
   const state = useSelector((state) => state.fetchFeeds);
-  console.warn(state.data?.response?.data.data);
+
+  // console.warn(
+  //   state.data?.response?.data?.data?.categoryData.category === "All"
+  // );
 
   return (
     <>
@@ -117,16 +120,34 @@ export const Home = () => {
                 : scale.height * 0.581 + Constants.statusBarHeight - 94,
           }}
         >
-          {type === "All" ? (
-            <All />
-          ) : type === "Senator" ? (
-            <Senator />
-          ) : type === "Suits" ? (
-            <Suits />
-          ) : type === "Fit" ? (
-            <Fits />
+          {state.data?.response?.data?.data?.categoryData.category === "All" ? (
+            <All
+              state={state}
+              postData={state.data?.response?.data?.data?.categoryData}
+            />
+          ) : state.data?.response?.data?.data?.categoryData.category ===
+            "Men" ? (
+            <Senator
+              state={state}
+              MenData={state.data?.response?.data?.data?.categoryData}
+            />
+          ) : state.data?.response?.data?.data?.categoryData.category ===
+            "Women" ? (
+            <Suits
+              state={state}
+              womenData={state.data?.response?.data?.data?.categoryData}
+            />
+          ) : state.data?.response?.data?.data?.categoryData.category ===
+            "Native" ? (
+            <Fits
+              state={state}
+              nativeData={state.data?.response?.data?.data?.categoryData}
+            />
           ) : (
-            <Ankara />
+            <Ankara
+              state={state}
+              ankaraData={state.data?.response?.data?.data?.categoryData}
+            />
           )}
           <TouchableOpacity
             onPress={() =>

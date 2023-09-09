@@ -1,5 +1,5 @@
-import { View, TextInput } from "react-native";
-import React from "react";
+import { View, TextInput, ActivityIndicator } from "react-native";
+import React, { useState } from "react";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Image } from "expo-image";
@@ -8,10 +8,26 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
 import { dataFits } from "../../BottomTabScreens/Home/data";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { baseURL } from "../../../utils/request";
+import { addComment } from "../../../Redux/actions/Post/AddComment";
+import { useSelector, useDispatch } from "react-redux";
 
 export const PostDetail = () => {
   const { navigate } = useNavigation();
+  const route = useRoute();
+
+  const dispatch = useDispatch();
+
+  const [values, updateValue] = useState({
+    comment: "",
+  });
+
+  const _commentHandler = () => {
+    dispatch(addComment(values.comment, route?.params?.item?.id, navigate));
+  };
+
+  const state = useSelector((state) => state.comment);
   return (
     <View style={SharedStyles.container}>
       <KeyBoardAvoidingWrapper offset={scale.heightPixel(105)}>
@@ -22,7 +38,7 @@ export const PostDetail = () => {
                 <Image
                   cachePolicy={"memory-disk"}
                   source={{
-                    uri: "https://img.freepik.com/free-psd/simple-black-men-s-tee-mockup_53876-57893.jpg?size=626&ext=jpg&ga=GA1.1.70578014.1688424585&semt=ais",
+                    uri: `${baseURL + route.params?.item?.images[0]?.image}`,
                   }}
                   style={styles.mainImage}
                   contentFit="cover"
@@ -31,21 +47,21 @@ export const PostDetail = () => {
               <View style={styles.sideImageContainer}>
                 <Image
                   source={{
-                    uri: "https://img.freepik.com/free-photo/portrait-happy-handsome-young-man-posing-isolated-background_1150-63507.jpg?size=626&ext=jpg&ga=GA1.1.70578014.1688424585&semt=ais",
+                    uri: `${baseURL + route.params?.item?.images[1]?.image}`,
                   }}
                   style={styles.sideImage}
                   contentFit="cover"
                 />
                 <Image
                   source={{
-                    uri: "https://t4.ftcdn.net/jpg/00/36/15/45/240_F_36154505_P9rHYaLbfnLXBnwf5PfL4dTkB2xVFteU.jpg",
+                    uri: `${baseURL + route.params?.item?.images[2]?.image}`,
                   }}
                   style={styles.sideImage}
                   contentFit="cover"
                 />
                 <Image
                   source={{
-                    uri: "https://t4.ftcdn.net/jpg/00/68/68/73/240_F_68687386_uYZd2YeBUzBJt7dxzFY0gCVNy5YZN9F7.jpg",
+                    uri: `${baseURL + route.params?.item?.images[3]?.image}`,
                   }}
                   style={styles.sideImage}
                   contentFit="cover"
@@ -87,12 +103,14 @@ export const PostDetail = () => {
               <View style={styles.reactionIcons}>
                 <View style={styles.iconTextContainer}>
                   <AntDesign
-                    name="hearto"
+                    name={
+                      route.params?.item.user_has_liked ? "heart" : "hearto"
+                    }
                     size={scale.fontPixel(16)}
                     color={colors.blackText}
                   />
                   <Text
-                    text={"24k"}
+                    text={route.params?.item.likes}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={styles.likeShareText}
@@ -105,14 +123,16 @@ export const PostDetail = () => {
                     color={colors.blackText}
                   />
                   <Text
-                    text={"24k"}
+                    text={route.params?.item.favs}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={styles.likeShareText}
                   />
                 </View>
                 <AntDesign
-                  name="staro"
+                  name={
+                    route.params?.item.user_has_favorited ? "star" : "staro"
+                  }
                   size={scale.fontPixel(16)}
                   color={colors.blackText}
                 />
@@ -120,15 +140,13 @@ export const PostDetail = () => {
             </View>
             <View style={styles.aboutContainer}>
               <Text
-                text={"Fitted Black Jacket"}
+                text={route.params?.item.title}
                 textStyle={[Fontscales.headingSmallBold]}
                 ellipsizeMode={"tail"}
                 numberOfLines={1}
               />
               <Text
-                text={
-                  "Lorem ipsum dolor sit amet consectetur. Tellus eget a imperet pulvinar posuere imperdiet in. At porttitor ac condimentum arcu ut etiam tincidunt. Eget habitasse viverra feugiat ultricies bibendum libero elit."
-                }
+                text={route.params?.item.body}
                 textStyle={Fontscales.paragraphSmallRegular}
                 numberOfLines={2}
                 ellipsizeMode={"tail"}
@@ -138,23 +156,45 @@ export const PostDetail = () => {
             <View style={styles.commentContainer}>
               <View style={styles.inputSendContainer}>
                 <TextInput
+                  keyboardType="default"
+                  autoComplete="off"
+                  textContentType="none"
                   placeholder="Leave a comment"
                   placeholderTextColor={colors.blackText}
                   style={styles.input}
+                  value={values.comment}
+                  onChangeText={(text) =>
+                    updateValue({
+                      ...values,
+                      comment: text,
+                    })
+                  }
+                  multiline={false}
                 />
-                <Feather
-                  name="send"
-                  size={scale.fontPixel(16)}
-                  color={colors.blackText}
-                />
+                {state.loading ? (
+                  <ActivityIndicator
+                    size={scale.fontPixel(16)}
+                    color={colors.mainPrimary}
+                  />
+                ) : (
+                  <Feather
+                    onPress={() => _commentHandler()}
+                    name="send" //add loading
+                    size={scale.fontPixel(16)}
+                    disabled={values.comment.length < 1 ? true : false}
+                    color={
+                      values.comment.length < 1 ? "lightgray" : colors.blackText
+                    }
+                  />
+                )}
               </View>
             </View>
             <Text
-              onPress={() => navigate("Comments")}
+              onPress={() => navigate("Comments", { item: route.params.item })}
               ellipsizeMode={"tail"}
               numberOfLines={1}
               textStyle={styles.comment}
-              text={"view 165 comments"}
+              text={`view ${route.params?.item?.no_comments} comments`}
             />
           </View>
           <View style={styles.seeMoreContainer}>
@@ -168,13 +208,13 @@ export const PostDetail = () => {
                   <View key={index} style={styles.itemContainer}>
                     <View style={styles.innerContainer}>
                       <Image
-                        source={{ uri: item.imageUrl }}
+                        source={{ uri: item?.imageUrl }}
                         contentFit="cover"
                         cachePolicy={"memory-disk"}
                         style={styles.image}
                       />
                       <AntDesign
-                        name={item.like ? "heart" : "hearto"}
+                        name={item?.like ? "heart" : "hearto"}
                         size={scale.fontPixel(18)}
                         color={"white"}
                         style={styles.likeIcon}
@@ -185,10 +225,10 @@ export const PostDetail = () => {
                         textStyle={styles.text}
                         ellipsizeMode={"tail"}
                         numberOfLines={1}
-                        text={item.name}
+                        text={item?.name}
                       />
                       <Text
-                        text={item.subText}
+                        text={item?.subText}
                         textStyle={styles.subText}
                         ellipsizeMode={"tail"}
                         numberOfLines={2}

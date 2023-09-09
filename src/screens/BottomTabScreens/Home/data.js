@@ -5,15 +5,15 @@ export const topData = [
   },
   {
     id: 2,
-    name: "Senator",
+    name: "Men",
   },
   {
     id: 3,
-    name: "Suits",
+    name: "Women",
   },
   {
     id: 4,
-    name: "Fit",
+    name: "Native",
   },
   {
     id: 5,

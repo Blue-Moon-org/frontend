@@ -33,8 +33,9 @@ export const styles = StyleSheet.create({
   mapItemsContainer: {
     flexDirection: "row",
     width: "100%",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     flexWrap: "wrap",
+    gap: scale.pixelSizeHorizontal(12),
   },
   btnContainer: {
     alignSelf: "center",
@@ -53,5 +54,28 @@ export const styles = StyleSheet.create({
     paddingHorizontal: scale.pixelSizeHorizontal(16),
     // paddingVertical: scale.pixelSizeVertical(14),
     borderColor: "#F6D6AA",
+  },
+  modalContainer: {
+    backgroundColor: colors.lightPrimary,
+    height: "100%",
+    paddingVertical: scale.pixelSizeVertical(20),
+    paddingHorizontal: scale.pixelSizeHorizontal(16),
+    borderTopRightRadius: scale.fontPixel(8),
+    borderTopLeftRadius: scale.fontPixel(8),
+    flexDirection: "row",
+    alignContent: "center",
+  },
+  text: {
+    fontFamily: "Outfit_400Regular",
+    fontSize: scale.fontPixel(13),
+    color: colors.grey1,
+    marginTop: scale.pixelSizeVertical(3),
+  },
+  cameraContainer: {
+    alignItems: "center",
+    marginRight: -scale.pixelSizeHorizontal(30),
+  },
+  galleryContainer: {
+    alignItems: "center",
   },
 });
