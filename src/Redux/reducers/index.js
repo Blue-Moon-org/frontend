@@ -12,6 +12,9 @@ import { phoneNoVerifyReducer } from "./phoneVerifyReducer";
 import { fetchFeedsReducer } from "./Posts/Feeds";
 import { fetchLikeReducer } from "./Posts/Like";
 import { addCommentReducer } from "./Posts/AddComments";
+import { favoritePostReducer } from "./Posts/FavoritePost";
+import { postDetailReducer } from "./Posts/PostDetail";
+import { createPostReducer } from "./Posts/createPost";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -25,4 +28,7 @@ export const reducers = combineReducers({
   fetchFeeds: fetchFeedsReducer,
   like: fetchLikeReducer,
   comment: addCommentReducer,
+  favourite: favoritePostReducer,
+  postDetail: postDetailReducer,
+  createPost: createPostReducer
 });

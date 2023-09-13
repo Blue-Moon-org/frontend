@@ -1,5 +1,5 @@
 import { View, FlatList, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Text } from "../../../components/common";
 import { scale } from "../../../utils/scale";
 import { Image } from "expo-image";
@@ -8,11 +8,13 @@ import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { baseURL } from "../../../utils/request";
 import { HomeListComponentEmpty } from "../../../components/primary";
+import { HomeRenderItems } from "../Renders/HomeRenderItems";
 
 export const All = ({ postData, state }) => {
   const { navigate } = useNavigation();
 
   const renderItem = ({ item, index, separator }) => {
+    const [hasLike, updatLike] = useState("");
     const _detailHandler = () => {
       navigate("RootStack", {
         screen: "PostDetail",
@@ -20,6 +22,10 @@ export const All = ({ postData, state }) => {
           item,
         },
       });
+    };
+
+    const likeHanlder = () => {
+      console.warn(item.user_has_liked);
     };
 
     return (
@@ -42,7 +48,7 @@ export const All = ({ postData, state }) => {
             size={scale.fontPixel(18)}
             color={"white"}
             style={styles.likeIcon}
-            // onPress={() => console.warn("object")}
+            onPress={() => likeHanlder()}
           />
         </View>
         <View style={styles.bottomContainer}>
@@ -68,7 +74,9 @@ export const All = ({ postData, state }) => {
         showsVerticalScrollIndicator={false}
         numColumns={3}
         data={postData?.posts}
-        renderItem={renderItem}
+        renderItem={({ item, index }) => (
+          <HomeRenderItems item={item} index={index} />
+        )}
         columnWrapperStyle={{ gap: scale.pixelSizeHorizontal(17) }}
         keyExtractor={(item, index) => item.id}
         ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}

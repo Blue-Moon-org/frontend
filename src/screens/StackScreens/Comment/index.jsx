@@ -17,7 +17,12 @@ export const Comments = () => {
     headerTitleStyle: Fontscales.paragraphLargeMedium,
     headerLeft: () => (
       <MaterialCommunityIcons
-        onPress={() => navigate("PostDetail", { item: route.params.item })}
+        onPress={() =>
+          navigate("PostDetail", {
+            item: route.params.item,
+            hasLike: route.params.hasLike,
+          })
+        }
         style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
         name="keyboard-backspace"
         size={scale.fontPixel(24)}

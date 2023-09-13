@@ -4,6 +4,8 @@ import {
   TextInput as Input,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
+  Alert,
 } from "react-native";
 import React, { useState, useRef, useMemo, useCallback } from "react";
 import { Fontscales, SharedStyles } from "../../../styles";
@@ -18,11 +20,17 @@ import {
 } from "../../../components/common";
 import { PostCreateBottomTab } from "./PostCreateBottomTab";
 import RNPickerSelect from "react-native-picker-select";
+import { colors } from "../../../constants/colorpallette";
+import { createPost } from "../../../Redux/actions/Post/CreatePosts";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 export const PostCreate = () => {
   const [height, updateHeight] = useState(scale.heightPixel(47));
 
   const bottomSheetRef = useRef();
+  const { navigate } = useNavigation();
+  const dispatch = useDispatch();
 
   const snapPoints = useMemo(
     () => [scale.heightPixel(120), scale.heightPixel(130)],
@@ -48,8 +56,8 @@ export const PostCreate = () => {
     title: "",
     caption: "",
     category: "",
+    error: "",
   });
-  console.warn(state.category);
 
   const placeholder = {
     label: "Select a category...",
@@ -57,12 +65,48 @@ export const PostCreate = () => {
     color: "#9EA0A4",
   };
   const items = [
-    { label: "All", value: "All" },
     { label: "Men", value: "Men" },
-    //   { label: "Women", value: "Women" },
-    //   { label: "Native", value: "Native" },
-    //   { label: "Ankara", value: "Ankara" },
+    { label: "Women", value: "Women" },
+    { label: "Native", value: "Native" },
+    { label: "Ankara", value: "Ankara" },
   ];
+
+  const popUp = (error) => {
+    Alert.alert("Photos Alert", error, [
+      {
+        text: "Close",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "Try again",
+        onPress: () => {
+          // _galleryHandler();
+        },
+      },
+    ]);
+  };
+  // console.warn(state.Images[1]?.image);
+
+  const createPostHandler = () => {
+    if (
+      state.Images[1]?.image === undefined ||
+      state.Images[2]?.image === undefined ||
+      state.Images[3]?.image === undefined ||
+      state.Images[4]?.image === undefined
+    ) {
+      popUp("You're to select 4 Photos");
+    } else if (state.title === "") {
+      popUp("Title field may not be empty");
+    } else if (state.caption === "") {
+      popUp("Caption field may not be empty");
+    } else if (state.category === "") {
+      popUp("Categoty field may not be empty");
+    } else {
+      dispatch(createPost(state, navigate));
+      handleClosePress();
+    }
+  };
 
   return (
     <>
@@ -113,6 +157,12 @@ export const PostCreate = () => {
                   marginBottom: scale.pixelSizeVertical(16),
                   marginTop: scale.pixelSizeVertical(40),
                 }}
+                onChangeText={(text) => {
+                  setState({
+                    ...state,
+                    title: text,
+                  });
+                }}
               />
               <Input
                 onFocus={() => handleClosePress()}
@@ -132,19 +182,56 @@ export const PostCreate = () => {
                   updateHeight(e.nativeEvent.contentSize.height)
                 }
                 multiline={true}
+                onChangeText={(text) => {
+                  setState({
+                    ...state,
+                    caption: text,
+                  });
+                }}
               />
-              {/* <RNPickerSelect
-                // style={{
-                //   borderColor: "red",
-                //   borderWidth: 1,
-                // }}
-                // placeholder={placeholder}
-                // onValueChange={(value) =>
-                //   setState({ ...state, category: value })
-                // }
-                // items={items}
-                // value={state.category}
-              /> */}
+              <RNPickerSelect
+                style={{
+                  iconContainer: {
+                    opacity: 0,
+                  },
+                  viewContainer: {
+                    borderColor: colors.lightPrimary,
+                    borderWidth: scale.fontPixel(1),
+                    marginTop: scale.pixelSizeVertical(15),
+                    borderRadius: scale.fontPixel(6),
+                    height: scale.heightPixel(47),
+                    justifyContent: "center",
+                    paddingLeft:
+                      Platform.OS === "ios" ? scale.pixelSizeHorizontal(20) : 0,
+                  },
+                  placeholder: {
+                    fontFamily: "Outfit_400Regular",
+                    fontSize: scale.fontPixel(14),
+                    color: colors.grey1,
+                  },
+                  done: {
+                    fontFamily: "Outfit_400Regular",
+                    fontSize: scale.fontPixel(14),
+                    color: colors.grey1,
+                  },
+                  inputIOS: {
+                    fontFamily: "Outfit_400Regular",
+                    fontSize: scale.fontPixel(14),
+                    color: colors.grey1,
+                  },
+                  inputAndroid: {
+                    fontFamily: "Outfit_400Regular",
+                    fontSize: scale.fontPixel(14),
+                    color: colors.grey1,
+                  },
+                }}
+                placeholder={placeholder}
+                onValueChange={(value) =>
+                  setState({ ...state, category: value })
+                }
+                items={items}
+                value={state.category}
+              />
               <Button
                 title={"Post"}
                 textStyle={[
@@ -154,7 +241,7 @@ export const PostCreate = () => {
                   },
                 ]}
                 containerStyle={styles.btnContainer}
-                onPress={() => handleClosePress()}
+                onPress={() => createPostHandler()}
               />
             </>
           </KeyBoardAvoidingWrapper>

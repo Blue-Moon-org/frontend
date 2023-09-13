@@ -1,5 +1,5 @@
 import { View, TextInput, ActivityIndicator } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Image } from "expo-image";
@@ -12,6 +12,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { baseURL } from "../../../utils/request";
 import { addComment } from "../../../Redux/actions/Post/AddComment";
 import { useSelector, useDispatch } from "react-redux";
+import { addFavourite } from "../../../Redux/actions/Post/FavoritePost";
+import { postDetail } from "../../../Redux/actions/Post/PostDetail";
 
 export const PostDetail = () => {
   const { navigate } = useNavigation();
@@ -28,6 +30,23 @@ export const PostDetail = () => {
   };
 
   const state = useSelector((state) => state.comment);
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      dispatch(postDetail(route.params?.item?.id));
+    }
+    return () => (sub = false);
+  }, [route.params?.item?.id]);
+  const detail = useSelector((state) => state.postDetail);
+
+  const _handleFav = () => {
+    // updateHasFav(!hasFav);
+    dispatch(addFavourite(route.params?.item?.id));
+    dispatch(postDetail(route.params?.item?.id));
+  };
+  console.warn(route.params?.item.images);
+
   return (
     <View style={SharedStyles.container}>
       <KeyBoardAvoidingWrapper offset={scale.heightPixel(105)}>
@@ -103,18 +122,22 @@ export const PostDetail = () => {
               <View style={styles.reactionIcons}>
                 <View style={styles.iconTextContainer}>
                   <AntDesign
-                    name={
-                      route.params?.item.user_has_liked ? "heart" : "hearto"
-                    }
+                    name={route.params?.hasLike ? "heart" : "hearto"}
                     size={scale.fontPixel(16)}
                     color={colors.blackText}
                   />
-                  <Text
-                    text={route.params?.item.likes}
-                    numberOfLines={1}
-                    ellipsizeMode={"tail"}
-                    textStyle={styles.likeShareText}
-                  />
+                  {!detail.loading ? (
+                    <Text
+                      text={
+                        !detail?.data?.response?.data?.likes
+                          ? ""
+                          : detail?.data?.response?.data?.likes
+                      }
+                      numberOfLines={1}
+                      ellipsizeMode={"tail"}
+                      textStyle={styles.likeShareText}
+                    />
+                  ) : null}
                 </View>
                 <View style={styles.iconTextContainer}>
                   <Feather
@@ -122,19 +145,28 @@ export const PostDetail = () => {
                     size={scale.fontPixel(16)}
                     color={colors.blackText}
                   />
-                  <Text
-                    text={route.params?.item.favs}
-                    numberOfLines={1}
-                    ellipsizeMode={"tail"}
-                    textStyle={styles.likeShareText}
-                  />
+                  {!detail.loading ? (
+                    <Text
+                      text={
+                        detail?.data?.response?.data?.favs
+                          ? detail?.data?.response?.data?.favs
+                          : ""
+                      }
+                      numberOfLines={1}
+                      ellipsizeMode={"tail"}
+                      textStyle={styles.likeShareText}
+                    />
+                  ) : null}
                 </View>
                 <AntDesign
                   name={
-                    route.params?.item.user_has_favorited ? "star" : "staro"
+                    detail?.data?.response?.data?.user_has_favorited
+                      ? "star"
+                      : "staro"
                   }
                   size={scale.fontPixel(16)}
                   color={colors.blackText}
+                  onPress={() => _handleFav()}
                 />
               </View>
             </View>
@@ -190,7 +222,12 @@ export const PostDetail = () => {
               </View>
             </View>
             <Text
-              onPress={() => navigate("Comments", { item: route.params.item })}
+              onPress={() =>
+                navigate("Comments", {
+                  item: route.params.item,
+                  hasLike: route.params?.item.likes,
+                })
+              }
               ellipsizeMode={"tail"}
               numberOfLines={1}
               textStyle={styles.comment}

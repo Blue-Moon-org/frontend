@@ -1,17 +1,22 @@
 import { fetchPostRequestInit } from "../../../utils/requestInit";
 import { actionTypesAddFavorite } from "../../constants/PostTypes";
 
-export const fetchLikes = (body, id, navigate) => async (dispatch) => {
+export const addFavourite = (id, navigate) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
 
   dispatch({
-    type: actionTypesAddFavorite.ADD_COMMENT_LOADING,
+    type: actionTypesAddFavorite.ADD_FAVOURITE_LOADING,
   });
 
-  await fetchPostRequestInit(`/post/favorite/${id}/`)
+  await fetchPostRequestInit(
+    `/post/favorite/${id}/`,
+    "",
+    "application/json",
+    `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2NDQyNzI4LCJpYXQiOjE2OTM4NTA3MjgsImp0aSI6IjgwZGY3YjZhZmFmMzQ3MGM4YzgzZjE0N2RlZDkwODBmIiwidXNlcl9pZCI6IjYwYmVhYjZmLTkxNTYtNGQ3Mi1iOWNlLTAyMDYyZmRmM2FjZSJ9.1pP07B96mJ0hNXGQ1b082dOKUQ6hrocOm_1O-qjQZJA`
+  )
     .then((res) => {
       dispatch({
-        type: actionTypesAddFavorite.ADD_COMMENT_SUCCESS,
+        type: actionTypesAddFavorite.ADD_FAVOURITE_SUCCESS,
         payload: res,
       });
       //   navigate("ForgotPasswordVerification",);
@@ -19,7 +24,7 @@ export const fetchLikes = (body, id, navigate) => async (dispatch) => {
     .catch((err) => {
       console.warn(err);
       dispatch({
-        type: actionTypesAddFavorite.ADD_COMMENT_ERROR,
+        type: actionTypesAddFavorite.ADD_FAVOURITE_ERROR,
         error: err,
       });
     });

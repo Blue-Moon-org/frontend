@@ -1,4 +1,4 @@
-import { actionTypesAddFavorite } from "../../constants/PostTypes";
+import { actionTypesPostDetail } from "../../constants/PostTypes";
 
 const initialState = {
   data: {},
@@ -6,12 +6,12 @@ const initialState = {
   loading: false,
 };
 
-export const favoritePostReducer = (
+export const postDetailReducer = (
   state = initialState,
   { type, payload, error }
 ) => {
   switch (type) {
-    case actionTypesAddFavorite.ADD_FAVOURITE_LOADING:
+    case actionTypesPostDetail.POST_DETAIL_LOADING:
       return {
         ...state,
         data: null,
@@ -19,7 +19,7 @@ export const favoritePostReducer = (
         error: "",
       };
 
-    case actionTypesAddFavorite.ADD_FAVOURITE_SUCCESS:
+    case actionTypesPostDetail.POST_DETAIL_SUCCESS:
       return {
         ...state,
         data: payload,
@@ -27,7 +27,7 @@ export const favoritePostReducer = (
         error: "",
       };
 
-    case actionTypesAddFavorite.ADD_FAVOURITE_ERROR:
+    case actionTypesPostDetail.POST_DETAIL_ERROR:
       return {
         ...state,
         data: null,

@@ -7,7 +7,7 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { styles } from "./styles";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { scale } from "../../../utils/scale";
 import { colors } from "../../../constants/colorpallette";
 import * as ImagePicker from "expo-image-picker";
@@ -26,11 +26,13 @@ export const PostCreateBottomTab = ({
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: false,
         base64: true,
-        // exif: true,
         quality: 1,
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         selectionLimit: 4,
         allowsMultipleSelection: true,
+        exif: true,
+        orderedSelection: true,
+        aspect: [3, 4],
       });
       if (!result.canceled) {
         setState({
@@ -40,16 +42,16 @@ export const PostCreateBottomTab = ({
               image: "",
             },
             {
-              image: result.assets[0]?.uri,
+              image: result.assets[0],
             },
             {
-              image: result.assets[1]?.uri,
+              image: result.assets[1],
             },
             {
-              image: result.assets[2]?.uri,
+              image: result.assets[2]
             },
             {
-              image: result.assets[3]?.uri,
+              image: result.assets[3]
             },
           ],
         });
