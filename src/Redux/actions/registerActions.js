@@ -12,6 +12,8 @@ export const userRegistration = (body, navigate) => async (dispatch) => {
     type: actionTypesRegister.USER_REGISTER_LOADING,
   });
 
+  console.warn(body);
+
   await fetchPostRequestInit(
     `/core/register/`,
     {
@@ -37,6 +39,8 @@ export const userRegistration = (body, navigate) => async (dispatch) => {
       navigate("EmailVerification", { email: res.response.data.email });
     })
     .catch((err) => {
+      console.warn(err.message.email);
+
       dispatch({ type: actionTypesRegister.USER_REGISTER_ERROR, payload: err });
     });
 };
@@ -48,7 +52,6 @@ export const emailVerify =
     dispatch({
       type: actionTypesEmailVerify.USER_EMAILVERIFY_LOADING,
     });
-
 
     await fetchPostRequestInit(`/core/verify-email/`, {
       email: email,

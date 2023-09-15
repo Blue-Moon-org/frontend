@@ -1,11 +1,23 @@
 import { fetchGetRequestInit } from "../../../utils/requestInit";
 import { actionTypesFeeds } from "../../constants/PostTypes";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const fetchFeeds = (type, navigate) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
   dispatch({
     type: actionTypesFeeds.FETCH_FEEDS_LOADING,
   });
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(user);
+      return value != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  const value = getData();
 
   await fetchGetRequestInit(
     `/post/feed/${type}/?page=${1}`,
