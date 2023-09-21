@@ -1,73 +1,27 @@
-import { View, FlatList, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-import { Text } from "../../../components/common";
+import { View, FlatList } from "react-native";
+import React, { useCallback, useEffect } from "react";
 import { scale } from "../../../utils/scale";
-import { Image } from "expo-image";
-import { AntDesign } from "@expo/vector-icons";
-import { styles } from "./styles";
-import { useNavigation } from "@react-navigation/native";
-import { baseURL } from "../../../utils/request";
-import { HomeListComponentEmpty } from "../../../components/primary";
+import {
+  HomeListComponentEmpty,
+  LoadMore,
+  Error,
+  ErrorMore,
+} from "../../../components/primary";
 import { HomeRenderItems } from "../Renders/HomeRenderItems";
+import { fetchFeeds } from "../../../Redux/actions";
+import { useDispatch } from "react-redux";
 
-export const All = ({ postData, state }) => {
-  const { navigate } = useNavigation();
+export const All = ({ postData, state, page, updatePage, type }) => {
+  const dispatch = useDispatch();
 
-  const renderItem = ({ item, index, separator }) => {
-    const [hasLike, updatLike] = useState("");
-    const _detailHandler = () => {
-      navigate("RootStack", {
-        screen: "PostDetail",
-        params: {
-          item,
-        },
-      });
-    };
+  const fetchMoreFeeds = useCallback(() => {
+    // if (state.isListEnd === false && state.moreLoading === false) {
+    //   updatePage(page++);
+    //   console.warn(state.isListEnd);
+    //   dispatch(fetchFeeds(type, page, "navigate"));
+    // }
+  }, [page]);
 
-    const likeHanlder = () => {
-      console.warn(item.user_has_liked);
-    };
-
-    return (
-      <TouchableOpacity
-        onPress={() => _detailHandler()}
-        activeOpacity={0.8}
-        style={styles.itemContainer}
-      >
-        <View style={styles.innerContainer}>
-          <Image
-            source={{
-              uri: `${baseURL + item?.images[0]?.image}`,
-            }}
-            contentFit="cover"
-            cachePolicy={"memory-disk"}
-            style={styles.image}
-          />
-          <AntDesign
-            name={item.user_has_liked ? "heart" : "hearto"}
-            size={scale.fontPixel(18)}
-            color={"white"}
-            style={styles.likeIcon}
-            onPress={() => likeHanlder()}
-          />
-        </View>
-        <View style={styles.bottomContainer}>
-          <Text
-            textStyle={styles.text}
-            ellipsizeMode={"tail"}
-            numberOfLines={1}
-            text={item.title}
-          />
-          <Text
-            text={item.body}
-            textStyle={styles.subText}
-            ellipsizeMode={"tail"}
-            numberOfLines={2}
-          />
-        </View>
-      </TouchableOpacity>
-    );
-  };
   return (
     <View>
       <FlatList
@@ -84,6 +38,15 @@ export const All = ({ postData, state }) => {
           marginTop: scale.pixelSizeVertical(5),
           // width: "100%",
         }}
+        onEndReachedThreshold={0.6}
+        onEndReached={() => fetchMoreFeeds()}
+        ListFooterComponent={() =>
+          state.moreError ? (
+            <ErrorMore state={state} />
+          ) : (
+            <LoadMore loading={state.moreLoading} />
+          )
+        }
       />
     </View>
   );

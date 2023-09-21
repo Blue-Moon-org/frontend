@@ -4,9 +4,10 @@ const initialState = {
   user: {},
   error: "",
   loading: false,
+  user: null,
 };
 
-export const loginReducer = (state = initialState, { type, payload }) => {
+export const loginReducer = (state = initialState, { type, payload, user }) => {
   switch (type) {
     case actionTypesLogin.USER_LOGIN_LOADING:
       return {
@@ -14,6 +15,7 @@ export const loginReducer = (state = initialState, { type, payload }) => {
         user: null,
         loading: true,
         error: "",
+        user: null,
       };
 
     case actionTypesLogin.USER_LOGIN_SUCCESS:
@@ -22,6 +24,7 @@ export const loginReducer = (state = initialState, { type, payload }) => {
         user: payload,
         loading: false,
         error: "",
+        user: user,
       };
 
     case actionTypesLogin.USER_LOGIN_ERROR:
@@ -30,6 +33,7 @@ export const loginReducer = (state = initialState, { type, payload }) => {
         user: "",
         loading: false,
         error: payload,
+        user: null,
       };
 
     default:

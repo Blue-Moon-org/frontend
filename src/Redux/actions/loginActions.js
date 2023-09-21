@@ -10,11 +10,10 @@ export const userLogin = (body, navigate) => async (dispatch) => {
 
   const storedData = async (value) => {
     try {
-      const userValue = JSON.stringify(value);
-      await AsyncStorage.setItem("user", userValue);
+      await AsyncStorage.setItem("user", JSON.stringify(value.user_data));
+      await AsyncStorage.setItem("userTokens", JSON.stringify(value.tokens));
     } catch (e) {
       console.warn(e);
-      dispatch({ type: actionTypesLogin.USER_LOGIN_ERROR, payload: e });
     }
   };
 
@@ -23,9 +22,12 @@ export const userLogin = (body, navigate) => async (dispatch) => {
     password: body.password,
   })
     .then((res) => {
-      console.warn(res);
-      dispatch({ type: actionTypesLogin.USER_LOGIN_SUCCESS, payload: res });
-      storedData({});
+      dispatch({
+        type: actionTypesLogin.USER_LOGIN_SUCCESS,
+        payload: res,
+        user: res.response.data.data,
+      });
+      storedData(res.response.data.data);
 
       // navigate("Stacks");
     })

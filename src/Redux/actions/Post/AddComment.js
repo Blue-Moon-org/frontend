@@ -1,5 +1,6 @@
 import { actionTypesAddComment } from "../../constants/PostTypes";
 import { fetchPostRequestInit } from "../../../utils/requestInit";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const addComment = (body, id, navigate) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
@@ -7,13 +8,16 @@ export const addComment = (body, id, navigate) => async (dispatch) => {
     type: actionTypesAddComment.ADD_COMMENT_LOADING,
   });
 
+  const jsonValue = await AsyncStorage.getItem("userTokens");
+  let result = JSON.parse(jsonValue);
+
   await fetchPostRequestInit(
     `/post/comments/${id}/`,
     {
       email: body,
     },
     "application/json",
-    `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2NDQyNzI4LCJpYXQiOjE2OTM4NTA3MjgsImp0aSI6IjgwZGY3YjZhZmFmMzQ3MGM4YzgzZjE0N2RlZDkwODBmIiwidXNlcl9pZCI6IjYwYmVhYjZmLTkxNTYtNGQ3Mi1iOWNlLTAyMDYyZmRmM2FjZSJ9.1pP07B96mJ0hNXGQ1b082dOKUQ6hrocOm_1O-qjQZJA`
+    `Bearer ${result.access}`
   )
     .then((res) => {
       dispatch({

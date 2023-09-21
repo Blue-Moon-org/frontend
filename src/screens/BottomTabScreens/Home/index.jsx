@@ -22,7 +22,7 @@ import { Lodaing } from "../../../components/primary";
 
 export const Home = () => {
   const [type, updateType] = useState("All");
-
+  const [page, updatePage] = useState(1);
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
       ? scale.heightPixel(40)
@@ -36,17 +36,13 @@ export const Home = () => {
     let subscribe = true;
 
     if (subscribe) {
-      dispatch(fetchFeeds(type, navigate));
+      dispatch(fetchFeeds(type, page, navigate));
     }
 
     return () => (subscribe = false);
   }, [type]);
 
   const state = useSelector((state) => state.fetchFeeds);
-
-  // console.warn(
-  //   state.data?.response?.data?.data?.categoryData.category === "All"
-  // );
 
   return (
     <>
@@ -56,7 +52,7 @@ export const Home = () => {
           style={{
             height:
               Platform.OS === "ios"
-                ? scale.heightPixel(289) + Constants.statusBarHeight + add
+                ? scale.heightPixel(295) + Constants.statusBarHeight + add
                 : scale.height * 0.343 + Constants.statusBarHeight,
 
             zIndex: 2,
@@ -122,29 +118,40 @@ export const Home = () => {
         >
           {state.data?.response?.data?.data?.categoryData.category === "All" ? (
             <All
+              page={page}
+              type={type}
+              updatePage={updatePage}
               state={state}
               postData={state.data?.response?.data?.data?.categoryData}
             />
           ) : state.data?.response?.data?.data?.categoryData.category ===
             "Men" ? (
             <Senator
+              page={page}
+              updatePage={updatePage}
               state={state}
               MenData={state.data?.response?.data?.data?.categoryData}
             />
           ) : state.data?.response?.data?.data?.categoryData.category ===
             "Women" ? (
             <Suits
+              page={page}
+              updatePage={updatePage}
               state={state}
               womenData={state.data?.response?.data?.data?.categoryData}
             />
           ) : state.data?.response?.data?.data?.categoryData.category ===
             "Native" ? (
             <Fits
+              page={page}
+              updatePage={updatePage}
               state={state}
               nativeData={state.data?.response?.data?.data?.categoryData}
             />
           ) : (
             <Ankara
+              page={page}
+              updatePage={updatePage}
               state={state}
               ankaraData={state.data?.response?.data?.data?.categoryData}
             />

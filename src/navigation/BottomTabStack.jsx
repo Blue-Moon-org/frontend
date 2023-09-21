@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Chat,
   Find,
@@ -14,10 +14,31 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { scale } from "../utils/scale";
 import { Text } from "../components/common";
 import { Fontscales } from "../styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Tab = createBottomTabNavigator();
 export const BottomTabStack = () => {
   const [active, setActive] = useState(false);
+  const [user, updateUser] = useState("");
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("user");
+      updateUser(jsonValue);
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      getData();
+    }
+
+    return () => (sub = false);
+  }, [user]);
+
   return (
     <Tab.Navigator
       initialRouteName="Home"

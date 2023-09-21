@@ -1,6 +1,7 @@
 import { actionTypesCreatePost } from "../../constants/PostTypes";
 import { fetchPostRequestInit } from "../../../utils/requestInit";
 import { Alert, Platform } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const createPost = (body, navigate) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
@@ -42,17 +43,18 @@ export const createPost = (body, navigate) => async (dispatch) => {
   form.append("category", body.category);
   form.append("body", body.caption);
 
-  console.warn(body.Images[3].image);
-
   dispatch({
     type: actionTypesCreatePost.CREATE_POSTS_LOADING,
   });
+
+  const jsonValue = await AsyncStorage.getItem("userTokens");
+  let result = JSON.parse(jsonValue);
 
   await fetchPostRequestInit(
     `/post/posts/`,
     form,
     "multipart/form-data",
-    `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2NDQyNzI4LCJpYXQiOjE2OTM4NTA3MjgsImp0aSI6IjgwZGY3YjZhZmFmMzQ3MGM4YzgzZjE0N2RlZDkwODBmIiwidXNlcl9pZCI6IjYwYmVhYjZmLTkxNTYtNGQ3Mi1iOWNlLTAyMDYyZmRmM2FjZSJ9.1pP07B96mJ0hNXGQ1b082dOKUQ6hrocOm_1O-qjQZJA`
+    `Bearer ${result.access}`
   )
     .then((res) => {
       Alert.alert("Photos Alert", "Post has been created successfully 😊", [

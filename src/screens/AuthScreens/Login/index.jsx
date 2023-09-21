@@ -119,7 +119,7 @@ export const Login = () => {
             </View>
 
             <View style={styles.condtionContainer}>
-              <View style={styles.rememberMeContainer}>
+              {/* <View style={styles.rememberMeContainer}>
                 <MaterialCommunityIcons
                   name={
                     !state.rememberMe
@@ -136,7 +136,7 @@ export const Login = () => {
                   }
                 />
                 <Text textStyle={styles.rememberMeText} text={"Remember me"} />
-              </View>
+              </View> */}
               <Text
                 onPress={() => navigate("ForgotPassword")}
                 textStyle={styles.forgotPassword}

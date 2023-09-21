@@ -39,7 +39,7 @@ export const userRegistration = (body, navigate) => async (dispatch) => {
       navigate("EmailVerification", { email: res.response.data.email });
     })
     .catch((err) => {
-      console.warn(err.message.email);
+      console.warn(err.message);
 
       dispatch({ type: actionTypesRegister.USER_REGISTER_ERROR, payload: err });
     });

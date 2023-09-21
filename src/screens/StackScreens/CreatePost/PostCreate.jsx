@@ -24,6 +24,7 @@ import { colors } from "../../../constants/colorpallette";
 import { createPost } from "../../../Redux/actions/Post/CreatePosts";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { Lodaing } from "../../../components/primary";
 
 export const PostCreate = () => {
   const [height, updateHeight] = useState(scale.heightPixel(47));
@@ -86,7 +87,7 @@ export const PostCreate = () => {
       },
     ]);
   };
-  // console.warn(state.Images[1]?.image);
+  const postCreate = useSelector((state) => state.createPost);
 
   const createPostHandler = () => {
     if (
@@ -110,6 +111,7 @@ export const PostCreate = () => {
 
   return (
     <>
+      {postCreate.loading ? <Lodaing /> : null}
       <TouchableWithoutFeedback
         onPress={() => handleClosePress()}
         activeOpacity={1}
