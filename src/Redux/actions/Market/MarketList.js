@@ -10,6 +10,7 @@ export const fetchMarkets = (type, navigate) => async (dispatch) => {
 
   const jsonValue = await AsyncStorage.getItem("userTokens");
   let result = JSON.parse(jsonValue);
+
   await fetchGetRequestInit(
     `/api/products/user-products/`,
     `Bearer ${result.access}`

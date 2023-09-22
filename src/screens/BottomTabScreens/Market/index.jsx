@@ -7,7 +7,7 @@ import { styles } from "./styles";
 import { topData } from "./data";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { All } from "./All";
 import { Men } from "./Men";
@@ -15,15 +15,30 @@ import { Women } from "./Women";
 import { Children } from "./Children";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
+import { fetchMarkets } from "../../../Redux/actions/Market/MarketList";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Market = () => {
   const [type, updateType] = useState("All");
+  const dispatch = useDispatch();
+
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
       ? scale.heightPixel(40)
       : scale.heightPixel(1);
 
   const { navigate } = useNavigation();
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      dispatch(fetchMarkets(type, navigate));
+    }
+
+    return () => (sub = false);
+  }, [type]);
+
+  const marketlist = useSelector((state) => state.marketList);
 
   return (
     <View style={SharedStyles.container}>

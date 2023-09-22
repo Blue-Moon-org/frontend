@@ -29,6 +29,7 @@ export const Home = () => {
       : scale.heightPixel(1);
 
   const dispatch = useDispatch();
+  const state = useSelector((state) => state.fetchFeeds);
 
   const { navigate } = useNavigation();
 
@@ -41,8 +42,6 @@ export const Home = () => {
 
     return () => (subscribe = false);
   }, [type]);
-
-  const state = useSelector((state) => state.fetchFeeds);
 
   return (
     <>
@@ -79,7 +78,10 @@ export const Home = () => {
                         item.name === type ? colors.mainPrimary : colors.grey2,
                     },
                   ]}
-                  onPress={() => updateType(item.name)}
+                  onPress={() => {
+                    updateType(item.name);
+                    updatePage(1);
+                  }}
                   key={item.id}
                 >
                   <Text
@@ -116,44 +118,45 @@ export const Home = () => {
                 : scale.height * 0.581 + Constants.statusBarHeight - 94,
           }}
         >
-          {state.data?.response?.data?.data?.categoryData.category === "All" ? (
+          {state.category === "All" ? (
             <All
               page={page}
               type={type}
               updatePage={updatePage}
               state={state}
-              postData={state.data?.response?.data?.data?.categoryData}
+              postData={state.dataAll}
             />
-          ) : state.data?.response?.data?.data?.categoryData.category ===
-            "Men" ? (
+          ) : state.category === "Men" ? (
             <Senator
               page={page}
               updatePage={updatePage}
               state={state}
-              MenData={state.data?.response?.data?.data?.categoryData}
+              MenData={state.dataMen}
+              type={type}
             />
-          ) : state.data?.response?.data?.data?.categoryData.category ===
-            "Women" ? (
+          ) : state.category === "Women" ? (
             <Suits
               page={page}
               updatePage={updatePage}
               state={state}
-              womenData={state.data?.response?.data?.data?.categoryData}
+              womenData={state.dataWomen}
+              type={type}
             />
-          ) : state.data?.response?.data?.data?.categoryData.category ===
-            "Native" ? (
+          ) : state.category === "Native" ? (
             <Fits
               page={page}
               updatePage={updatePage}
               state={state}
-              nativeData={state.data?.response?.data?.data?.categoryData}
+              nativeData={state.dataNative}
+              type={type}
             />
           ) : (
             <Ankara
               page={page}
               updatePage={updatePage}
               state={state}
-              ankaraData={state.data?.response?.data?.data?.categoryData}
+              ankaraData={state.dataAmkara}
+              type={type}
             />
           )}
           <TouchableOpacity

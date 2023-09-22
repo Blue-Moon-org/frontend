@@ -15,6 +15,7 @@ import { addCommentReducer } from "./Posts/AddComments";
 import { favoritePostReducer } from "./Posts/FavoritePost";
 import { postDetailReducer } from "./Posts/PostDetail";
 import { createPostReducer } from "./Posts/createPost";
+import { fetchMarketReducer } from "./Market/market";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -30,5 +31,6 @@ export const reducers = combineReducers({
   comment: addCommentReducer,
   favourite: favoritePostReducer,
   postDetail: postDetailReducer,
-  createPost: createPostReducer
+  createPost: createPostReducer,
+  marketList: fetchMarketReducer,
 });
