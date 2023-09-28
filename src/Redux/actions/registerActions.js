@@ -55,7 +55,7 @@ export const emailVerify =
 
     await fetchPostRequestInit(`/core/verify-email/`, {
       email: email,
-      otp: state.code,
+      otp: parseFloat(state.code),
     })
       .then((res) => {
         dispatch({

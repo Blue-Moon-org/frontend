@@ -38,7 +38,8 @@ export const Suits = ({ womenData, state, page, updatePage, type }) => {
         keyExtractor={(item, index) => item.id}
         ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
         contentContainerStyle={{
-          marginTop: scale.pixelSizeVertical(10),
+          marginTop: scale.pixelSizeVertical(4),
+
           // width: "100%",
         }}
         onEndReachedThreshold={16}

@@ -19,6 +19,7 @@ import Constants from "expo-constants";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchFeeds } from "../../../Redux/actions";
 import { Lodaing } from "../../../components/primary";
+import { CartView } from "../../../Redux/actions/Market/CartView";
 
 export const Home = () => {
   const [type, updateType] = useState("All");
@@ -38,6 +39,7 @@ export const Home = () => {
 
     if (subscribe) {
       dispatch(fetchFeeds(type, page, navigate));
+      dispatch(CartView(navigate));
     }
 
     return () => (subscribe = false);
@@ -52,7 +54,7 @@ export const Home = () => {
             height:
               Platform.OS === "ios"
                 ? scale.heightPixel(295) + Constants.statusBarHeight + add
-                : scale.height * 0.343 + Constants.statusBarHeight,
+                : scale.height * 0.338 + Constants.statusBarHeight,
 
             zIndex: 2,
           }}
@@ -115,7 +117,7 @@ export const Home = () => {
                 ? scale.height -
                   (scale.heightPixel(380) + Constants.statusBarHeight) -
                   add
-                : scale.height * 0.581 + Constants.statusBarHeight - 94,
+                : scale.height * 0.594 + Constants.statusBarHeight - 94,
           }}
         >
           {state.category === "All" ? (

@@ -1,5 +1,5 @@
 import { FlatList, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Text } from "../../../components/common";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { styles } from "./styles";
@@ -8,29 +8,35 @@ import { Image } from "expo-image";
 import { Feather } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
-
-const data = [
-  {
-    id: 1,
-    dressName: "High Quality Caftan",
-    brandName: "E-Ward Fits",
-    length: "5 yards",
-    price: "40000",
-    imageUrl:
-      "https://img.freepik.com/premium-photo/perfect-perfect-3d-beautiful-feminine-blouse_849761-14415.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
-  },
-  {
-    id: 2,
-    dressName: "High Quality Caftan",
-    brandName: "E-Ward Fits",
-    length: "2 pcs",
-    price: "17625",
-    imageUrl:
-      "https://img.freepik.com/premium-photo/perfect-perfect-3d-beautiful-feminine-blouse_849761-14415.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { CartView } from "../../../Redux/actions/Market/CartView";
+import { Lodaing } from "../../../components/primary";
+import { AddToCart } from "../../../Redux/actions/Market/AddToCart";
+import { baseURL } from "../../../utils/request";
 
 export const Cart = () => {
+  const { navigate } = useNavigation();
+
+  const dispatch = useDispatch();
+
+  const cartData = useSelector((state) => state.cartView);
+
+  // useEffect(() => {
+  //   let sub = true;
+  //   if (sub) {
+  //     dispatch(CartView(navigate));
+  //   }
+
+  //   return () => (sub = false);
+  // }, []);
+
+  let sum = 0;
+  let deliveryFee = 0;
+
+  cartData?.data?.forEach((value) => {
+    sum += value?.product?.price;
+  });
+
   let naira = new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",
@@ -39,15 +45,18 @@ export const Cart = () => {
     useGrouping: true,
   });
 
-  const { navigate } = useNavigation();
+  const _removeHandler = (item) => {
+    dispatch(AddToCart(item?.product.slug, navigate));
+    dispatch(CartView(navigate));
+  };
 
-  const renderItem = ({ item, index }) => {
+  const RenderItem = ({ item, index }) => {
     return (
       <View style={styles.cartContainer}>
         <View style={styles.imageContainer}>
           <Image
             style={styles.image}
-            source={{ uri: item.imageUrl }}
+            source={{ uri: `${baseURL + item?.product?.images[0]?.image}` }}
             cachePolicy={"memory-disk"}
             contentFit="cover"
           />
@@ -55,12 +64,12 @@ export const Cart = () => {
 
         <View style={styles.priceSide}>
           <Text
-            text={item.dressName}
+            text={item?.product.title}
             textStyle={Fontscales.headingSmallMedium}
             numberOfLines={1}
             ellipsizeMode={"tail"}
           />
-          <Text text={item.brandName} textStyle={styles.text} />
+          <Text text={item?.product.owner} textStyle={styles.text} />
           <View
             style={{
               flexDirection: "row",
@@ -69,9 +78,12 @@ export const Cart = () => {
               alignItems: "baseline",
             }}
           >
-            <Text text={item.length} textStyle={Fontscales.labelSmallMedium} />
             <Text
-              text={naira.format(item.price)}
+              text={item?.quantity}
+              textStyle={Fontscales.labelSmallMedium}
+            />
+            <Text
+              text={naira.format(item?.product?.price)}
               textStyle={[
                 Fontscales.labelLargeRegular,
                 {
@@ -87,63 +99,72 @@ export const Cart = () => {
           size={scale.fontPixel(20)}
           color={colors.mainPrimary}
           style={styles.x}
+          onPress={() => _removeHandler(item)}
         />
       </View>
     );
   };
 
   return (
-    <View style={SharedStyles.container}>
-      <View style={{ marginBottom: scale.heightPixel(200) }}>
-        <FlatList
-          contentContainerStyle={{
-            marginTop: scale.pixelSizeVertical(10),
-          }}
-          data={data}
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
-
-      <View style={styles.totalExpense}>
-        <View style={styles.expenseContainer}>
-          <View style={styles.expense}>
-            <Text text={"Sub total"} textStyle={Fontscales.labelSmallRegular} />
-            <Text
-              text={naira.format(57625)}
-              textStyle={Fontscales.labelSmallRegular}
-            />
-          </View>
-          <View style={styles.expense}>
-            <Text
-              text={"Delivery fee"}
-              textStyle={Fontscales.labelSmallRegular}
-            />
-            <Text
-              text={naira.format(5000)}
-              textStyle={Fontscales.labelSmallRegular}
-            />
-          </View>
-        </View>
-        <View style={styles.totalContainer}>
-          <Text text={"Total"} textStyle={Fontscales.labelMediumBold} />
-          <Text
-            text={naira.format(62625)}
-            textStyle={Fontscales.labelMediumBold}
+    <>
+      {cartData.loading ? <Lodaing /> : null}
+      <View style={SharedStyles.container}>
+        <View style={{ marginBottom: scale.heightPixel(200) }}>
+          <FlatList
+            contentContainerStyle={{
+              marginTop: scale.pixelSizeVertical(10),
+            }}
+            data={cartData.data}
+            renderItem={({ item, index, separators }) => (
+              <RenderItem item={item} index={index} />
+            )}
+            showsVerticalScrollIndicator={false}
           />
         </View>
-        <Button
-          onPress={() => navigate("Checkout")}
-          containerStyle={styles.btnContainer}
-          textStyle={[
-            Fontscales.labelSmallRegular,
-            {
-              color: "white",
-            },
-          ]}
-          title={"Checkout"}
-        />
+
+        <View style={styles.totalExpense}>
+          <View style={styles.expenseContainer}>
+            <View style={styles.expense}>
+              <Text
+                text={"Sub total"}
+                textStyle={Fontscales.labelSmallRegular}
+              />
+              <Text
+                text={naira.format(sum)}
+                textStyle={Fontscales.labelSmallRegular}
+              />
+            </View>
+            <View style={styles.expense}>
+              <Text
+                text={"Delivery fee"}
+                textStyle={Fontscales.labelSmallRegular}
+              />
+              <Text
+                text={naira.format(deliveryFee)}
+                textStyle={Fontscales.labelSmallRegular}
+              />
+            </View>
+          </View>
+          <View style={styles.totalContainer}>
+            <Text text={"Total"} textStyle={Fontscales.labelMediumBold} />
+            <Text
+              text={naira.format(sum + deliveryFee)}
+              textStyle={Fontscales.labelMediumBold}
+            />
+          </View>
+          <Button
+            onPress={() => navigate("Checkout", { sum, deliveryFee })}
+            containerStyle={styles.btnContainer}
+            textStyle={[
+              Fontscales.labelSmallRegular,
+              {
+                color: "white",
+              },
+            ]}
+            title={"Checkout"}
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 };

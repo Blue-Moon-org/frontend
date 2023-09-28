@@ -8,7 +8,10 @@ export const createPost = (body, navigate) => async (dispatch) => {
 
   const form = new FormData();
   form.append("images", {
-    name: body.Images[1].image.fileName,
+    name:
+      Platform.OS === "android"
+        ? body.Images[4].image.uri
+        : body.Images[4].image.fileName,
     type: "image/jpeg",
     uri:
       Platform.OS === "android"
@@ -16,7 +19,10 @@ export const createPost = (body, navigate) => async (dispatch) => {
         : body.Images[1].image.uri.replace("file://", ""),
   });
   form.append("images", {
-    name: body.Images[2].image.fileName,
+    name:
+      Platform.OS === "android"
+        ? body.Images[4].image.uri
+        : body.Images[4].image.fileName,
     type: "image/jpeg",
     uri:
       Platform.OS === "android"
@@ -24,7 +30,10 @@ export const createPost = (body, navigate) => async (dispatch) => {
         : body.Images[2].image.uri.replace("file://", ""),
   });
   form.append("images", {
-    name: body.Images[3].image.fileName,
+    name:
+      Platform.OS === "android"
+        ? body.Images[4].image.uri
+        : body.Images[4].image.fileName,
     type: "image/jpeg",
     uri:
       Platform.OS === "android"
@@ -32,7 +41,10 @@ export const createPost = (body, navigate) => async (dispatch) => {
         : body.Images[3].image.uri.replace("file://", ""),
   });
   form.append("images", {
-    name: body.Images[4].image.fileName,
+    name:
+      Platform.OS === "android"
+        ? body.Images[4].image.uri
+        : body.Images[4].image.fileName,
     type: "image/jpeg",
     uri:
       Platform.OS === "android"
@@ -57,6 +69,7 @@ export const createPost = (body, navigate) => async (dispatch) => {
     `Bearer ${result.access}`
   )
     .then((res) => {
+      console.warn(res);
       Alert.alert("Photos Alert", "Post has been created successfully 😊", [
         {
           text: "Go Home",
@@ -79,6 +92,12 @@ export const createPost = (body, navigate) => async (dispatch) => {
     })
     .catch((err) => {
       console.warn(err);
+      Alert.alert("Photos Alert", "Error occured", [
+        {
+          text: "Close",
+          onPress: () => {},
+        },
+      ]);
       dispatch({
         type: actionTypesCreatePost.CREATE_POSTS_ERROR,
         payload: err,

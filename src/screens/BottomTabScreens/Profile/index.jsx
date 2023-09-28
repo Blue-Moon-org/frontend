@@ -13,6 +13,7 @@ import { Liked } from "./Liked";
 import Constants from "expo-constants";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export const Profile = () => {
   const [type, updateType] = useState("Posts");
@@ -71,7 +72,7 @@ export const Profile = () => {
   };
 
   return (
-    <View style={[SharedStyles.container]}>
+    <SafeAreaView style={[SharedStyles.container]}>
       <View
         style={{
           height:
@@ -159,6 +160,6 @@ export const Profile = () => {
           <Liked />
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };

@@ -1,14 +1,17 @@
-import { actionTypesCreatePost } from "../../constants/PostTypes";
+import { actionTypesCreateMarket } from "../../constants/Market";
 import { fetchPostRequestInit } from "../../../utils/requestInit";
 import { Alert, Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const createPost = (body, navigate) => async (dispatch) => {
+export const createMarket = (body, navigate) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
 
   const form = new FormData();
   form.append("images", {
-    name: body.Images[1].image.fileName,
+    name:
+      Platform.OS === "android"
+        ? body.Images[4].image.uri
+        : body.Images[4].image.fileName,
     type: "image/jpeg",
     uri:
       Platform.OS === "android"
@@ -16,7 +19,10 @@ export const createPost = (body, navigate) => async (dispatch) => {
         : body.Images[1].image.uri.replace("file://", ""),
   });
   form.append("images", {
-    name: body.Images[2].image.fileName,
+    name:
+      Platform.OS === "android"
+        ? body.Images[4].image.uri
+        : body.Images[4].image.fileName,
     type: "image/jpeg",
     uri:
       Platform.OS === "android"
@@ -24,7 +30,10 @@ export const createPost = (body, navigate) => async (dispatch) => {
         : body.Images[2].image.uri.replace("file://", ""),
   });
   form.append("images", {
-    name: body.Images[3].image.fileName,
+    name:
+      Platform.OS === "android"
+        ? body.Images[4].image.uri
+        : body.Images[4].image.fileName,
     type: "image/jpeg",
     uri:
       Platform.OS === "android"
@@ -32,7 +41,10 @@ export const createPost = (body, navigate) => async (dispatch) => {
         : body.Images[3].image.uri.replace("file://", ""),
   });
   form.append("images", {
-    name: body.Images[4].image.fileName,
+    name:
+      Platform.OS === "android"
+        ? body.Images[4].image.uri
+        : body.Images[4].image.fileName,
     type: "image/jpeg",
     uri:
       Platform.OS === "android"
@@ -41,17 +53,21 @@ export const createPost = (body, navigate) => async (dispatch) => {
   });
   form.append("title", body.title);
   form.append("category", body.category);
-  form.append("body", body.caption);
+  form.append("description", body.caption);
+  form.append("price", body.price);
+  form.append("discount_price", 0);
+  form.append("stock", body.stock);
+  form.append("label", "");
 
   dispatch({
-    type: actionTypesCreatePost.CREATE_POSTS_LOADING,
+    type: actionTypesCreateMarket.CREATE_MARKET_LOADING,
   });
 
   const jsonValue = await AsyncStorage.getItem("userTokens");
   let result = JSON.parse(jsonValue);
 
   await fetchPostRequestInit(
-    `/post/posts/`,
+    `/api/products/create/`,
     form,
     "multipart/form-data",
     `Bearer ${result.access}`
@@ -59,28 +75,35 @@ export const createPost = (body, navigate) => async (dispatch) => {
     .then((res) => {
       Alert.alert("Photos Alert", "Post has been created successfully 😊", [
         {
-          text: "Go Home",
+          text: "Go Market",
           onPress: () => {
             navigate("BottomTabStack", {
-              screen: "Home",
+              screen: "Market",
             });
           },
           style: "cancel",
         },
         {
-          text: "Post more",
+          text: "Sell more",
           onPress: () => {},
         },
       ]);
       dispatch({
-        type: actionTypesCreatePost.CREATE_POSTS_SUCCESS,
+        type: actionTypesCreateMarket.CREATE_MARKET_SUCCESS,
         payload: res,
       });
     })
     .catch((err) => {
       console.warn(err);
+
+      Alert.alert("Photos Alert", "Error occured", [
+        {
+          text: "Close",
+          onPress: () => {},
+        },
+      ]);
       dispatch({
-        type: actionTypesCreatePost.CREATE_POSTS_ERROR,
+        type: actionTypesCreateMarket.CREATE_MARKET_ERROR,
         payload: err,
       });
     });

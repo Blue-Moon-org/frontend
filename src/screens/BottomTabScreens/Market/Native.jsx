@@ -1,17 +1,20 @@
-import { View, FlatList } from "react-native";
+import { View, FlatList, Platform, TouchableOpacity } from "react-native";
 import React, { useCallback } from "react";
 import { scale } from "../../../utils/scale";
-import { HomeRenderItems } from "../Renders/HomeRenderItems";
 import {
   HomeListComponentEmpty,
   LoadMore,
   Error,
   ErrorMore,
 } from "../../../components/primary";
-import { fetchFeeds } from "../../../Redux/actions";
+import { useNavigation } from "@react-navigation/native";
+import { MarketRenderItems } from "../Renders/MarketRenderItems";
 import { useDispatch } from "react-redux";
+import { fetchMarkets } from "../../../Redux/actions/Market/MarketList";
 
-export const Fits = ({ nativeData, state, page, updatePage, type }) => {
+export const Native = ({ page, updatePage, state, data, type }) => {
+  const { navigate } = useNavigation();
+
   const dispatch = useDispatch();
 
   const fetchMoreFeeds = useCallback(() => {
@@ -20,7 +23,7 @@ export const Fits = ({ nativeData, state, page, updatePage, type }) => {
     } else {
       if (state.moreLoadingNative === false) {
         updatePage(page++);
-        dispatch(fetchFeeds(type, page, "navigate"));
+        dispatch(fetchMarkets(type, page, "navigate"));
       }
     }
   }, [page, state.isListEndNative]);
@@ -30,16 +33,14 @@ export const Fits = ({ nativeData, state, page, updatePage, type }) => {
       <FlatList
         showsVerticalScrollIndicator={false}
         numColumns={3}
-        data={nativeData}
-        renderItem={({ item, index }) => (
-          <HomeRenderItems item={item} index={index} />
+        data={data}
+        renderItem={({ item, index, separator }) => (
+          <MarketRenderItems item={item} index={index} separator={separator} />
         )}
         columnWrapperStyle={{ gap: scale.pixelSizeHorizontal(17) }}
         keyExtractor={(item, index) => item.id}
-        ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
         contentContainerStyle={{
-          marginTop: scale.pixelSizeVertical(4),
-          // width: "100%",
+          marginTop: scale.pixelSizeVertical(5),
         }}
         onEndReachedThreshold={16}
         onEndReached={() => fetchMoreFeeds()}
@@ -50,6 +51,7 @@ export const Fits = ({ nativeData, state, page, updatePage, type }) => {
             <LoadMore loading={state.moreLoadingMen} />
           )
         }
+        ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
       />
     </View>
   );

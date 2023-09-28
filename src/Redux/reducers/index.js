@@ -15,7 +15,13 @@ import { addCommentReducer } from "./Posts/AddComments";
 import { favoritePostReducer } from "./Posts/FavoritePost";
 import { postDetailReducer } from "./Posts/PostDetail";
 import { createPostReducer } from "./Posts/createPost";
+
+//market
 import { fetchMarketReducer } from "./Market/market";
+import { createMarketReducer } from "./Market/marketCreate";
+import { addToCartReducer } from "./Market/AddToCart";
+import { cartViewReducer } from "./Market/CartView";
+import { checkOutReducer } from "./Market/Checkout";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -33,4 +39,8 @@ export const reducers = combineReducers({
   postDetail: postDetailReducer,
   createPost: createPostReducer,
   marketList: fetchMarketReducer,
+  marketCreate: createMarketReducer,
+  addToCart: addToCartReducer,
+  cartView: cartViewReducer,
+  checkOut: checkOutReducer,
 });

@@ -93,7 +93,6 @@ export const EmailVerification = () => {
       });
     }
   };
-
   const onpress = () => {
     updateOtpState({ ...otpState, inputFocus: true });
     inputRef?.current?.focus();
@@ -190,7 +189,6 @@ export const EmailVerification = () => {
               {eachDigit.map(eachInputDigit)}
             </Pressable>
             <TextInput
-            
               value={otpState.code}
               onChangeText={(text) => {
                 let onlyNums = text.replace(/[^0-9]/g, "");

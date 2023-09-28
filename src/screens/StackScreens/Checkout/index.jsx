@@ -12,11 +12,40 @@ import {
   Ionicons,
 } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
+import { checkOut } from "../../../Redux/actions/Market/CheckOut";
 
 export const Checkout = () => {
   const [picked, setPicked] = useState(1);
   const [pay, setpay] = useState(1);
+
+    let naira = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+      notation: "compact",
+      compactDisplay: "short",
+      useGrouping: true,
+    });
+
+    const { navigate } = useNavigation();
+
+    const route = useRoute();
+
+    const dispatch = useDispatch;
+
+    const _checkOutHandler = () => {
+      let address = addressData.filter((item) => {
+        return item.id === picked;
+      });
+
+      let payment = paymentData.filter((item) => {
+        return item.id === pay;
+      });
+
+      dispatch(checkOut());
+    };
+
   const addressData = [
     {
       id: 1,
@@ -47,15 +76,8 @@ export const Checkout = () => {
     },
   ];
 
-  let naira = new Intl.NumberFormat("en-NG", {
-    style: "currency",
-    currency: "NGN",
-    notation: "compact",
-    compactDisplay: "short",
-    useGrouping: true,
-  });
 
-  const { navigate } = useNavigation();
+
 
   return (
     <View style={[SharedStyles.container]}>
@@ -242,7 +264,7 @@ export const Checkout = () => {
           <View style={styles.expense}>
             <Text text={"Sub total"} textStyle={Fontscales.labelSmallRegular} />
             <Text
-              text={naira.format(57625)}
+              text={naira.format(route.params?.sum)}
               textStyle={Fontscales.labelSmallRegular}
             />
           </View>
@@ -252,7 +274,7 @@ export const Checkout = () => {
               textStyle={Fontscales.labelSmallRegular}
             />
             <Text
-              text={naira.format(5000)}
+              text={naira.format(route.params?.deliveryFee)}
               textStyle={Fontscales.labelSmallRegular}
             />
           </View>
@@ -260,12 +282,12 @@ export const Checkout = () => {
         <View style={styles.totalContainer}>
           <Text text={"Total"} textStyle={Fontscales.labelMediumBold} />
           <Text
-            text={naira.format(62625)}
+            text={naira.format(route.params?.sum + route.params?.deliveryFee)}
             textStyle={Fontscales.labelMediumBold}
           />
         </View>
         <Button
-          // onPress={() => navigate("")}
+          onPress={() => _checkOutHandler()}
           containerStyle={styles.btnContainer}
           textStyle={[
             Fontscales.labelSmallRegular,

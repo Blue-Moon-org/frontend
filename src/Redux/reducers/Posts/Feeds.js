@@ -51,7 +51,7 @@ export const fetchFeedsReducer = (
       return {
         ...state,
         loading: false,
-        moreError: false,
+        moreError: "",
         moreLoadingAll: true,
         moreLoadingMen: true,
         moreLoadingWomen: true,

@@ -24,7 +24,7 @@ export const BottomTabStack = () => {
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem("user");
-      updateUser(jsonValue);
+      updateUser(JSON.parse(jsonValue));
     } catch (e) {
       // error reading value
     }
@@ -257,7 +257,7 @@ export const BottomTabStack = () => {
       />
       <Tab.Screen
         options={{
-          headerShown: true,
+          headerShown: false,
           title: "",
           tabBarLabel: ({ color, focused }) => (
             <Text
@@ -314,7 +314,7 @@ export const BottomTabStack = () => {
           tabBarAccessibilityLabel: "home",
         }}
         name="Profile"
-        component={active ? BuyerProfile : Profile}
+        component={user?.account_type === "Buyer" ? BuyerProfile : Profile}
       />
     </Tab.Navigator>
   );

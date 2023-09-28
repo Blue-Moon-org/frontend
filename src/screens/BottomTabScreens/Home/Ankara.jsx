@@ -38,7 +38,7 @@ export const Ankara = ({ ankaraData, state, page, updatePage, type }) => {
         keyExtractor={(item, index) => item.id}
         ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
         contentContainerStyle={{
-          marginTop: scale.pixelSizeVertical(10),
+          marginTop: scale.pixelSizeVertical(4),
           // height: "100%",
         }}
         onEndReachedThreshold={16}

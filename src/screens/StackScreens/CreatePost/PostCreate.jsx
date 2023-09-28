@@ -52,6 +52,7 @@ export const PostCreate = () => {
     Images: [
       {
         image: "",
+        id: 1,
       },
     ],
     title: "",
@@ -118,11 +119,11 @@ export const PostCreate = () => {
       >
         <View style={[SharedStyles.container, styles.container]}>
           <KeyBoardAvoidingWrapper offset={scale.heightPixel(106)}>
-            <>
+            <View>
               <View style={styles.mapItemsContainer}>
                 {state?.Images?.map((item, index) => {
                   return (
-                    <>
+                    <View key={index} style={{ width: "30%" }}>
                       {index === 0 ? (
                         <TouchableOpacity
                           style={styles.imagePickerContainer}
@@ -146,7 +147,7 @@ export const PostCreate = () => {
                           />
                         </View>
                       )}
-                    </>
+                    </View>
                   );
                 })}
               </View>
@@ -245,7 +246,7 @@ export const PostCreate = () => {
                 containerStyle={styles.btnContainer}
                 onPress={() => createPostHandler()}
               />
-            </>
+            </View>
           </KeyBoardAvoidingWrapper>
         </View>
       </TouchableWithoutFeedback>

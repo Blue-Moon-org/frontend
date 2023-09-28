@@ -40,18 +40,23 @@ export const PostCreateBottomTab = ({
           Images: [
             {
               image: "",
+              id: 1,
             },
             {
               image: result.assets[0],
+              id: 2,
             },
             {
               image: result.assets[1],
+              id: 3,
             },
             {
-              image: result.assets[2]
+              image: result.assets[2],
+              id: 4,
             },
             {
-              image: result.assets[3]
+              image: result.assets[3],
+              id: 5,
             },
           ],
         });

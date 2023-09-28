@@ -42,7 +42,8 @@ export const Senator = ({ MenData, state, page, updatePage, type }) => {
         keyExtractor={(item, index) => item.id}
         ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
         contentContainerStyle={{
-          marginTop: scale.pixelSizeVertical(2),
+          marginTop: scale.pixelSizeVertical(10),
+
           // width: "100%",
         }}
         onEndReachedThreshold={16}

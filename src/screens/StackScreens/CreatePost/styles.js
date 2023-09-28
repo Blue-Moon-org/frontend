@@ -5,7 +5,7 @@ import { colors } from "../../../constants/colorpallette";
 export const styles = StyleSheet.create({
   imagePickerContainer: {
     height: scale.heightPixel(110),
-    width: "31%",
+    width: "100%",
     backgroundColor: "#F6D6AA",
     borderRadius: scale.fontPixel(8),
     justifyContent: "center",
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   },
   imageContainer: {
     height: scale.heightPixel(110),
-    width: "31%",
+    width: "100%",
     backgroundColor: "#F6D6AA",
     borderRadius: scale.fontPixel(8),
     justifyContent: "center",

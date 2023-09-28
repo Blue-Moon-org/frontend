@@ -18,10 +18,13 @@ export const fetchFeeds = (type, page, navigate) => async (dispatch) => {
       type: actionTypesFeeds.FETCH_FEEDS_MORE_LOADING,
     });
   }
+
+  console.warn(page);
   // console.warn("wdqwdqw", endPointData.page);
 
   const jsonValue = await AsyncStorage.getItem("userTokens");
   let result = JSON.parse(jsonValue);
+  // console.warn(result.access);
 
   await fetchGetRequestInit(
     `/post/feed/${type}/?page=${page}`,

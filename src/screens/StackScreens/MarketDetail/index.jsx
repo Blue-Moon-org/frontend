@@ -5,11 +5,13 @@ import { Fontscales, SharedStyles } from "../../../styles";
 import { Image } from "expo-image";
 import { KeyBoardAvoidingWrapper, Text } from "../../../components/common";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
-import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
 import { dataFits } from "../../BottomTabScreens/Home/data";
+import { useRoute } from "@react-navigation/native";
+import { baseURL } from "../../../utils/request";
 
 export const MarketDetail = () => {
+  const route = useRoute();
   return (
     <View style={SharedStyles.container}>
       <KeyBoardAvoidingWrapper>
@@ -20,7 +22,7 @@ export const MarketDetail = () => {
                 <Image
                   cachePolicy={"memory-disk"}
                   source={{
-                    uri: "https://img.freepik.com/free-psd/simple-black-men-s-tee-mockup_53876-57893.jpg?size=626&ext=jpg&ga=GA1.1.70578014.1688424585&semt=ais",
+                    uri: `${baseURL + route.params?.item?.images[0]?.image}`,
                   }}
                   style={styles.mainImage}
                   contentFit="cover"
@@ -29,21 +31,21 @@ export const MarketDetail = () => {
               <View style={styles.sideImageContainer}>
                 <Image
                   source={{
-                    uri: "https://img.freepik.com/free-photo/portrait-happy-handsome-young-man-posing-isolated-background_1150-63507.jpg?size=626&ext=jpg&ga=GA1.1.70578014.1688424585&semt=ais",
+                    uri: `${baseURL + route.params?.item?.images[1]?.image}`,
                   }}
                   style={styles.sideImage}
                   contentFit="cover"
                 />
                 <Image
                   source={{
-                    uri: "https://t4.ftcdn.net/jpg/00/36/15/45/240_F_36154505_P9rHYaLbfnLXBnwf5PfL4dTkB2xVFteU.jpg",
+                    uri: `${baseURL + route.params?.item?.images[2]?.image}`,
                   }}
                   style={styles.sideImage}
                   contentFit="cover"
                 />
                 <Image
                   source={{
-                    uri: "https://t4.ftcdn.net/jpg/00/68/68/73/240_F_68687386_uYZd2YeBUzBJt7dxzFY0gCVNy5YZN9F7.jpg",
+                    uri: `${baseURL + route.params?.item?.images[3]?.image}`,
                   }}
                   style={styles.sideImage}
                   contentFit="cover"
@@ -82,17 +84,14 @@ export const MarketDetail = () => {
                 </View>
               </View>
 
-              <TouchableOpacity
-                activeOpacity={0.8}
-                style={styles.reactionIcons}
-              >
+              <TouchableOpacity activeOpacity={1} style={styles.reactionIcons}>
                 <Ionicons
-                  name="cart-outline"
+                  name={route.params?.hasCarted ? "cart" : "cart-outline"}
                   color={"white"}
                   size={scale.fontPixel(20)}
                 />
                 <Text
-                  text={"Add to cart"}
+                  text={route.params?.hasCarted ? "In cart" : "Add to cart"}
                   textStyle={styles.cartText}
                   numberOfLines={1}
                   ellipsizeMode={"tail"}
@@ -101,15 +100,13 @@ export const MarketDetail = () => {
             </View>
             <View style={styles.aboutContainer}>
               <Text
-                text={"Fitted Black Jacket"}
+                text={route.params?.item.title}
                 textStyle={[Fontscales.headingSmallBold]}
                 ellipsizeMode={"tail"}
                 numberOfLines={1}
               />
               <Text
-                text={
-                  "Lorem ipsum dolor sit amet consectetur. Tellus eget a imperet pulvinar posuere imperdiet in. At porttitor ac condimentum arcu ut etiam tincidunt. Eget habitasse viverra feugiat ultricies bibendum libero elit."
-                }
+                text={route.params?.item.title}
                 textStyle={Fontscales.paragraphSmallRegular}
                 numberOfLines={2}
                 ellipsizeMode={"tail"}

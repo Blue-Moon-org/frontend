@@ -1,80 +1,56 @@
-import { View, FlatList, Platform, TouchableOpacity } from "react-native";
-import React from "react";
-import { dataSuits } from "../Home/data";
-import { Text } from "../../../components/common";
+import { View, FlatList } from "react-native";
+import React, { useCallback } from "react";
 import { scale } from "../../../utils/scale";
-import { Image } from "expo-image";
-import { Ionicons } from "@expo/vector-icons";
-import { styles } from "./styles";
+import {
+  HomeListComponentEmpty,
+  LoadMore,
+  Error,
+  ErrorMore,
+} from "../../../components/primary";
 import { useNavigation } from "@react-navigation/native";
+import { MarketRenderItems } from "../Renders/MarketRenderItems";
+import { useDispatch } from "react-redux";
+import { fetchMarkets } from "../../../Redux/actions/Market/MarketList";
 
-export const Children = () => {
+export const Children = ({ page, updatePage, state, data, type }) => {
   const { navigate } = useNavigation();
-  const renderItem = ({ item, index, separator }) => {
-    const detailHandler = () => {
-      navigate("RootStack", {
-        screen: "MarketDetail",
-      });
-    };
+  const dispatch = useDispatch();
 
-    return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={() => detailHandler()}
-        style={styles.itemContainer}
-      >
-        <View style={styles.innerContainer}>
-          <Image
-            source={{ uri: item.imageUrl }}
-            contentFit="cover"
-            cachePolicy={"memory-disk"}
-            style={styles.image}
-          />
-          <Ionicons
-            name={item.like ? "cart" : "cart-outline"}
-            size={scale.fontPixel(18)}
-            color={"white"}
-            style={styles.likeIcon}
-          />
-        </View>
-        <View style={styles.bottomContainer}>
-          <Text
-            textStyle={styles.text}
-            ellipsizeMode={"tail"}
-            numberOfLines={1}
-            text={item.name}
-          />
-          <Text
-            text={item.subText}
-            textStyle={styles.subText}
-            ellipsizeMode={"tail"}
-            numberOfLines={2}
-          />
-        </View>
-      </TouchableOpacity>
-    );
-  };
+  const fetchMoreFeeds = useCallback(() => {
+    if (state.isListEndAnkara === null) {
+      return;
+    } else {
+      if (state.moreLoadingWomen === false) {
+        updatePage(page++);
+        dispatch(fetchMarkets(type, page, navigate));
+      }
+    }
+  }, [page, state.isListEndAnkara]);
+
   return (
-    <View
-      style={{
-        // height:
-        //   Platform.OS === "ios"
-        //     ? scale.height - scale.heightPixel(398)
-        //     : scale.height < 715
-        //     ? scale.height - scale.heightPixel(385)
-        //     : scale.height - scale.heightPixel(370),
-      }}
-    >
+    <View>
       <FlatList
         showsVerticalScrollIndicator={false}
         numColumns={3}
-        data={dataSuits}
-        renderItem={renderItem}
-        columnWrapperStyle={{ justifyContent: "space-between" }}
+        data={data}
+        renderItem={({ item, index, separator }) => (
+          <MarketRenderItems item={item} index={index} separator={separator} />
+        )}
+        columnWrapperStyle={{ gap: scale.pixelSizeHorizontal(17) }}
         keyExtractor={(item, index) => item.id}
         contentContainerStyle={{
-          marginTop: scale.pixelSizeVertical(10),
+          marginTop: scale.pixelSizeVertical(5),
         }}
+        onEndReachedThreshold={16}
+        onEndReached={() => fetchMoreFeeds()}
+        ListFooterComponent={() =>
+          state.moreError ? (
+            <ErrorMore state={state} />
+          ) : (
+            <LoadMore loading={state.moreLoadingMen} />
+          )
+        }
+        ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
       />
     </View>
   );

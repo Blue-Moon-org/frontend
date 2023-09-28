@@ -9,9 +9,13 @@ import { colors } from "../../constants/colorpallette";
 import { Fontscales } from "../../styles";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 export const AppHeader = () => {
   const { navigate } = useNavigation();
+
+  const state = useSelector((state) => state.cartView);
+
   return Platform.OS === "ios" ? (
     <View style={styles.mainContainer}>
       <View
@@ -50,9 +54,11 @@ export const AppHeader = () => {
         </View>
 
         <View style={styles.iconContainer}>
-          <View style={styles.cartBargeContainer}>
-            <Text text={4} textStyle={styles.text} />
-          </View>
+          {state.data && (
+            <View style={styles.cartBargeContainer}>
+              <Text text={state.data?.length} textStyle={styles.text} />
+            </View>
+          )}
           <Ionicons
             name="cart-outline"
             size={scale.fontPixel(30)}
@@ -104,9 +110,11 @@ export const AppHeader = () => {
         </View>
 
         <View style={styles.iconContainer}>
-          <View style={styles.cartBargeContainer}>
-            <Text text={4} textStyle={styles.text} />
-          </View>
+          {state.data && (
+            <View style={styles.cartBargeContainer}>
+              <Text text={state.data?.length} textStyle={styles.text} />
+            </View>
+          )}
           <Ionicons
             name="cart-outline"
             size={scale.fontPixel(30)}
@@ -127,7 +135,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: "white",
     height:
-      Platform.OS === "ios" ? scale.heightPixel(140) : scale.heightPixel(110),
+      Platform.OS === "ios" ? scale.heightPixel(140) : scale.heightPixel(120),
     borderBottomRightRadius: scale.fontPixel(20),
     borderBottomLeftRadius: scale.fontPixel(20),
   },
@@ -144,6 +152,7 @@ const styles = StyleSheet.create({
     height: Platform.OS === "ios" ? "76%" : "76%",
     width: "13%",
     borderRadius: scale.fontPixel(8),
+    backgroundColor: colors.lightPrimary,
   },
   image: {
     height: "100%",

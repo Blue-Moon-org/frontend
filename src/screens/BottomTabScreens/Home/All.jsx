@@ -38,7 +38,7 @@ export const All = ({ postData, state, page, updatePage, type }) => {
         keyExtractor={(item, index) => item.id}
         ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
         contentContainerStyle={{
-          marginTop: scale.pixelSizeVertical(2),
+          marginTop: scale.pixelSizeVertical(4),
           // width: "100%",
         }}
         onEndReachedThreshold={0.5}
