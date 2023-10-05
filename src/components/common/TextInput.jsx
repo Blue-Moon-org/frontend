@@ -29,6 +29,7 @@ export const TextInput = ({
   clearButtonMode,
   returnKeyType,
   returnKeyLabel,
+  onSubmitEditing,
   others,
 }) => {
   return (
@@ -58,6 +59,7 @@ export const TextInput = ({
       onFocus={onFocus}
       autoComplete={autoComplete}
       ref={refs}
+      onSubmitEditing={onSubmitEditing}
       autoFocus={autoFocus}
       autoCapitalize="words"
       style={[

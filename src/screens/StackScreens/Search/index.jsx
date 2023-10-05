@@ -10,15 +10,33 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
+import { searchFilterData } from "./data";
+import { ActivityIndicator } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  designerSearchResultData,
-  othersSearchResultData,
-  styleSearchResultData,
-  searchFilterData,
-} from "./data";
+  postSearch,
+  latestSeatch,
+  peopleSearch,
+  productSeatch,
+} from "../../../Redux/actions/Post/search";
 
 export const Search = () => {
   const [filter, setFilter] = useState("");
+  const [searchText, updateSearchText] = useState("");
+  const dispatch = useDispatch();
+
+  const submitSearch = () => {
+    if (searchText.length <= 2) return;
+    dispatch(postSearch(searchText, 1, "navigate"));
+    dispatch(latestSeatch(searchText, 1, "navigate"));
+    dispatch(peopleSearch(searchText, 1, "navigate"));
+    dispatch(productSeatch(searchText, 1, "navigate"));
+  };
+  const latest = useSelector((state) => state.latest);
+  const post = useSelector((state) => state.post);
+  const people = useSelector((state) => state.people);
+  const product = useSelector((state) => state.product);
+
   return (
     <View style={SharedStyles.container}>
       <KeyBoardAvoidingWrapper offset={scale.heightPixel(105)}>
@@ -32,9 +50,14 @@ export const Search = () => {
             />
             <TextInput
               returnKeyType="search"
-              onSubmitEditing={() => {}}
+              clearButtonMode="while-editing"
+              onSubmitEditing={() => submitSearch()}
               style={[styles.textInput, Fontscales.labelSmallRegular]}
               placeholder="Search for anything"
+              value={searchText}
+              onChangeText={(text) => {
+                updateSearchText(text);
+              }}
             />
           </View>
           <ScrollView
@@ -84,7 +107,7 @@ export const Search = () => {
             })}
           </ScrollView>
           <Text
-            text={"Designers"}
+            text={"Latest"}
             textStyle={[
               Fontscales.labelSmallMedium,
               {
@@ -94,24 +117,30 @@ export const Search = () => {
             ]}
           />
           <View style={styles.container}>
-            {designerSearchResultData.map((item, index) => {
-              return (
-                <Text
-                  key={index}
-                  text={item.name}
-                  textStyle={[
-                    Fontscales.labelSmallRegular,
-                    {
-                      marginBottom: scale.pixelSizeVertical(12),
-                    },
-                  ]}
-                />
-              );
-            })}
+            {latest.loadingLatest ? (
+              <ActivityIndicator size={25} color={colors.mainPrimary} />
+            ) : (
+              latest.dataLatest?.response?.data?.data
+                ?.slice(0, 9)
+                .map((item, index) => {
+                  return (
+                    <Text
+                      key={index}
+                      text={item.body}
+                      textStyle={[
+                        Fontscales.labelSmallRegular,
+                        {
+                          marginBottom: scale.pixelSizeVertical(12),
+                        },
+                      ]}
+                    />
+                  );
+                })
+            )}
           </View>
           <Text text={"Show all"} textStyle={styles.showAll} />
           <Text
-            text={"Styles"}
+            text={"Designers & Buyers"}
             textStyle={[
               Fontscales.labelSmallMedium,
               {
@@ -121,24 +150,64 @@ export const Search = () => {
             ]}
           />
           <View style={styles.container}>
-            {styleSearchResultData.map((item, index) => {
-              return (
-                <Text
-                  key={index}
-                  text={item.styleName}
-                  textStyle={[
-                    Fontscales.labelSmallRegular,
-                    {
-                      marginBottom: scale.pixelSizeVertical(12),
-                    },
-                  ]}
-                />
-              );
-            })}
+            {people.loadingPeople ? (
+              <ActivityIndicator size={25} color={colors.mainPrimary} />
+            ) : (
+              people.dataPeople?.response?.data?.data
+                ?.slice(0, 9)
+                .map((item, index) => {
+                  return (
+                    <Text
+                      key={index}
+                      text={item.fullname}
+                      textStyle={[
+                        Fontscales.labelSmallRegular,
+                        {
+                          marginBottom: scale.pixelSizeVertical(12),
+                        },
+                      ]}
+                    />
+                  );
+                })
+            )}
+          </View>
+
+          <Text text={"Show all"} textStyle={styles.showAll} />
+          <Text
+            text={"Products"}
+            textStyle={[
+              Fontscales.labelSmallMedium,
+              {
+                marginTop: scale.pixelSizeVertical(20),
+                marginBottom: scale.pixelSizeVertical(8),
+              },
+            ]}
+          />
+          <View style={styles.container}>
+            {product.loadingProduct ? (
+              <ActivityIndicator size={25} color={colors.mainPrimary} />
+            ) : (
+              product.dataProduct?.response?.data?.data
+                ?.slice(0, 9)
+                .map((item, index) => {
+                  return (
+                    <Text
+                      key={index}
+                      text={item.title}
+                      textStyle={[
+                        Fontscales.labelSmallRegular,
+                        {
+                          marginBottom: scale.pixelSizeVertical(12),
+                        },
+                      ]}
+                    />
+                  );
+                })
+            )}
           </View>
           <Text text={"Show all"} textStyle={styles.showAll} />
           <Text
-            text={"Others"}
+            text={"Posts"}
             textStyle={[
               Fontscales.labelSmallMedium,
               {
@@ -148,20 +217,26 @@ export const Search = () => {
             ]}
           />
           <View style={styles.container}>
-            {othersSearchResultData.map((item, index) => {
-              return (
-                <Text
-                  key={index}
-                  text={item.title}
-                  textStyle={[
-                    Fontscales.labelSmallRegular,
-                    {
-                      marginBottom: scale.pixelSizeVertical(12),
-                    },
-                  ]}
-                />
-              );
-            })}
+            {post.loadingPost ? (
+              <ActivityIndicator size={25} color={colors.mainPrimary} />
+            ) : (
+              post.dataPost?.response?.data?.data
+                ?.slice(0, 9)
+                .map((item, index) => {
+                  return (
+                    <Text
+                      key={index}
+                      text={item.body}
+                      textStyle={[
+                        Fontscales.labelSmallRegular,
+                        {
+                          marginBottom: scale.pixelSizeVertical(12),
+                        },
+                      ]}
+                    />
+                  );
+                })
+            )}
           </View>
           <Text text={"Show all"} textStyle={styles.showAll} />
         </View>

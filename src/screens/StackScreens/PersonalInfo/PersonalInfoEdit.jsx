@@ -1,5 +1,5 @@
 import { ScrollView, View } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -14,9 +14,96 @@ import {
 import { Image } from "expo-image";
 import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import * as ImagePicker from "expo-image-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { userUpadte } from "../../../Redux/actions/DetailsUpdate";
 
 export const PersonalInfoEdit = () => {
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
+  const dispatch = useDispatch();
+
+  const [user, updateUser] = useState({
+    profilePicture: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    primaryAddress: "",
+    secondaryAddress: "",
+  });
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("user");
+
+      let result = JSON.parse(jsonValue);
+      updateUser({
+        profilePicture: "",
+        firstName: result.firstname,
+        lastName: result.lastname,
+        email: result.email,
+        phoneNumber: result.phone,
+        primaryAddress: result.address ?? "",
+        secondaryAddress: "",
+      });
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      getData();
+    }
+
+    return () => (sub = false);
+  }, []);
+
+  const update = useSelector((state) => state.update);
+  // console.warn(update);
+
+  const _updateHandler = () => {
+    if (user.firstName === "") {
+      console.warn("err");
+    } else if (user.lastName === "") {
+      console.warn("err");
+    } else if (user.email === "") {
+      console.warn("err");
+    } else if (user.phoneNumber === "" || user.phoneNumber.length < 10) {
+      console.warn("err");
+    } else if (user.primaryAddress === "") {
+      console.warn("err");
+    } else {
+      dispatch(userUpadte(user, navigate));
+    }
+  };
+
+  const _galleryHandler = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: false,
+        base64: true,
+        quality: 1,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        selectionLimit: 1,
+        allowsMultipleSelection: false,
+        exif: true,
+        orderedSelection: true,
+        aspect: [3, 4],
+      });
+      if (!result.canceled) {
+        updateUser({
+          ...user,
+          profilePicture: result.assets[0],
+        });
+      }
+    } catch (error) {
+      popUp(error);
+    }
+  };
+
   return (
     <SafeAreaView style={SharedStyles.container}>
       <KeyBoardAvoidingWrapper offset={scale.heightPixel(5)}>
@@ -42,44 +129,86 @@ export const PersonalInfoEdit = () => {
               <Image
                 style={styles.image}
                 source={{
-                  uri: "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=626&ext=jpg&ga=GA1.1.70578014.1688424585&semt=sph",
+                  uri: user.profilePicture?.uri,
                 }}
                 contentFit="cover"
                 cachePolicy={"memory-disk"}
               />
+
               <MaterialCommunityIcons
                 name="image-edit"
                 size={scale.fontPixel(28)}
                 color={colors.grey1}
                 style={styles.iconEdit}
+                onPress={() => _galleryHandler()}
               />
             </View>
           </View>
 
           <View style={styles.textInputContainer}>
-            <Text textStyle={styles.text} text={"Name"} />
-            <TextInput placeholder={"Slyvester stallone"} />
+            <Text textStyle={styles.text} text={"First name"} />
+            <TextInput
+              value={user.firstName}
+              onChangeText={(text) => {
+                updateUser({ ...user, firstName: text });
+              }}
+              placeholder={"Slyvester"}
+            />
+          </View>
+          <View style={styles.textInputContainer}>
+            <Text textStyle={styles.text} text={"Last name"} />
+            <TextInput
+              value={user.lastName}
+              onChangeText={(text) => {
+                updateUser({ ...user, lastName: text });
+              }}
+              placeholder={"stallone"}
+            />
           </View>
           <View style={styles.textInputContainer}>
             <Text textStyle={styles.text} text={"Email"} />
-            <TextInput placeholder={"Example@gmail.com"} />
+            <TextInput
+              value={user.email}
+              onChangeText={(text) => {
+                updateUser({ ...user, email: text });
+              }}
+              placeholder={"Example@gmail.com"}
+            />
           </View>
           <View style={styles.textInputContainer}>
             <Text textStyle={styles.text} text={"Phone"} />
-            <TextInput placeholder={"09145654542"} />
+            <TextInput
+              value={user.phoneNumber}
+              onChangeText={(text) => {
+                updateUser({ ...user, phoneNumber: text });
+              }}
+              placeholder={"09145654542"}
+            />
           </View>
           <View style={styles.textInputContainer}>
             <Text textStyle={styles.text} text={"Primary Address"} />
-            <TextInput placeholder={"Ikotun Lagos, Nigeria"} />
+            <TextInput
+              value={user.primaryAddress}
+              onChangeText={(text) => {
+                updateUser({ ...user, primaryAddress: text });
+              }}
+              placeholder={"Ikotun Lagos, Nigeria"}
+            />
           </View>
           <View style={styles.textInputContainer}>
             <Text textStyle={styles.text} text={"Secondary Address"} />
-            <TextInput placeholder={"Lekki Lagos, Nigeria"} />
+            <TextInput
+              value={user.secondaryAddress}
+              onChangeText={(text) => {
+                updateUser({ ...user, secondaryAddress: text });
+              }}
+              placeholder={"Lekki Lagos, Nigeria"}
+            />
           </View>
-          
+
           <Button
             title={"Submit"}
-            onPress={() => {}}
+            onPress={() => _updateHandler()}
             containerStyle={styles.btnContainer}
             textStyle={styles.btnText}
           />

@@ -13,7 +13,7 @@ import {
   MenuTrigger,
 } from "react-native-popup-menu";
 
-export const ChatHeader = () => {
+export const ChatHeader = ({ user }) => {
   const data = [
     {
       id: 1,
@@ -56,7 +56,7 @@ export const ChatHeader = () => {
         </View>
         <View style={styles.nameContainer}>
           <Text
-            text={"Savannah"}
+            text={user?.firstname ? user?.firstname : user?.fullname}
             textStyle={[styles.name, Fontscales.paragraphLargeMedium]}
           />
         </View>

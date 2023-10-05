@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
@@ -8,9 +8,30 @@ import { Fontscales, SharedStyles } from "../../../styles";
 import { Text } from "../../../components/common";
 import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const PersonalInfo = () => {
   const { navigate, goBack } = useNavigation();
+  const [user, updateUser] = useState("");
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("user");
+      updateUser(JSON.parse(jsonValue));
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      getData();
+    }
+
+    return () => (sub = false);
+  }, [user]);
+
   return (
     <SafeAreaView style={SharedStyles.container}>
       <Ionicons
@@ -35,9 +56,9 @@ export const PersonalInfo = () => {
         />
       </View>
       <View style={styles.detailContainer}>
-        <Text text={"Username"} textStyle={Fontscales.labelSmallMedium} />
+        <Text text={"Full name"} textStyle={Fontscales.labelSmallMedium} />
         <Text
-          text={"slivker"}
+          text={user.fullname}
           textStyle={[
             Fontscales.labelSmallMedium,
             {
@@ -49,7 +70,7 @@ export const PersonalInfo = () => {
       <View style={styles.detailContainer}>
         <Text text={"Phone"} textStyle={Fontscales.labelSmallMedium} />
         <Text
-          text={"08076565434"}
+          text={user.phone}
           textStyle={[
             Fontscales.labelSmallMedium,
             {
@@ -61,7 +82,7 @@ export const PersonalInfo = () => {
       <View style={styles.detailContainer}>
         <Text text={"Email"} textStyle={Fontscales.labelSmallMedium} />
         <Text
-          text={"Example@gmail.com"}
+          text={user.email}
           textStyle={[
             Fontscales.labelSmallMedium,
             {
@@ -73,7 +94,7 @@ export const PersonalInfo = () => {
       <View style={styles.detailContainer}>
         <Text text={"Gender"} textStyle={Fontscales.labelSmallMedium} />
         <Text
-          text={"male"}
+          text={user.sex ?? "-"}
           textStyle={[
             Fontscales.labelSmallMedium,
             {
@@ -88,7 +109,7 @@ export const PersonalInfo = () => {
           textStyle={Fontscales.labelSmallMedium}
         />
         <Text
-          text={"Ikotun Lagos, Nigeria"}
+          text={user?.address ?? "-"}
           textStyle={[
             Fontscales.labelSmallMedium,
             {
@@ -103,7 +124,7 @@ export const PersonalInfo = () => {
           textStyle={Fontscales.labelSmallMedium}
         />
         <Text
-          text={"Lekki Lagos, Nigeria"}
+          text={user?.secondaryAddress ? user?.secondaryAddress : "-"}
           textStyle={[
             Fontscales.labelSmallMedium,
             {

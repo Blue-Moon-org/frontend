@@ -1,4 +1,10 @@
-import { Platform, StyleSheet, TextInput, View } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
@@ -16,6 +22,8 @@ export const AppHeader = () => {
 
   const state = useSelector((state) => state.cartView);
 
+  // console.warn(user);
+
   return Platform.OS === "ios" ? (
     <View style={styles.mainContainer}>
       <View
@@ -24,7 +32,11 @@ export const AppHeader = () => {
           { paddingTop: Constants.statusBarHeight },
         ]}
       >
-        <View style={styles.imageConatiner}>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => navigate("Profile")}
+          style={styles.imageConatiner}
+        >
           <Image
             contentFit="cover"
             style={styles.image}
@@ -33,7 +45,7 @@ export const AppHeader = () => {
               uri: "https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?w=2000&t=st=1688497523~exp=1688498123~hmac=231d6292720e943c2a7e81a88bbb01be8748b8129b28e86495ab70df0f302c89",
             }}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.textInputContainer}>
           <Ionicons
             name="search-outline"
@@ -80,7 +92,11 @@ export const AppHeader = () => {
           // { paddingTop: Constants.statusBarHeight },
         ]}
       >
-        <View style={styles.imageConatiner}>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => navigate("Profile")}
+          style={styles.imageConatiner}
+        >
           <Image
             contentFit="cover"
             style={styles.image}
@@ -89,7 +105,7 @@ export const AppHeader = () => {
               uri: "https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?w=2000&t=st=1688497523~exp=1688498123~hmac=231d6292720e943c2a7e81a88bbb01be8748b8129b28e86495ab70df0f302c89",
             }}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.textInputContainer}>
           <Ionicons
             name="search-outline"

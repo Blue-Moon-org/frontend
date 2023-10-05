@@ -1,5 +1,5 @@
 import { View, Platform } from "react-native";
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { AppHeader } from "../../../components/primary";
 import { SharedStyles } from "../../../styles";
 import { PendingOrders } from "./PendingOrders";
@@ -9,12 +9,34 @@ import Constants from "expo-constants";
 import { styles } from "./styles";
 import { Text } from "../../../components/common";
 import { Fontscales } from "../../../styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Chat = () => {
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
       ? scale.heightPixel(40)
       : scale.heightPixel(1);
+
+        const [user, updateUser] = useState("");
+
+        const getData = async () => {
+          try {
+            const jsonValue = await AsyncStorage.getItem("user");
+            updateUser(JSON.parse(jsonValue));
+          } catch (e) {
+            // error reading value
+          }
+        };
+
+        useEffect(() => {
+          let sub = true;
+          if (sub) {
+            getData();
+          }
+
+          return () => (sub = false);
+        }, [user]);
+
 
   return (
     <View style={SharedStyles.container}>
@@ -28,7 +50,7 @@ export const Chat = () => {
           zIndex: 2,
         }}
       >
-        <AppHeader />
+        <AppHeader  user={user}/>
         <PendingOrders />
 
         <Text
@@ -46,7 +68,7 @@ export const Chat = () => {
               : scale.height * 0.58 + Constants.statusBarHeight,
         }}
       >
-        <Messages />
+        <Messages user={user}/>
       </View>
     </View>
   );

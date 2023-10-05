@@ -8,7 +8,7 @@ import { Image } from "expo-image";
 import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 
-export const Messages = () => {
+export const Messages = ({ user }) => {
   const { navigate } = useNavigation();
   const renderMessages = ({ item, index }) => {
     return (

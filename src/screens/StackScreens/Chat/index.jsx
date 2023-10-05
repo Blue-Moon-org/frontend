@@ -4,7 +4,7 @@ import {
   Platform,
   FlatList,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { ChatHeader } from "../../../components/primary/ChatHeader";
 import { Interactions } from "./Interactions";
 import { styles } from "./styles";
@@ -15,6 +15,7 @@ import { chatData } from "./data";
 import { RenderChat } from "./RenderChat";
 import { ChatHeading } from "./ChatHeading";
 import { Measurements } from "./Measurements";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Chat = () => {
   const { keyboardHeight, show } = useKeyboardHeight();
@@ -35,6 +36,28 @@ export const Chat = () => {
       ? scale.pixelSizeVertical(95)
       : scale.pixelSizeVertical(40);
 
+
+        const [user, updateUser] = useState("");
+
+        const getData = async () => {
+          try {
+            const jsonValue = await AsyncStorage.getItem("user");
+            updateUser(JSON.parse(jsonValue));
+          } catch (e) {
+            // error reading value
+          }
+        };
+
+        useEffect(() => {
+          let sub = true;
+          if (sub) {
+            getData();
+          }
+
+          return () => (sub = false);
+        }, [user]);
+
+
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View
@@ -43,7 +66,7 @@ export const Chat = () => {
           paddingBottom: 2,
         }}
       >
-        <ChatHeader />
+        <ChatHeader user={user} />
       </View>
       <View
         style={{

@@ -8,7 +8,7 @@ import { Fontscales } from "../../styles";
 import { colors } from "../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
 
-export const ProfileHeader = ({ designer, client }) => {
+export const ProfileHeader = ({ designer, client, user }) => {
   const { goBack, navigate } = useNavigation();
   return (
     <>
@@ -25,13 +25,13 @@ export const ProfileHeader = ({ designer, client }) => {
         <View>
           <Text
             textStyle={[Fontscales.headingLargeRegular]}
-            text="B.Daniella Clothing"
+            text={user?.brandname ? user?.brandname : user?.fullname}
           />
           <BaseText style={[Fontscales.paragraphSmallRegular]}>
-            Balla Daniella -
+            {user?.firstname} -{" "}
             <Text
               textStyle={{ color: colors.mainPrimary }}
-              text={!designer ? " Buyer" : " Designer"}
+              text={user?.account_type}
             />
           </BaseText>
         </View>

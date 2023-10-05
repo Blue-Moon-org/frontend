@@ -1,5 +1,5 @@
 import { View, ScrollView, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ProfileHeader } from "../../../components/primary";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SharedStyles, Fontscales } from "../../../styles";
@@ -13,14 +13,35 @@ import { Text } from "../../../components/common";
 import { useNavigation } from "@react-navigation/native";
 import { scale } from "../../../utils/scale";
 import { styles } from "./styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const ProfileSettings = () => {
   const { navigate } = useNavigation();
 
+  const [user, updateUser] = useState("");
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("user");
+      updateUser(JSON.parse(jsonValue));
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      getData();
+    }
+
+    return () => (sub = false);
+  }, [user]);
+
   return (
     <SafeAreaView style={SharedStyles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader designer={false} />
+        <ProfileHeader designer={false} user={user} />
         <Text text={"Profile"} textStyle={[Fontscales.labelSmallMedium]} />
 
         <View style={styles.container}>

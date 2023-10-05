@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, Platform } from "react-native";
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { ProfileHeader } from "../../../components/primary";
 import { SharedStyles } from "../../../styles";
 import { styles } from "./styles";
@@ -14,11 +14,32 @@ import Constants from "expo-constants";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Profile = () => {
   const [type, updateType] = useState("Posts");
 
   const { navigate } = useNavigation();
+        const [user, updateUser] = useState("");
+
+        const getData = async () => {
+          try {
+            const jsonValue = await AsyncStorage.getItem("user");
+            updateUser(JSON.parse(jsonValue));
+          } catch (e) {
+            // error reading value
+          }
+        };
+
+        useEffect(() => {
+          let sub = true;
+          if (sub) {
+            getData();
+          }
+
+          return () => (sub = false);
+        }, [user]);
+
 
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
@@ -82,7 +103,7 @@ export const Profile = () => {
           zIndex: 2,
         }}
       >
-        <ProfileHeader designer={true} />
+        <ProfileHeader designer={true} user={user} />
         <View style={styles.background} />
         <View style={styles.background2}>
           <View style={styles.leftSide}>

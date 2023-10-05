@@ -41,3 +41,19 @@ export const fetchPatchRequestInit = async (
 
   return { response };
 };
+
+export const fetchPutRequestInit = async (
+  endPoint,
+  body,
+  contentType,
+  token
+) => {
+  const response = await request.put(endPoint, body, {
+    headers: {
+      Authorization: token,
+      "Content-Type": contentType,
+    },
+  });
+
+  return { response };
+};
