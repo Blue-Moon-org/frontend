@@ -1,4 +1,5 @@
 import { actionTypesFeeds } from "../../constants/PostTypes";
+import { actionTypesAddFavorite } from "../../constants/PostTypes";
 
 const initialState = {
   dataAll: [],
@@ -6,6 +7,7 @@ const initialState = {
   dataMen: [],
   dataAnkara: [],
   dataNative: [],
+  data: [],
   error: "",
   loading: false,
   moreLoadingAll: false,
@@ -20,6 +22,11 @@ const initialState = {
   isListEndAnkara: "",
   moreError: false,
   category: "All",
+
+  // Favs
+  dataFav: {},
+  errorFav: "",
+  loadingFav: false,
 };
 
 export const fetchFeedsReducer = (
@@ -46,6 +53,7 @@ export const fetchFeedsReducer = (
         dataMen: [],
         dataAnkara: [],
         dataNative: [],
+        data: [],
       };
     case actionTypesFeeds.FETCH_FEEDS_MORE_LOADING:
       return {
@@ -71,6 +79,7 @@ export const fetchFeedsReducer = (
         moreLoadingAll: false,
         moreError: false,
         isListEndAll: isListEnd,
+        data: payload.response?.data?.data.categoryData.posts,
       };
     case actionTypesFeeds.FETCH_FEEDS_SUCCESS_MEN:
       return {
@@ -84,6 +93,7 @@ export const fetchFeedsReducer = (
         moreLoadingMen: false,
         moreError: false,
         isListEndMen: isListEnd,
+        data: payload.response?.data?.data.categoryData.posts,
       };
     case actionTypesFeeds.FETCH_FEEDS_SUCCESS_WOMEN:
       return {
@@ -97,7 +107,9 @@ export const fetchFeedsReducer = (
         moreLoadingWomen: false,
         moreError: false,
         isListEndWomen: isListEnd,
+        data: payload.response?.data?.data.categoryData.posts,
       };
+
     case actionTypesFeeds.FETCH_FEEDS_SUCCESS_ANKARA:
       return {
         ...state,
@@ -110,6 +122,7 @@ export const fetchFeedsReducer = (
         moreLoadingAnkara: false,
         moreError: false,
         isListEndAnkara: isListEnd,
+        data: payload.response?.data?.data.categoryData.posts,
       };
     case actionTypesFeeds.FETCH_FEEDS_SUCCESS_NATIVE:
       return {
@@ -123,6 +136,7 @@ export const fetchFeedsReducer = (
         moreLoadingNative: false,
         moreError: false,
         isListEndNative: isListEnd,
+        data: payload.response?.data?.data.categoryData.posts,
       };
 
     case actionTypesFeeds.FETCH_FEEDS_ERROR:
@@ -135,6 +149,7 @@ export const fetchFeedsReducer = (
         dataMen: [],
         dataNative: [],
         dataNative: [],
+        data: [],
         moreLoadingAll: false,
         moreLoadingMen: false,
         moreLoadingWomen: false,
@@ -170,6 +185,122 @@ export const fetchFeedsReducer = (
           moreLoadingNative: false,
         };
       }
+
+    default:
+      return state;
+  }
+};
+
+export const favoritePostReducer = (
+  state = initialState,
+  { type, payload, error, id }
+) => {
+  // console.warn(state);
+
+  switch (type) {
+    case actionTypesAddFavorite.ADD_FAVOURITE_LOADING:
+      return {
+        ...state,
+        dataFav: null,
+        loadingFav: true,
+        errorFav: "",
+      };
+
+    case actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_ALL:
+      const updatedAllPosts = state.dataAll.map((post) => {
+        if (post.id === id) {
+          return {
+            ...post,
+            favs: post.user_has_favorited ? post.favs + 1 : post.favs + 0,
+            user_has_favorited: !post.user_has_favorited,
+          };
+        }
+        return post;
+      });
+      // console.warn(state.dataAll);
+      return {
+        ...state,
+        dataAll: updatedAllPosts,
+      };
+    case actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_MEN:
+      const updatedMenPosts = state.dataMen.map((post) => {
+        if (post.id === id) {
+          return {
+            ...post,
+            favs: post.user_has_favorited ? post.favs + 1 : post.favs + 0,
+            user_has_favorited: !post.user_has_favorited,
+          };
+        }
+        return post;
+      });
+      return {
+        ...state,
+        dataAll: updatedMenPosts,
+      };
+
+    case actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_WOMEN:
+      const updatedWomenPosts = state.dataWomen.map((post) => {
+        if (post.id === id) {
+          return {
+            ...post,
+            favs: post.user_has_favorited ? post.favs + 1 : post.favs + 0,
+            user_has_favorited: !post.user_has_favorited,
+          };
+        }
+        return post;
+      });
+      return {
+        ...state,
+        dataAll: updatedWomenPosts,
+      };
+
+    case actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_NATIVE:
+      const updatedNativePosts = state.dataNative.map((post) => {
+        if (post.id === id) {
+          return {
+            ...post,
+            favs: post.user_has_favorited ? post.favs + 1 : post.favs + 0,
+            user_has_favorited: !post.user_has_favorited,
+          };
+        }
+        return post;
+      });
+      return {
+        ...state,
+        dataAll: updatedNativePosts,
+      };
+
+    case actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_ANKARA:
+      const updatedAnkaraPosts = state.dataAnkara.map((post) => {
+        if (post.id === id) {
+          return {
+            ...post,
+            favs: post.user_has_favorited ? post.favs + 1 : post.favs + 0,
+            user_has_favorited: !post.user_has_favorited,
+          };
+        }
+        return post;
+      });
+      return {
+        ...state,
+        dataAll: updatedAnkaraPosts,
+      };
+
+    case actionTypesAddFavorite.ADD_FAVOURITE_SUCCESS:
+      return {
+        ...state,
+        dataFav: payload,
+        loadingFav: false,
+        errorFav: "",
+      };
+
+    case actionTypesAddFavorite.ADD_FAVOURITE_ERROR:
+      return {
+        ...state,
+        dataFav: null,
+        loadingFav: false,
+        errorFav: error,
+      };
 
     default:
       return state;

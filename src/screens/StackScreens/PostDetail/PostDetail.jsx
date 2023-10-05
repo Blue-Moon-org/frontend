@@ -30,6 +30,8 @@ export const PostDetail = () => {
   };
 
   const state = useSelector((state) => state.comment);
+  const posDel = useSelector((state) => state.postDetail);
+  const fav = useSelector((state) => state.favourite);
 
   useEffect(() => {
     let sub = true;
@@ -39,13 +41,18 @@ export const PostDetail = () => {
     return () => (sub = false);
   }, [route.params?.item?.id]);
   const detail = useSelector((state) => state.postDetail);
+  // console.warn(data);
 
+  // let active = "";
   const _handleFav = () => {
-    // updateHasFav(!hasFav);
+    // makeIsFav(!isFav);
+    // active = true;
     dispatch(addFavourite(route.params?.item?.id));
     dispatch(postDetail(route.params?.item?.id));
   };
-  console.warn(route.params?.item.images);
+
+  const [isFav, makeIsFav] = useState(route.params.item.user_has_favorited);
+  const [favCount, updateFavCount] = useState(route.params.item.favs);
 
   return (
     <View style={SharedStyles.container}>
@@ -126,18 +133,16 @@ export const PostDetail = () => {
                     size={scale.fontPixel(16)}
                     color={colors.blackText}
                   />
-                  {!detail.loading ? (
-                    <Text
-                      text={
-                        !detail?.data?.response?.data?.likes
-                          ? ""
-                          : detail?.data?.response?.data?.likes
-                      }
-                      numberOfLines={1}
-                      ellipsizeMode={"tail"}
-                      textStyle={styles.likeShareText}
-                    />
-                  ) : null}
+                  <Text
+                    text={
+                      !detail?.data?.response?.data?.likes
+                        ? ""
+                        : detail?.data?.response?.data?.likes
+                    }
+                    numberOfLines={1}
+                    ellipsizeMode={"tail"}
+                    textStyle={styles.likeShareText}
+                  />
                 </View>
                 <View style={styles.iconTextContainer}>
                   <Feather
@@ -145,28 +150,29 @@ export const PostDetail = () => {
                     size={scale.fontPixel(16)}
                     color={colors.blackText}
                   />
-                  {!detail.loading ? (
+                  {/* {active ? ( */}
+                  <Text
+                    // text={isFav === true ? favCount + 1 : favCount}
+                    numberOfLines={1}
+                    ellipsizeMode={"tail"}
+                    textStyle={styles.likeShareText}
+                  />
+                  {/* ) : (
                     <Text
-                      text={
-                        detail?.data?.response?.data?.favs
-                          ? detail?.data?.response?.data?.favs
-                          : ""
-                      }
+                      text={favCount}
                       numberOfLines={1}
                       ellipsizeMode={"tail"}
                       textStyle={styles.likeShareText}
                     />
-                  ) : null}
+                  )} */}
                 </View>
                 <AntDesign
-                  name={
-                    detail?.data?.response?.data?.user_has_favorited
-                      ? "star"
-                      : "staro"
-                  }
+                  name={1 + 1 === 2 ? "star" : "staro"}
                   size={scale.fontPixel(16)}
                   color={colors.blackText}
-                  onPress={() => _handleFav()}
+                  onPress={() => {
+                    _handleFav();
+                  }}
                 />
               </View>
             </View>
@@ -213,9 +219,11 @@ export const PostDetail = () => {
                     onPress={() => _commentHandler()}
                     name="send" //add loading
                     size={scale.fontPixel(16)}
-                    disabled={values.comment.length < 1 ? true : false}
+                    disabled={values?.comment?.length < 1 ? true : false}
                     color={
-                      values.comment.length < 1 ? "lightgray" : colors.blackText
+                      values?.comment?.length < 1
+                        ? "lightgray"
+                        : colors.blackText
                     }
                   />
                 )}

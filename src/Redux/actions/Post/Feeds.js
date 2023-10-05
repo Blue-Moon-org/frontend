@@ -19,7 +19,6 @@ export const fetchFeeds = (type, page, navigate) => async (dispatch) => {
     });
   }
 
-  console.warn(page);
   // console.warn("wdqwdqw", endPointData.page);
 
   const jsonValue = await AsyncStorage.getItem("userTokens");

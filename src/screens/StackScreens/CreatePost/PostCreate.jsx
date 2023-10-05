@@ -6,6 +6,7 @@ import {
   Keyboard,
   Platform,
   Alert,
+  Text,
 } from "react-native";
 import React, { useState, useRef, useMemo, useCallback } from "react";
 import { Fontscales, SharedStyles } from "../../../styles";
@@ -19,7 +20,7 @@ import {
   TextInput,
 } from "../../../components/common";
 import { PostCreateBottomTab } from "./PostCreateBottomTab";
-import RNPickerSelect from "react-native-picker-select";
+import { Picker as SelectPicker } from "@react-native-picker/picker";
 import { colors } from "../../../constants/colorpallette";
 import { createPost } from "../../../Redux/actions/Post/CreatePosts";
 import { useSelector, useDispatch } from "react-redux";
@@ -28,20 +29,16 @@ import { Lodaing } from "../../../components/primary";
 
 export const PostCreate = () => {
   const [height, updateHeight] = useState(scale.heightPixel(47));
-
   const bottomSheetRef = useRef();
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
-
   const snapPoints = useMemo(
     () => [scale.heightPixel(120), scale.heightPixel(130)],
     []
   );
-
   const handleSheetChanges = useCallback((index) => {
     // console.warn("handleSheetChanges", index);
   }, []);
-
   const handleClosePress = () => bottomSheetRef.current.close();
   const handleOpenModal = useCallback(() => {
     Keyboard.dismiss();
@@ -60,19 +57,7 @@ export const PostCreate = () => {
     category: "",
     error: "",
   });
-
-  const placeholder = {
-    label: "Select a category...",
-    value: null,
-    color: "#9EA0A4",
-  };
-  const items = [
-    { label: "Men", value: "Men" },
-    { label: "Women", value: "Women" },
-    { label: "Native", value: "Native" },
-    { label: "Ankara", value: "Ankara" },
-  ];
-
+  console.warn(state.category);
   const popUp = (error) => {
     Alert.alert("Photos Alert", error, [
       {
@@ -89,7 +74,6 @@ export const PostCreate = () => {
     ]);
   };
   const postCreate = useSelector((state) => state.createPost);
-
   const createPostHandler = () => {
     if (
       state.Images[1]?.image === undefined ||
@@ -192,49 +176,34 @@ export const PostCreate = () => {
                   });
                 }}
               />
-              <RNPickerSelect
+              <View
                 style={{
-                  iconContainer: {
-                    opacity: 0,
-                  },
-                  viewContainer: {
-                    borderColor: colors.lightPrimary,
-                    borderWidth: scale.fontPixel(1),
-                    marginTop: scale.pixelSizeVertical(15),
-                    borderRadius: scale.fontPixel(6),
-                    height: scale.heightPixel(47),
-                    justifyContent: "center",
-                    paddingLeft:
-                      Platform.OS === "ios" ? scale.pixelSizeHorizontal(20) : 0,
-                  },
-                  placeholder: {
-                    fontFamily: "Outfit_400Regular",
-                    fontSize: scale.fontPixel(14),
-                    color: colors.grey1,
-                  },
-                  done: {
-                    fontFamily: "Outfit_400Regular",
-                    fontSize: scale.fontPixel(14),
-                    color: colors.grey1,
-                  },
-                  inputIOS: {
-                    fontFamily: "Outfit_400Regular",
-                    fontSize: scale.fontPixel(14),
-                    color: colors.grey1,
-                  },
-                  inputAndroid: {
-                    fontFamily: "Outfit_400Regular",
-                    fontSize: scale.fontPixel(14),
-                    color: colors.grey1,
-                  },
+                  borderColor: colors.lightPrimary,
+                  borderWidth: scale.fontPixel(1),
+                  marginTop: scale.pixelSizeVertical(15),
+                  borderRadius: scale.fontPixel(6),
+                  height: scale.heightPixel(47),
+                  justifyContent: "center",
+                  paddingLeft:
+                    Platform.OS === "ios" ? scale.pixelSizeHorizontal(20) : 0,
+                  justifyContent: "center",
                 }}
-                placeholder={placeholder}
-                onValueChange={(value) =>
-                  setState({ ...state, category: value })
-                }
-                items={items}
-                value={state.category}
-              />
+              >
+                <SelectPicker
+                  label="Category"
+                  fontFamily="Outfit_400Regular"
+                  style={{}}
+                  selectedValue={state.category}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setState({ ...state, category: itemValue })
+                  }
+                >
+                  <SelectPicker.Item label="Men" value="Men" />
+                  <SelectPicker.Item label="Women" value="Women" />
+                  <SelectPicker.Item label="Native" value="Native" />
+                  <SelectPicker.Item label="Ankara" value="Ankara" />
+                </SelectPicker>
+              </View>
               <Button
                 title={"Post"}
                 textStyle={[

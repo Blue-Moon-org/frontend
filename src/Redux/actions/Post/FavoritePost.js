@@ -11,6 +11,26 @@ export const addFavourite = (id, navigate) => async (dispatch) => {
   const jsonValue = await AsyncStorage.getItem("userTokens");
   let result = JSON.parse(jsonValue);
 
+  dispatch({
+    type: actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_ALL,
+    id: id,
+  });
+  dispatch({
+    type: actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_MEN,
+    id: id,
+  });
+  dispatch({
+    type: actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_WOMEN,
+    id: id,
+  });
+  dispatch({
+    type: actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_NATIVE,
+    id: id,
+  });
+  dispatch({
+    type: actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_ANKARA,
+    id: id,
+  });
   await fetchPostRequestInit(
     `/post/favorite/${id}/`,
     "",
@@ -21,6 +41,7 @@ export const addFavourite = (id, navigate) => async (dispatch) => {
       dispatch({
         type: actionTypesAddFavorite.ADD_FAVOURITE_SUCCESS,
         payload: res,
+        id: id,
       });
       //   navigate("ForgotPasswordVerification",);
     })
@@ -29,6 +50,7 @@ export const addFavourite = (id, navigate) => async (dispatch) => {
       dispatch({
         type: actionTypesAddFavorite.ADD_FAVOURITE_ERROR,
         error: err,
+        id: id,
       });
     });
 };

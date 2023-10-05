@@ -12,9 +12,9 @@ import { phoneNoVerifyReducer } from "./phoneVerifyReducer";
 import { fetchFeedsReducer } from "./Posts/Feeds";
 import { fetchLikeReducer } from "./Posts/Like";
 import { addCommentReducer } from "./Posts/AddComments";
-import { favoritePostReducer } from "./Posts/FavoritePost";
 import { postDetailReducer } from "./Posts/PostDetail";
 import { createPostReducer } from "./Posts/createPost";
+import { favoritePostReducer } from "./Posts/Feeds";
 
 //market
 import { fetchMarketReducer } from "./Market/market";
@@ -22,6 +22,13 @@ import { createMarketReducer } from "./Market/marketCreate";
 import { addToCartReducer } from "./Market/AddToCart";
 import { cartViewReducer } from "./Market/CartView";
 import { checkOutReducer } from "./Market/Checkout";
+import {
+  latestSearchReducer,
+  peopleSearchReducer,
+  postSearchReducer,
+  productSearchReducer,
+} from "./Posts/search";
+import { userUpdateReducer } from "./DetailsUpdate";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -43,4 +50,9 @@ export const reducers = combineReducers({
   addToCart: addToCartReducer,
   cartView: cartViewReducer,
   checkOut: checkOutReducer,
+  latest: latestSearchReducer,
+  people: peopleSearchReducer,
+  post: postSearchReducer,
+  product: productSearchReducer,
+  update: userUpdateReducer,
 });

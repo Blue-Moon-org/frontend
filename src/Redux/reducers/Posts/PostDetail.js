@@ -22,7 +22,7 @@ export const postDetailReducer = (
     case actionTypesPostDetail.POST_DETAIL_SUCCESS:
       return {
         ...state,
-        data: payload,
+        data: payload?.response?.data,
         loading: false,
         error: "",
       };
