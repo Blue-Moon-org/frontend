@@ -27,7 +27,7 @@ export const userRegistration = (body, navigate) => async (dispatch) => {
       address: body.address,
       policy: body.policy,
       other_contact: body.otherContact,
-      fullname: body.fullName,
+      full_name: body.fullName,
     },
     "application/json"
   )

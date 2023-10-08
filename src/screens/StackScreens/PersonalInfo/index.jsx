@@ -32,6 +32,7 @@ export const PersonalInfo = () => {
     return () => (sub = false);
   }, [user]);
 
+
   return (
     <SafeAreaView style={SharedStyles.container}>
       <Ionicons
@@ -124,7 +125,7 @@ export const PersonalInfo = () => {
           textStyle={Fontscales.labelSmallMedium}
         />
         <Text
-          text={user?.secondaryAddress ? user?.secondaryAddress : "-"}
+          text={user?.secondaryAddress ? user?.secondaryaddress : "-"}
           textStyle={[
             Fontscales.labelSmallMedium,
             {

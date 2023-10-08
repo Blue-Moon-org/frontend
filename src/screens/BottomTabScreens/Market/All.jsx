@@ -26,7 +26,7 @@ export const All = ({ page, type, updatePage, data, state }) => {
         dispatch(fetchMarkets(type, page, navigate));
       }
     }
-  }, [page, state.isListEndAll]);
+  }, [state.isListEndAll]);
 
   return (
     <View>

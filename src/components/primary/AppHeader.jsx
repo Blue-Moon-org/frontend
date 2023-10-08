@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,11 +16,32 @@ import { Fontscales } from "../../styles";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { baseURL } from "../../utils/request";
 
 export const AppHeader = () => {
   const { navigate } = useNavigation();
 
   const state = useSelector((state) => state.cartView);
+  const [user, updateUser] = useState("");
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("user");
+      updateUser(JSON.parse(jsonValue));
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      getData();
+    }
+
+    return () => (sub = false);
+  }, [user]);
 
   // console.warn(user);
 
@@ -42,7 +63,7 @@ export const AppHeader = () => {
             style={styles.image}
             cachePolicy={"memory-disk"}
             source={{
-              uri: "https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?w=2000&t=st=1688497523~exp=1688498123~hmac=231d6292720e943c2a7e81a88bbb01be8748b8129b28e86495ab70df0f302c89",
+              uri: `${baseURL + user?.image}`,
             }}
           />
         </TouchableOpacity>

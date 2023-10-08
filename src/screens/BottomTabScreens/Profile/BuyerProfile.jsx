@@ -14,10 +14,18 @@ import {
 import { scale } from "../../../utils/scale";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogout } from "../../../Redux/actions/loginActions";
 
 export const BuyerProfile = () => {
   const { navigate } = useNavigation();
   const [user, updateUser] = useState("");
+
+  const dispatch = useDispatch();
+
+  const state = useSelector((state) => state.logoutState);
+
+  console.warn(state);
 
   const getData = async () => {
     try {
@@ -36,6 +44,17 @@ export const BuyerProfile = () => {
 
     return () => (sub = false);
   }, [user]);
+
+  const _logoutHandler = async () => {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      await AsyncStorage.multiRemove(keys).then(() => {
+        dispatch(userLogout(""));
+      });
+    } catch (e) {
+      console.log("Error: ", e);
+    }
+  };
 
   return (
     <SafeAreaView style={[SharedStyles.container]}>
@@ -241,6 +260,7 @@ export const BuyerProfile = () => {
               name="notebook"
               size={scale.fontPixel(20)}
               color="black"
+              onPress={() => _logoutHandler()}
             />
             <Text
               textStyle={[

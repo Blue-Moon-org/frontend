@@ -25,7 +25,7 @@ export const Men = ({ page, updatePage, state, data, type }) => {
         dispatch(fetchMarkets(type, page, navigate));
       }
     }
-  }, [page, state.isListEndMen]);
+  }, [ state.isListEndMen]);
 
   return (
     <View>

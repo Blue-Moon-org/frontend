@@ -63,7 +63,6 @@ export const MarketCreate = () => {
     stock: "",
   });
 
-
   // console.warn(state.Images[1].image.fileName);
 
   const popUp = (error) => {
@@ -247,10 +246,34 @@ export const MarketCreate = () => {
                     setState({ ...state, category: itemValue })
                   }
                 >
-                  <SelectPicker.Item label="Men" value="Men" />
-                  <SelectPicker.Item label="Women" value="Women" />
-                  <SelectPicker.Item label="Native" value="Native" />
-                  <SelectPicker.Item label="Ankara" value="Ankara" />
+                  <SelectPicker.Item
+                    style={{ fontSize: scale.fontPixel(13) }}
+                    color={colors.blackText}
+                    fontFamily="Outfit_400Regular"
+                    label="Men"
+                    value="Men"
+                  />
+                  <SelectPicker.Item
+                    style={{ fontSize: scale.fontPixel(13) }}
+                    color={colors.blackText}
+                    fontFamily="Outfit_400Regular"
+                    label="Women"
+                    value="Women"
+                  />
+                  <SelectPicker.Item
+                    style={{ fontSize: scale.fontPixel(13) }}
+                    color={colors.blackText}
+                    fontFamily="Outfit_400Regular"
+                    label="Native"
+                    value="Native"
+                  />
+                  <SelectPicker.Item
+                    style={{ fontSize: scale.fontPixel(13) }}
+                    color={colors.blackText}
+                    fontFamily="Outfit_400Regular"
+                    label="Ankara"
+                    value="Ankara"
+                  />
                 </SelectPicker>
               </View>
               <Button

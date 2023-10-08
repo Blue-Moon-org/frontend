@@ -1,5 +1,5 @@
 import { TouchableOpacity, View, Alert } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   KeyBoardAvoidingWrapper,
@@ -19,11 +19,32 @@ import { scale } from "../../../utils/scale";
 import { Fontscales } from "../../../styles";
 import { colors } from "../../../constants/colorpallette";
 import StarRating from "react-native-star-rating-widget";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const OrderDetail = () => {
   const { navigate, setOptions } = useNavigation();
 
   const { params } = useRoute();
+
+  const [user, updateUser] = useState("");
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("user");
+      updateUser(JSON.parse(jsonValue));
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      getData();
+    }
+
+    return () => (sub = false);
+  }, [user]);
 
   setOptions({
     title: `Order ${params.orderId}`,
@@ -105,7 +126,9 @@ export const OrderDetail = () => {
           <View style={styles.mainStepContainer}>
             <View style={styles.stepsContainer}>
               <TouchableOpacity
-                disabled={reach >= 1 ? true : false}
+                disabled={
+                  reach >= 1 || user.account_type === "Buyer" ? true : false
+                }
                 onPress={() => alert()}
                 activeOpacity={0.8}
                 style={[
@@ -132,7 +155,9 @@ export const OrderDetail = () => {
                 ]}
               />
               <TouchableOpacity
-                disabled={reach >= 2 ? true : false}
+                disabled={
+                  reach >= 2 || user.account_type === "Buyer" ? true : false
+                }
                 activeOpacity={0.8}
                 onPress={() => alert()}
                 style={{
@@ -153,7 +178,9 @@ export const OrderDetail = () => {
                 ]}
               />
               <TouchableOpacity
-                disabled={reach >= 3 ? true : false}
+                disabled={
+                  reach >= 3 || user.account_type === "Buyer" ? true : false
+                }
                 activeOpacity={0.8}
                 onPress={() => alert()}
                 style={{
@@ -174,7 +201,9 @@ export const OrderDetail = () => {
                 ]}
               />
               <TouchableOpacity
-                disabled={reach >= 4 ? true : false}
+                disabled={
+                  reach >= 4 || user.account_type === "Buyer" ? true : false
+                }
                 activeOpacity={0.8}
                 onPress={() => alert()}
                 style={{
@@ -195,7 +224,9 @@ export const OrderDetail = () => {
                 ]}
               />
               <TouchableOpacity
-                disabled={reach >= 5 ? true : false}
+                disabled={
+                  reach >= 5 || user.account_type === "Buyer" ? true : false
+                }
                 activeOpacity={0.8}
                 onPress={() => alert()}
                 style={[
@@ -286,41 +317,43 @@ export const OrderDetail = () => {
               </View>
             </View>
           </View>
-
-          <View style={styles.ratingContainer}>
-            <Text
-              text={"Rate the Service"}
-              textStyle={Fontscales.labelMediumBold}
-            />
-            <StarRating
-              style={{ marginTop: scale.pixelSizeVertical(15) }}
-              rating={rating}
-              maxStars={5}
-              starSize={scale.fontPixel(24)}
-              color={colors.mainPrimary}
-              emptyColor={colors.grey1}
-              enableHalfStar={true}
-              enableSwiping={true}
-              animationConfig={{
-                scale: scale.fontPixel(1),
-                duration: 200,
-                delay: 150,
-              }}
-              onChange={(newRating) => {
-                setRating(newRating);
-              }}
-            />
-          </View>
-          <TextInput
-            placeholder={"Leave a comment"}
-            textInputStyle={styles.textInput}
-          />
-
-          <Button
-            title={"Submit"}
-            textStyle={Fontscales.labelSmallMedium}
-            containerStyle={styles.btnContainer}
-          />
+          {user.account_type === "Buyer" && (
+            <View>
+              <View style={styles.ratingContainer}>
+                <Text
+                  text={"Rate the Service"}
+                  textStyle={Fontscales.labelMediumBold}
+                />
+                <StarRating
+                  style={{ marginTop: scale.pixelSizeVertical(15) }}
+                  rating={rating}
+                  maxStars={5}
+                  starSize={scale.fontPixel(24)}
+                  color={colors.mainPrimary}
+                  emptyColor={colors.grey1}
+                  enableHalfStar={true}
+                  enableSwiping={true}
+                  animationConfig={{
+                    scale: scale.fontPixel(1),
+                    duration: 200,
+                    delay: 150,
+                  }}
+                  onChange={(newRating) => {
+                    setRating(newRating);
+                  }}
+                />
+              </View>
+              <TextInput
+                placeholder={"Leave a comment"}
+                textInputStyle={styles.textInput}
+              />
+              <Button
+                title={"Submit"}
+                textStyle={Fontscales.labelSmallMedium}
+                containerStyle={styles.btnContainer}
+              />
+            </View>
+          )}
 
           <Text
             textStyle={[

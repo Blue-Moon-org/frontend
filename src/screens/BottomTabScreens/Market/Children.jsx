@@ -25,7 +25,7 @@ export const Children = ({ page, updatePage, state, data, type }) => {
         dispatch(fetchMarkets(type, page, navigate));
       }
     }
-  }, [page, state.isListEndAnkara]);
+  }, [ state.isListEndAnkara]);
 
   return (
     <View>

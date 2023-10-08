@@ -20,31 +20,31 @@ export const Checkout = () => {
   const [picked, setPicked] = useState(1);
   const [pay, setpay] = useState(1);
 
-    let naira = new Intl.NumberFormat("en-NG", {
-      style: "currency",
-      currency: "NGN",
-      notation: "compact",
-      compactDisplay: "short",
-      useGrouping: true,
+  let naira = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    notation: "compact",
+    compactDisplay: "short",
+    useGrouping: true,
+  });
+
+  const { navigate } = useNavigation();
+
+  const route = useRoute();
+
+  const dispatch = useDispatch();
+
+  const _checkOutHandler = () => {
+    let address = addressData.filter((item) => {
+      return item.id === picked;
     });
 
-    const { navigate } = useNavigation();
+    let payment = paymentData.filter((item) => {
+      return item.id === pay;
+    });
 
-    const route = useRoute();
-
-    const dispatch = useDispatch;
-
-    const _checkOutHandler = () => {
-      let address = addressData.filter((item) => {
-        return item.id === picked;
-      });
-
-      let payment = paymentData.filter((item) => {
-        return item.id === pay;
-      });
-
-      dispatch(checkOut());
-    };
+    dispatch(checkOut(address, payment, navigate));
+  };
 
   const addressData = [
     {
@@ -75,9 +75,6 @@ export const Checkout = () => {
       selcted: false,
     },
   ];
-
-
-
 
   return (
     <View style={[SharedStyles.container]}>

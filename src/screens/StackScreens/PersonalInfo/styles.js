@@ -48,6 +48,13 @@ export const styles = StyleSheet.create({
     marginBottom: scale.pixelSizeVertical(8),
     paddingLeft: scale.pixelSizeHorizontal(7),
   },
+  textSex: {
+    fontFamily: "Outfit_500Medium",
+    fontSize: scale.fontPixel(10),
+    marginBottom: scale.pixelSizeVertical(8),
+    paddingLeft: scale.pixelSizeHorizontal(7),
+    paddingTop: scale.pixelSizeVertical(15),
+  },
   textInputContainer: {
     marginTop: scale.pixelSizeVertical(15),
   },
@@ -58,5 +65,13 @@ export const styles = StyleSheet.create({
     paddingVertical: scale.pixelSizeVertical(10),
     borderRadius: scale.fontPixel(8),
     marginTop: scale.pixelSizeVertical(30),
+    marginBottom: scale.pixelSizeVertical(30),
+  },
+  textSex: {
+    fontFamily: "Outfit_500Medium",
+    fontSize: scale.fontPixel(10),
+    marginBottom: scale.pixelSizeVertical(8),
+    paddingLeft: scale.pixelSizeHorizontal(7),
+    paddingTop: scale.pixelSizeVertical(15),
   },
 });

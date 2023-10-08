@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
@@ -8,9 +8,30 @@ import { Fontscales, SharedStyles } from "../../../styles";
 import { Text } from "../../../components/common";
 import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const BizInfo = () => {
   const { navigate, goBack } = useNavigation();
+
+  const [user, updateUser] = useState("");
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("user");
+      updateUser(JSON.parse(jsonValue));
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      getData();
+    }
+
+    return () => (sub = false);
+  }, [user]);
   return (
     <SafeAreaView style={SharedStyles.container}>
       <Ionicons
@@ -37,7 +58,7 @@ export const BizInfo = () => {
       <View style={styles.detailContainer}>
         <Text text={"Business name"} textStyle={Fontscales.labelSmallMedium} />
         <Text
-          text={"Coture"}
+          text={user?.brand_name}
           textStyle={[
             Fontscales.labelSmallMedium,
             {
@@ -47,9 +68,21 @@ export const BizInfo = () => {
         />
       </View>
       <View style={styles.detailContainer}>
-        <Text text={"About Business"} textStyle={Fontscales.labelSmallMedium} />
+        <Text text={"Full name"} textStyle={Fontscales.labelSmallMedium} />
         <Text
-          text={"Caftan specialist"}
+          text={user?.fullname}
+          textStyle={[
+            Fontscales.labelSmallMedium,
+            {
+              color: "#848495",
+            },
+          ]}
+        />
+      </View>
+      <View style={styles.detailContainer}>
+        <Text text={"Account Type"} textStyle={Fontscales.labelSmallMedium} />
+        <Text
+          text={user?.account_type}
           textStyle={[
             Fontscales.labelSmallMedium,
             {
@@ -61,7 +94,7 @@ export const BizInfo = () => {
       <View style={styles.detailContainer}>
         <Text text={"Address"} textStyle={Fontscales.labelSmallMedium} />
         <Text
-          text={"Ikotun lagos, Nigeria"}
+          text={user?.address ?? "-"}
           textStyle={[
             Fontscales.labelSmallMedium,
             {
@@ -73,7 +106,7 @@ export const BizInfo = () => {
       <View style={styles.detailContainer}>
         <Text text={"Phone"} textStyle={Fontscales.labelSmallMedium} />
         <Text
-          text={"08136765654"}
+          text={user?.phone}
           textStyle={[
             Fontscales.labelSmallMedium,
             {
@@ -85,7 +118,7 @@ export const BizInfo = () => {
       <View style={styles.detailContainer}>
         <Text text={"Email"} textStyle={Fontscales.labelSmallMedium} />
         <Text
-          text={"Example@gmail.com"}
+          text={user?.email}
           textStyle={[
             Fontscales.labelSmallMedium,
             {

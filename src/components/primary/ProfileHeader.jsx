@@ -7,9 +7,13 @@ import { Text } from "../common";
 import { Fontscales } from "../../styles";
 import { colors } from "../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
+import { baseURL } from "../../utils/request";
 
 export const ProfileHeader = ({ designer, client, user }) => {
   const { goBack, navigate } = useNavigation();
+
+  // console.warn(baseURL + user.brand_image);
+
   return (
     <>
       {!designer && (
@@ -25,10 +29,17 @@ export const ProfileHeader = ({ designer, client, user }) => {
         <View>
           <Text
             textStyle={[Fontscales.headingLargeRegular]}
-            text={user?.brandname ? user?.brandname : user?.fullname}
+            text={
+              user?.account_type === "Designer"
+                ? user?.brand_name
+                : user?.fullname
+            }
           />
           <BaseText style={[Fontscales.paragraphSmallRegular]}>
-            {user?.firstname} -{" "}
+            {user?.account_type === "Designer"
+              ? user?.fullname
+              : user?.firstname}
+            {" - "}
             <Text
               textStyle={{ color: colors.mainPrimary }}
               text={user?.account_type}
@@ -66,7 +77,10 @@ export const ProfileHeader = ({ designer, client, user }) => {
               cachePolicy={"memory-disk"}
               contentFit="cover"
               source={{
-                uri: "https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?size=626&ext=jpg&ga=GA1.1.70578014.1688424585&semt=sph",
+                uri:
+                  user?.account_type === "Designer"
+                    ? `${baseURL + user?.brand_image}`
+                    : `${baseURL + user?.image}`,
               }}
             />
           </View>
@@ -82,6 +96,7 @@ const styles = StyleSheet.create({
     height: scale.heightPixel(47),
     borderRadius: scale.fontPixel(8),
     marginLeft: scale.pixelSizeHorizontal(20),
+    backgroundColor: colors.mainPrimary,
   },
   image: {
     width: "100%",

@@ -41,15 +41,17 @@ export const PostDetail = () => {
     return () => (sub = false);
   }, [route.params?.item?.id]);
   const detail = useSelector((state) => state.postDetail);
-  // console.warn(data);
+  const allData = useSelector((state) => state.fetchFeedsAll);
 
   // let active = "";
   const _handleFav = () => {
     // makeIsFav(!isFav);
     // active = true;
-    dispatch(addFavourite(route.params?.item?.id));
-    dispatch(postDetail(route.params?.item?.id));
+    // console.warn("object");
+    dispatch(addFavourite(route.params?.item?.id, allData.dataAll, navigate));
+    // dispatch(postDetail(route.params?.item?.id));
   };
+  console.warn(route?.params?.item);
 
   const [isFav, makeIsFav] = useState(route.params.item.user_has_favorited);
   const [favCount, updateFavCount] = useState(route.params.item.favs);
@@ -134,11 +136,7 @@ export const PostDetail = () => {
                     color={colors.blackText}
                   />
                   <Text
-                    text={
-                      !detail?.data?.response?.data?.likes
-                        ? ""
-                        : detail?.data?.response?.data?.likes
-                    }
+                    text={route.params?.item?.likes}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={styles.likeShareText}
@@ -150,24 +148,17 @@ export const PostDetail = () => {
                     size={scale.fontPixel(16)}
                     color={colors.blackText}
                   />
-                  {/* {active ? ( */}
                   <Text
-                    // text={isFav === true ? favCount + 1 : favCount}
+                    text={route.params?.item.favs}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={styles.likeShareText}
                   />
-                  {/* ) : (
-                    <Text
-                      text={favCount}
-                      numberOfLines={1}
-                      ellipsizeMode={"tail"}
-                      textStyle={styles.likeShareText}
-                    />
-                  )} */}
                 </View>
                 <AntDesign
-                  name={1 + 1 === 2 ? "star" : "staro"}
+                  name={
+                    route.params?.item.user_has_favorited ? "star" : "staro"
+                  }
                   size={scale.fontPixel(16)}
                   color={colors.blackText}
                   onPress={() => {

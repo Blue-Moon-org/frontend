@@ -26,7 +26,7 @@ export const Native = ({ page, updatePage, state, data, type }) => {
         dispatch(fetchMarkets(type, page, "navigate"));
       }
     }
-  }, [page, state.isListEndNative]);
+  }, [ state.isListEndNative]);
 
   return (
     <View>

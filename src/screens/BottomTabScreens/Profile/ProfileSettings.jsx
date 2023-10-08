@@ -14,11 +14,20 @@ import { useNavigation } from "@react-navigation/native";
 import { scale } from "../../../utils/scale";
 import { styles } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { userLogout } from "../../../Redux/actions/loginActions";
+// import { useDisclose } from "native-base";
+import { useDispatch, useSelector } from "react-redux";
 
 export const ProfileSettings = () => {
   const { navigate } = useNavigation();
 
   const [user, updateUser] = useState("");
+
+  const dispatch = useDispatch();
+
+  const state = useSelector((state) => state.logoutState);
+
+  // console.warn(state);
 
   const getData = async () => {
     try {
@@ -37,6 +46,19 @@ export const ProfileSettings = () => {
 
     return () => (sub = false);
   }, [user]);
+
+  const _logoutHandler = async () => {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      await AsyncStorage.multiRemove(keys)
+        .then(() => {})
+        .then(() => {
+          dispatch(userLogout(""));
+        });
+    } catch (e) {
+      console.log("Error: ", e);
+    }
+  };
 
   return (
     <SafeAreaView style={SharedStyles.container}>
@@ -229,7 +251,11 @@ export const ProfileSettings = () => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
+          <TouchableOpacity
+            onPress={() => _logoutHandler()}
+            style={styles.btn}
+            activeOpacity={0.7}
+          >
             <SimpleLineIcons
               name="notebook"
               size={scale.fontPixel(20)}

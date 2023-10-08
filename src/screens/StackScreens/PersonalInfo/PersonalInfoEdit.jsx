@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { userUpadte } from "../../../Redux/actions/DetailsUpdate";
+import { Picker as SelectPicker } from "@react-native-picker/picker";
+import { Lodaing } from "../../../components/primary";
 
 export const PersonalInfoEdit = () => {
   const { goBack, navigate } = useNavigation();
@@ -31,6 +33,7 @@ export const PersonalInfoEdit = () => {
     phoneNumber: "",
     primaryAddress: "",
     secondaryAddress: "",
+    sex: "",
   });
 
   const getData = async () => {
@@ -62,7 +65,6 @@ export const PersonalInfoEdit = () => {
   }, []);
 
   const update = useSelector((state) => state.update);
-  // console.warn(update);
 
   const _updateHandler = () => {
     if (user.firstName === "") {
@@ -71,12 +73,14 @@ export const PersonalInfoEdit = () => {
       console.warn("err");
     } else if (user.email === "") {
       console.warn("err");
-    } else if (user.phoneNumber === "" || user.phoneNumber.length < 10) {
+    } else if (user.phoneNumber === "" || user.phoneNumber.length < 11) {
+      console.warn("err");
+    } else if (user.sex === "") {
       console.warn("err");
     } else if (user.primaryAddress === "") {
       console.warn("err");
     } else {
-      dispatch(userUpadte(user, navigate));
+      dispatch(userUpadte(user, goBack));
     }
   };
 
@@ -96,124 +100,175 @@ export const PersonalInfoEdit = () => {
       if (!result.canceled) {
         updateUser({
           ...user,
-          profilePicture: result.assets[0],
+          profilePicture: result?.assets[0],
         });
       }
     } catch (error) {
-      popUp(error);
+      console.warn(error);
     }
   };
 
   return (
-    <SafeAreaView style={SharedStyles.container}>
-      <KeyBoardAvoidingWrapper offset={scale.heightPixel(5)}>
-        <View>
-          <Ionicons
-            onPress={() => goBack()}
-            name="md-arrow-back-sharp"
-            size={scale.fontPixel(24)}
-            color={colors.blackText}
-            style={{ marginTop: scale.pixelSizeVertical(8) }}
-          />
-          <Text
-            text={"Personal Information Edit"}
-            textStyle={[
-              Fontscales.labelLargeMedium,
-              {
-                marginVertical: scale.pixelSizeVertical(12),
-              },
-            ]}
-          />
-          <View style={styles.imageConatiner}>
-            <View style={styles.imageEditConatiner}>
-              <Image
-                style={styles.image}
-                source={{
-                  uri: user.profilePicture?.uri,
-                }}
-                contentFit="cover"
-                cachePolicy={"memory-disk"}
-              />
+    <>
+      {update.loading ? <Lodaing /> : null}
+      <SafeAreaView style={SharedStyles.container}>
+        <KeyBoardAvoidingWrapper offset={scale.heightPixel(5)}>
+          <View>
+            <Ionicons
+              onPress={() => goBack()}
+              name="md-arrow-back-sharp"
+              size={scale.fontPixel(24)}
+              color={colors.blackText}
+              style={{ marginTop: scale.pixelSizeVertical(8) }}
+            />
+            <Text
+              text={"Personal Information Edit"}
+              textStyle={[
+                Fontscales.labelLargeMedium,
+                {
+                  marginVertical: scale.pixelSizeVertical(12),
+                },
+              ]}
+            />
+            <View style={styles.imageConatiner}>
+              <View style={styles.imageEditConatiner}>
+                <Image
+                  style={styles.image}
+                  source={{
+                    uri: user.profilePicture?.uri,
+                  }}
+                  contentFit="cover"
+                  cachePolicy={"memory-disk"}
+                />
 
-              <MaterialCommunityIcons
-                name="image-edit"
-                size={scale.fontPixel(28)}
-                color={colors.grey1}
-                style={styles.iconEdit}
-                onPress={() => _galleryHandler()}
+                <MaterialCommunityIcons
+                  name="image-edit"
+                  size={scale.fontPixel(28)}
+                  color={colors.grey1}
+                  style={styles.iconEdit}
+                  onPress={() => _galleryHandler()}
+                />
+              </View>
+            </View>
+
+            <View style={styles.textInputContainer}>
+              <Text textStyle={styles.text} text={"First name"} />
+              <TextInput
+                value={user.firstName}
+                onChangeText={(text) => {
+                  updateUser({ ...user, firstName: text });
+                }}
+                placeholder={"Slyvester"}
               />
             </View>
-          </View>
+            <View style={styles.textInputContainer}>
+              <Text textStyle={styles.text} text={"Last name"} />
+              <TextInput
+                value={user.lastName}
+                onChangeText={(text) => {
+                  updateUser({ ...user, lastName: text });
+                }}
+                placeholder={"stallone"}
+              />
+            </View>
+            <View style={styles.textInputContainer}>
+              <Text textStyle={styles.text} text={"Email"} />
+              <TextInput
+                value={user.email}
+                onChangeText={(text) => {
+                  updateUser({ ...user, email: text });
+                }}
+                placeholder={"Example@gmail.com"}
+              />
+            </View>
+            <Text textStyle={styles.textSex} text={"Gender"} />
 
-          <View style={styles.textInputContainer}>
-            <Text textStyle={styles.text} text={"First name"} />
-            <TextInput
-              value={user.firstName}
-              onChangeText={(text) => {
-                updateUser({ ...user, firstName: text });
+            <View
+              style={{
+                borderColor: colors.grey2,
+                borderWidth: scale.fontPixel(1),
+                // marginTop: scale.pixelSizeVertical(5),
+                borderRadius: scale.fontPixel(6),
+                height: scale.heightPixel(47),
+                justifyContent: "center",
+                paddingLeft:
+                  Platform.OS === "ios" ? scale.pixelSizeHorizontal(20) : 0,
+                justifyContent: "center",
               }}
-              placeholder={"Slyvester"}
-            />
-          </View>
-          <View style={styles.textInputContainer}>
-            <Text textStyle={styles.text} text={"Last name"} />
-            <TextInput
-              value={user.lastName}
-              onChangeText={(text) => {
-                updateUser({ ...user, lastName: text });
-              }}
-              placeholder={"stallone"}
-            />
-          </View>
-          <View style={styles.textInputContainer}>
-            <Text textStyle={styles.text} text={"Email"} />
-            <TextInput
-              value={user.email}
-              onChangeText={(text) => {
-                updateUser({ ...user, email: text });
-              }}
-              placeholder={"Example@gmail.com"}
-            />
-          </View>
-          <View style={styles.textInputContainer}>
-            <Text textStyle={styles.text} text={"Phone"} />
-            <TextInput
-              value={user.phoneNumber}
-              onChangeText={(text) => {
-                updateUser({ ...user, phoneNumber: text });
-              }}
-              placeholder={"09145654542"}
-            />
-          </View>
-          <View style={styles.textInputContainer}>
-            <Text textStyle={styles.text} text={"Primary Address"} />
-            <TextInput
-              value={user.primaryAddress}
-              onChangeText={(text) => {
-                updateUser({ ...user, primaryAddress: text });
-              }}
-              placeholder={"Ikotun Lagos, Nigeria"}
-            />
-          </View>
-          <View style={styles.textInputContainer}>
-            <Text textStyle={styles.text} text={"Secondary Address"} />
-            <TextInput
-              value={user.secondaryAddress}
-              onChangeText={(text) => {
-                updateUser({ ...user, secondaryAddress: text });
-              }}
-              placeholder={"Lekki Lagos, Nigeria"}
-            />
-          </View>
+            >
+              <SelectPicker
+                label="Category"
+                fontFamily="Outfit_400Regular"
+                style={{ fontSize: 13 }}
+                selectedValue={user.sex}
+                onValueChange={(itemValue, itemIndex) =>
+                  updateUser({ ...user, sex: itemValue })
+                }
+              >
+                <SelectPicker.Item
+                  style={{ fontSize: scale.fontPixel(13) }}
+                  color={colors.blackText}
+                  fontFamily="Outfit_400Regular"
+                  label="Male"
+                  value="Male"
+                />
+                <SelectPicker.Item
+                  style={{ fontSize: scale.fontPixel(13) }}
+                  color={colors.blackText}
+                  fontFamily="Outfit_400Regular"
+                  label="Female"
+                  value="Female"
+                />
+                <SelectPicker.Item
+                  style={{ fontSize: scale.fontPixel(13) }}
+                  color={colors.blackText}
+                  fontFamily="Outfit_400Regular"
+                  label="Other"
+                  value="Other"
+                />
+              </SelectPicker>
+            </View>
 
-          <Button
-            title={"Submit"}
-            onPress={() => _updateHandler()}
-            containerStyle={styles.btnContainer}
-            textStyle={styles.btnText}
-          />
-        </View>
-      </KeyBoardAvoidingWrapper>
-    </SafeAreaView>
+            <View style={styles.textInputContainer}>
+              <Text textStyle={styles.text} text={"Phone"} />
+              <TextInput
+                value={user.phoneNumber}
+                onChangeText={(text) => {
+                  updateUser({ ...user, phoneNumber: text });
+                }}
+                placeholder={"09145654542"}
+              />
+            </View>
+            <View style={styles.textInputContainer}>
+              <Text textStyle={styles.text} text={"Primary Address"} />
+              <TextInput
+                value={user.primaryAddress}
+                onChangeText={(text) => {
+                  updateUser({ ...user, primaryAddress: text });
+                }}
+                placeholder={"Ikotun Lagos, Nigeria"}
+              />
+            </View>
+            <View style={styles.textInputContainer}>
+              <Text textStyle={styles.text} text={"Secondary Address"} />
+              <TextInput
+                value={user.secondaryAddress}
+                onChangeText={(text) => {
+                  updateUser({ ...user, secondaryAddress: text });
+                }}
+                placeholder={"Lekki Lagos, Nigeria"}
+              />
+            </View>
+
+            <Button
+              title={"Submit"}
+              onPress={() => _updateHandler()}
+              containerStyle={styles.btnContainer}
+              textStyle={styles.btnText}
+            />
+          </View>
+        </KeyBoardAvoidingWrapper>
+      </SafeAreaView>
+    </>
   );
 };

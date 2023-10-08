@@ -20,6 +20,7 @@ import { fetchMarkets } from "../../../Redux/actions/Market/MarketList";
 import { useDispatch, useSelector } from "react-redux";
 import { Lodaing } from "../../../components/primary";
 import { CartView } from "../../../Redux/actions/Market/CartView";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Market = () => {
   const [type, updateType] = useState("All");
@@ -33,11 +34,23 @@ export const Market = () => {
 
   const { navigate, addListener } = useNavigation();
 
+  const [user, updateUser] = useState("");
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("user");
+      updateUser(JSON.parse(jsonValue));
+    } catch (e) {
+      // error reading value
+    }
+  };
+
   useEffect(() => {
     let sub = true;
     if (sub) {
       dispatch(fetchMarkets(type, page, navigate));
       dispatch(CartView(navigate));
+      getData();
     }
 
     return () => (sub = false);
@@ -115,17 +128,23 @@ export const Market = () => {
               })}
             </View>
             <View>
-              <TouchableOpacity
-                onPress={() =>
-                  navigate("RootStack", {
-                    screen: "MarketCreate",
-                  })
-                }
-                activeOpacity={0.8}
-                style={styles.plusSign}
-              >
-                <Feather name="plus" size={scale.fontPixel(20)} color="white" />
-              </TouchableOpacity>
+              {user.account_type === "Designer" && (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigate("RootStack", {
+                      screen: "MarketCreate",
+                    })
+                  }
+                  activeOpacity={0.8}
+                  style={styles.plusSign}
+                >
+                  <Feather
+                    name="plus"
+                    size={scale.fontPixel(20)}
+                    color="white"
+                  />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>
