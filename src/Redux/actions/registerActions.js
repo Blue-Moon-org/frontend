@@ -1,9 +1,13 @@
 import {
   actionTypesRegister,
   actionTypesEmailVerify,
-  actionTypesPhoneNoVerify,
+  actionTypesPhoneNoCheck,
+  actionTypesEmailCheck,
 } from "../constants/actionTypes";
-import { fetchPostRequestInit } from "../../utils/requestInit";
+import {
+  fetchGetRequestInit,
+  fetchPostRequestInit,
+} from "../../utils/requestInit";
 
 export const userRegistration = (body, navigate) => async (dispatch) => {
   // const { navigate } = useNavigation();
@@ -13,6 +17,13 @@ export const userRegistration = (body, navigate) => async (dispatch) => {
   });
 
   console.warn(body);
+
+  //   coords: locationDetail?.location?.coords,
+  // country: locationDetail?.address?.country,
+  // city: locationDetail?.address?.city,
+  // address: locationDetail?.address?.address,
+  // region: locationDetail?.address?.region,
+  // subRegion: locationDetail?.address?.subregion,
 
   await fetchPostRequestInit(
     `/core/register/`,
@@ -28,6 +39,12 @@ export const userRegistration = (body, navigate) => async (dispatch) => {
       policy: body.policy,
       other_contact: body.otherContact,
       full_name: body.fullName,
+      lon: body.coords.longitude,
+      lat: body.coords.latitude,
+      country: body.country,
+      city: body.city,
+      region: body.region,
+      subregion: body.subRegion,
     },
     "application/json"
   )
@@ -76,26 +93,3 @@ export const emailVerify =
         });
       });
   };
-
-// export const phoneNoVerify = (state, navigate) => async (dispatch) => {
-//   // const { navigate } = useNavigation();
-//   // 4 endpoint, body, content-type, token
-//   dispatch({
-//     type: actionTypesPhoneNoVerify.USER_PHONENOVERIFY_LOADING,
-//   });
-
-//   await fetchPostRequestInit(`/phoneNumberVerify`, state)
-//     .then((res) => {
-//       dispatch({
-//         type: actionTypesPhoneNoVerify.USER_PHONENOVERIFY_SUCCESS,
-//         payload: res,
-//       });
-//       // navigate("Login");
-//     })
-//     .catch((err) => {
-//       dispatch({
-//         type: actionTypesPhoneNoVerify.USER_PHONENOVERIFY_ERROR,
-//         payload: err,
-//       });
-//     });
-// };

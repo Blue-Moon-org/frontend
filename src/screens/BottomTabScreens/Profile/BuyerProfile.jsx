@@ -25,7 +25,7 @@ export const BuyerProfile = () => {
 
   const state = useSelector((state) => state.logoutState);
 
-  console.warn(state);
+  // console.warn(state);
 
   const getData = async () => {
     try {
@@ -174,7 +174,15 @@ export const BuyerProfile = () => {
         <Text text={"General"} textStyle={[Fontscales.labelSmallMedium]} />
 
         <View style={styles.container}>
-          <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
+          <TouchableOpacity
+            onPress={() =>
+              navigate("RootStack", {
+                screen: "Notification",
+              })
+            }
+            style={styles.btn}
+            activeOpacity={0.7}
+          >
             <Ionicons
               name="globe-outline"
               size={scale.fontPixel(20)}
@@ -185,11 +193,18 @@ export const BuyerProfile = () => {
                 Fontscales.labelSmallMedium,
                 { marginLeft: scale.pixelSizeHorizontal(10) },
               ]}
-              text={"Languages"}
+              text={"Notifications"}
             />
           </TouchableOpacity>
-
-          <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
+          <TouchableOpacity
+            onPress={() =>
+              navigate("RootStack", {
+                screen: "Feedback",
+              })
+            }
+            style={styles.btn}
+            activeOpacity={0.7}
+          >
             <Ionicons
               name="help-circle-outline"
               size={scale.fontPixel(20)}
@@ -200,7 +215,7 @@ export const BuyerProfile = () => {
                 Fontscales.labelSmallMedium,
                 { marginLeft: scale.pixelSizeHorizontal(10) },
               ]}
-              text={"Help and support"}
+              text={"Feedback"}
             />
           </TouchableOpacity>
         </View>

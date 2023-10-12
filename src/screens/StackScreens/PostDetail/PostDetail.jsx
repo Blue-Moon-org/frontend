@@ -1,4 +1,4 @@
-import { View, TextInput, ActivityIndicator } from "react-native";
+import { View, TextInput, ActivityIndicator, Keyboard } from "react-native";
 import React, { useEffect, useState } from "react";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
@@ -27,6 +27,7 @@ export const PostDetail = () => {
 
   const _commentHandler = () => {
     dispatch(addComment(values.comment, route?.params?.item?.id, navigate));
+    Keyboard.dismiss();
   };
 
   const state = useSelector((state) => state.comment);
@@ -51,7 +52,7 @@ export const PostDetail = () => {
     dispatch(addFavourite(route.params?.item?.id, allData.dataAll, navigate));
     // dispatch(postDetail(route.params?.item?.id));
   };
-  console.warn(route?.params?.item);
+  // console.warn(route?.params?.item);
 
   const [isFav, makeIsFav] = useState(route.params.item.user_has_favorited);
   const [favCount, updateFavCount] = useState(route.params.item.favs);

@@ -1,46 +1,43 @@
-import { fetchPostRequestInit } from "../../../utils/requestInit";
-import { actionTypesCheckOut } from "../../constants/Market";
+import { actionTypesFeedback } from "../constants/Notification";
+import { fetchPostRequestInit } from "../../utils/requestInit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
 
-export const checkOut = (address, billing, navigate) => async (dispatch) => {
+export const Feedback = (body, goBack) => async (dispatch) => {
+  // const { navigate } = useNavigation();
   // 4 endpoint, body, content-type, token
-
   dispatch({
-    type: actionTypesCheckOut.CHECK_OUT_LOADING,
+    type: actionTypesFeedback.FEED_BACK_LOADING,
   });
 
   const jsonValue = await AsyncStorage.getItem("userTokens");
   let result = JSON.parse(jsonValue);
+  // console.warn(result.access);
 
   await fetchPostRequestInit(
-    `/api/checkout/`,
+    `/notification/list/`,
     {
-      payment_method: address,
-      // BillingAddress: billing,
-      // ShippingAddress: billing,
+      title: body.title,
+      text: body.message,
     },
-    "application/json",
     `Bearer ${result.access}`
   )
     .then((res) => {
-      console.warn(res);
       dispatch({
-        type: actionTypesCheckOut.CHECK_OUT_SUCCESS,
+        type: actionTypesFeedback.FEED_BACK_SUCCESS,
         payload: res,
       });
       Toast.show({
         type: "success",
         text1: "Success",
-        text2: "Order has been placed successfully",
+        text2: "Your feedback has been sent successfully",
       });
-      navigate("BottomTabStack", {
-        screen: "Market",
-      });
+      goBack();
     })
     .catch((err) => {
       console.warn(err);
       dispatch({
-        type: actionTypesCheckOut.CHECK_OUT_ERROR,
+        type: actionTypesFeedback.FEED_BACK_ERROR,
         error: err,
       });
       Toast.show({

@@ -1,17 +1,43 @@
 import { Platform, StyleSheet, TextInput, View } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { Text } from "../common";
 import { scale } from "../../utils/scale";
 import { colors } from "../../constants/colorpallette";
-import { Fontscales } from "../../styles";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { baseURL } from "../../utils/request";
+import { useSelector } from "react-redux";
 
-export const FindHeader = ({ state, updateState }) => {
+export const FindHeader = ({}) => {
+  //state, updateState
   const { navigate } = useNavigation();
+
+  const [user, updateUser] = useState("");
+  const state = useSelector((state) => state.cartView);
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("user");
+      updateUser(JSON.parse(jsonValue));
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      getData();
+    }
+
+    return () => (sub = false);
+  }, [user]);
+  
   return Platform.OS === "ios" ? (
     <>
       <View style={styles.mainContainer}>
@@ -27,12 +53,21 @@ export const FindHeader = ({ state, updateState }) => {
               style={styles.image}
               cachePolicy={"memory-disk"}
               source={{
-                uri: "https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?w=2000&t=st=1688497523~exp=1688498123~hmac=231d6292720e943c2a7e81a88bbb01be8748b8129b28e86495ab70df0f302c89",
+                uri: `${baseURL + user?.image}`,
               }}
             />
           </View>
           <View style={styles.textInputContainer}>
-            <TextInput
+            <GooglePlacesAutocomplete
+              style={{}}
+              styles={{
+                textInputContainer: styles.textInputContainer,
+                textInput: styles.textInput,
+              }}
+              onFail={(err) => console.warn(err)}
+              placeholder="Find my location"
+            />
+            {/* <TextInput
               returnKeyType="search"
               onSubmitEditing={() =>
                 navigate("RootStack", {
@@ -45,12 +80,12 @@ export const FindHeader = ({ state, updateState }) => {
               //   updateState({ ...state, searchText: text });
               // }}
               // value={state.searchText}
-            />
+            /> */}
           </View>
 
           <View style={styles.iconContainer}>
             <View style={styles.cartBargeContainer}>
-              <Text text={4} textStyle={styles.text} />
+              <Text text={state.data?.length} textStyle={styles.text} />
             </View>
             <Ionicons
               name="cart-outline"
@@ -81,12 +116,22 @@ export const FindHeader = ({ state, updateState }) => {
               style={styles.image}
               cachePolicy={"memory-disk"}
               source={{
-                uri: "https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?w=2000&t=st=1688497523~exp=1688498123~hmac=231d6292720e943c2a7e81a88bbb01be8748b8129b28e86495ab70df0f302c89",
+                uri: `${baseURL + user?.image}`,
               }}
             />
           </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
+          {/* <View style={styles.textInputContainer}> */}
+          <GooglePlacesAutocomplete
+            style={{}}
+            styles={{
+              textInputContainer: styles.textInputContainer,
+              textInput: styles.textInput,
+            }}
+            onFail={(err) => console.warn(err)}
+            placeholder="Find my location"
+          />
+
+          {/* <TextInput
               returnKeyType="search"
               // onSubmitEditing={() =>
               //   navigate("RootStack", {
@@ -99,11 +144,11 @@ export const FindHeader = ({ state, updateState }) => {
               // value={state.searchText}
               style={[styles.textInput, Fontscales.labelSmallRegular]}
               placeholder="Enter a location"
-            />
-          </View>
+            /> */}
+          {/* </View> */}
           <View style={styles.iconContainer}>
             <View style={styles.cartBargeContainer}>
-              <Text text={4} textStyle={styles.text} />
+              <Text text={state.data?.length} textStyle={styles.text} />
             </View>
             <Ionicons
               name="cart-outline"
@@ -144,6 +189,7 @@ const styles = StyleSheet.create({
     height: Platform.OS === "ios" ? "76%" : "76%",
     width: "13%",
     borderRadius: scale.fontPixel(12),
+    backgroundColor: colors.mainPrimary,
   },
   image: {
     height: "100%",
@@ -171,18 +217,23 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   textInputContainer: {
-    width: "70%",
+    width: "89%",
     flexDirection: "row",
-    backgroundColor: colors.grey2,
+    backgroundColor: "white",
     height: "70%",
     alignItems: "center",
-    paddingLeft: scale.pixelSizeHorizontal(10),
     borderRadius: scale.fontPixel(10),
+    // backgroundColor: "red",
+    zIndex: 100,
+    marginHorizontal: scale.pixelSizeHorizontal(20),
+    marginTop: scale.pixelSizeVertical(5),
   },
   icon: {},
   textInput: {
-    paddingLeft: scale.pixelSizeHorizontal(8),
-    width: "95%",
+    width: "100%",
+    height: "100%",
+    borderRadius: scale.fontPixel(8),
+    backgroundColor: colors.grey2,
   },
   icon: {},
 });

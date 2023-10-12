@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 import {
   PostDetail,
@@ -25,6 +25,8 @@ import {
   Comments,
   ImagePreview,
   Reviews,
+  Feedback,
+  Notification,
 } from "../screens/StackScreens";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -34,11 +36,32 @@ import { Fontscales } from "../styles";
 import { colors } from "../constants/colorpallette";
 import { ProfileSettings } from "../screens/BottomTabScreens";
 import { TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createSharedElementStackNavigator();
 
 export const RootStack = () => {
   const { goBack, navigate } = useNavigation();
+
+  const [user, updateUser] = useState("");
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("user");
+      updateUser(JSON.parse(jsonValue));
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      getData();
+    }
+
+    return () => (sub = false);
+  }, [user]);
 
   return (
     <Stack.Navigator>
@@ -148,7 +171,13 @@ export const RootStack = () => {
           headerTitleStyle: Fontscales.paragraphLargeMedium,
           headerLeft: () => (
             <MaterialCommunityIcons
-              onPress={() => navigate("ProfileSettings")}
+              onPress={() =>
+                user.account_type === "Buyer"
+                  ? navigate("BottomTabStack", {
+                      screen: "BuyerProfile",
+                    })
+                  : navigate("ProfileSettings")
+              }
               style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
               name="keyboard-backspace"
               size={scale.fontPixel(24)}
@@ -386,24 +415,66 @@ export const RootStack = () => {
         component={PostCreate}
       />
       <Stack.Screen
-        options={{
-          // headerShown: true,
-          // title: "Comment",
-          // headerTitleAlign: "left",
-          // headerTitleAllowFontScaling: true,
-          // headerTitleStyle: Fontscales.paragraphLargeMedium,
-          // headerLeft: () => (
-          //   <MaterialCommunityIcons
-          //     onPress={() => navigate("PostDetail")}
-          //     style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
-          //     name="keyboard-backspace"
-          //     size={scale.fontPixel(24)}
-          //     color="black"
-          //   />
-          // ),
-        }}
+        options={
+          {
+            // headerShown: true,
+            // title: "Comment",
+            // headerTitleAlign: "left",
+            // headerTitleAllowFontScaling: true,
+            // headerTitleStyle: Fontscales.paragraphLargeMedium,
+            // headerLeft: () => (
+            //   <MaterialCommunityIcons
+            //     onPress={() => navigate("PostDetail")}
+            //     style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+            //     name="keyboard-backspace"
+            //     size={scale.fontPixel(24)}
+            //     color="black"
+            //   />
+            // ),
+          }
+        }
         name="Comments"
         component={Comments}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Notifications",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="Notification"
+        component={Notification}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Feedback",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="Feedback"
+        component={Feedback}
       />
       <Stack.Screen
         options={{

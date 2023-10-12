@@ -15,7 +15,6 @@ import { scale } from "../../../utils/scale";
 import { styles } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { userLogout } from "../../../Redux/actions/loginActions";
-// import { useDisclose } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
 
 export const ProfileSettings = () => {
@@ -170,7 +169,11 @@ export const ProfileSettings = () => {
         <Text text={"General"} textStyle={[Fontscales.labelSmallMedium]} />
 
         <View style={styles.container}>
-          <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
+          <TouchableOpacity
+            onPress={() => navigate("Notification")}
+            style={styles.btn}
+            activeOpacity={0.7}
+          >
             <Ionicons
               name="globe-outline"
               size={scale.fontPixel(20)}
@@ -181,11 +184,14 @@ export const ProfileSettings = () => {
                 Fontscales.labelSmallMedium,
                 { marginLeft: scale.pixelSizeHorizontal(10) },
               ]}
-              text={"Languages"}
+              text={"Notifications"}
             />
           </TouchableOpacity>
-
-          <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
+          <TouchableOpacity
+            onPress={() => navigate("Feedback")}
+            style={styles.btn}
+            activeOpacity={0.7}
+          >
             <Ionicons
               name="help-circle-outline"
               size={scale.fontPixel(20)}
@@ -196,7 +202,7 @@ export const ProfileSettings = () => {
                 Fontscales.labelSmallMedium,
                 { marginLeft: scale.pixelSizeHorizontal(10) },
               ]}
-              text={"Help and support"}
+              text={"Feedback"}
             />
           </TouchableOpacity>
         </View>

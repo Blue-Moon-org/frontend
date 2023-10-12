@@ -1,5 +1,5 @@
 import { View, Text as BaseText } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SharedStyles, Fontscales } from "../../../styles";
 import { Button, Text, TextInput } from "../../../components/common";
@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../../../Redux/actions";
 import { Lodaing } from "../../../components/primary";
+import { PhoneCheck } from "../../../Redux/actions/DetailCheck";
 
 export const Login = () => {
   const [state, updateState] = useState({
@@ -50,6 +51,9 @@ export const Login = () => {
       dispatch(userLogin(state, navigate));
     }
   };
+
+  // useEffect(() => {
+  // }, []);
 
   return (
     <>

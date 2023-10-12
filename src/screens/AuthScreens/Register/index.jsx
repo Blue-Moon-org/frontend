@@ -1,6 +1,6 @@
 import { TouchableOpacity, View } from "react-native";
 import { Text } from "../../../components/common";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
@@ -28,6 +28,9 @@ export const Register = () => {
       name: "Designer’s Account",
     },
   ];
+  const locationDetail = useSelector((state) => state.location);
+  const phone = useSelector((state) => state.phone);
+  const email = useSelector((state) => state.email);
 
   const [buyersState, updateBuyersState] = useState({
     showPassword: false,
@@ -41,6 +44,12 @@ export const Register = () => {
     confirmPassword: "",
     error: registerData?.error?.message,
     accountType: "Buyer",
+    coords: locationDetail?.location?.coords,
+    country: locationDetail?.address?.country,
+    city: locationDetail?.address?.city,
+    address: locationDetail?.address?.address,
+    region: locationDetail?.address?.region,
+    subRegion: locationDetail?.address?.subregion,
   });
 
   const dispatch = useDispatch();
@@ -85,6 +94,21 @@ export const Register = () => {
         ...buyersState,
         error: "Privacy policy must be read and checked",
       });
+    } else if (locationDetail.location === null) {
+      updateBuyersState({
+        ...buyersState,
+        error: `Unable to find you location, Please give permission to your location`,
+      });
+    } else if (locationDetail.address === null) {
+      updateBuyersState({
+        ...buyersState,
+        error: `Please check your internet connection`,
+      });
+    } else if (phone.phoneStatus === null || email.emailStatus === null) {
+      updateBuyersState({
+        ...buyersState,
+        error: `Email or Phone Number already exist`,
+      });
     } else {
       updateBuyersState({
         ...buyersState,
@@ -107,6 +131,12 @@ export const Register = () => {
     confirmPassword: "",
     error: registerData?.error?.message,
     accountType: "Designer",
+    coords: locationDetail?.location?.coords,
+    country: locationDetail?.address?.country,
+    city: locationDetail?.address?.city,
+    address: locationDetail?.address?.address,
+    region: locationDetail?.address?.region,
+    subRegion: locationDetail?.address?.subregion,
   });
 
   const submitDesignersAccount = () => {
@@ -147,6 +177,21 @@ export const Register = () => {
       updateDesignersState({
         ...designersState,
         error: "Privacy policy must be read and checked",
+      });
+    } else if (locationDetail.location === null) {
+      updateDesignersState({
+        ...designersState,
+        error: `Unable to find you location, Please give permission to your location`,
+      });
+    } else if (locationDetail.address === null) {
+      updateDesignersState({
+        ...designersState,
+        error: `Please check your internet connection`,
+      });
+    } else if (phone.phoneStatus === null || email.emailStatus === null) {
+      updateBuyersState({
+        ...buyersState,
+        error: `Email or Phone Number already exist`,
       });
     } else {
       updateDesignersState({

@@ -30,6 +30,7 @@ export const TextInput = ({
   returnKeyType,
   returnKeyLabel,
   onSubmitEditing,
+  numberOfLines,
   others,
 }) => {
   return (
@@ -60,8 +61,9 @@ export const TextInput = ({
       autoComplete={autoComplete}
       ref={refs}
       onSubmitEditing={onSubmitEditing}
+      numberOfLines={numberOfLines}
       autoFocus={autoFocus}
-      autoCapitalize="words"
+      //  autoCapitalize="words"
       style={[
         styles.textInputStyle,
         textInputStyle,

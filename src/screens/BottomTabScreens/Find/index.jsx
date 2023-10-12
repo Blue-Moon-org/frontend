@@ -10,11 +10,14 @@ import { coords } from "./coordData";
 import { colors } from "../../../constants/colorpallette";
 import { LocationCard } from "./LocationCard";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 export const Find = () => {
   const [state, updateState] = useState({
     searchText: "",
   });
+
+  const location = useSelector((state) => state.location);
 
   const { navigate } = useNavigation();
   return (
@@ -23,15 +26,15 @@ export const Find = () => {
       <View style={styles.mapContainer}>
         <MapView
           initialRegion={{
-            latitude: 4.815457,
-            longitude: 7.043627,
+            latitude: location.location?.coords?.latitude,
+            longitude: location.location?.coords?.longitude,
             latitudeDelta: 0.0822,
             longitudeDelta: 0.0921,
           }}
           // mapType={Platform.OS == "android" ? "none" : "standard"}
           style={styles.map}
         >
-          {coords.map((item, index) => {
+          {/* {coords.map((item, index) => {
             return (
               <Marker
                 key={index}
@@ -48,7 +51,7 @@ export const Find = () => {
                 <LocationCard {...item} />
               </Marker>
             );
-          })}
+          })} */}
         </MapView>
       </View>
     </View>

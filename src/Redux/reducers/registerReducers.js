@@ -2,12 +2,24 @@ import {
   actionTypesRegister,
   actionTypesEmailVerify,
   actionTypesPhoneNoVerify,
+  actionTypesPhoneNoCheck,
+  actionTypesEmailCheck,
 } from "../constants/actionTypes";
 
 const initialState = {
   user: {},
   error: "",
   loading: false,
+
+  //phone
+  phoneLoading: "",
+  phoneStatus: null,
+  phoneError: "",
+
+  //email
+  emailLoading: "",
+  emailStatus: null,
+  emailError: "",
 };
 
 export const registerReducer = (state = initialState, { type, payload }) => {
@@ -105,3 +117,4 @@ export const phoneNoVerifyReducer = (
       return state;
   }
 };
+

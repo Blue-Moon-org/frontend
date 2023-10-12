@@ -11,6 +11,8 @@ import { scale } from "../../../utils/scale";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
+import { EmailCheck, PhoneCheck } from "../../../Redux/actions/DetailCheck";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Buyer = ({
   updateBuyersState,
@@ -19,6 +21,12 @@ export const Buyer = ({
   registerData,
 }) => {
   const { navigate } = useNavigation();
+
+  const dispatch = useDispatch();
+
+  const phone = useSelector((state) => state.phone);
+  const email = useSelector((state) => state.email);
+
   return (
     <View
       style={{
@@ -72,7 +80,7 @@ export const Buyer = ({
           <Text text={"Email"} textStyle={styles.label} />
           <TextInput
             textInputStyle={[styles.inputSpace]}
-            //    inputState={}
+            inputState={email.emailError && "error"}
             editable={!registerData.loading}
             onChangeText={(text) => {
               updateBuyersState({
@@ -80,12 +88,26 @@ export const Buyer = ({
                 email: text,
               });
             }}
+            onBlur={() => dispatch(EmailCheck(buyersState.email))}
             placeholder={"Example@newmail.com"}
             textContentType={"emailAddress"}
             value={buyersState.email}
             autoComplete={"email"}
             keyboardType={"email-address"}
           />
+          {email.emailError && (
+            <Text
+              text={email.emailError}
+              numberOfLines={1}
+              ellipsizeMode={"tail"}
+              textStyle={{
+                fontSize: scale.fontPixel(10),
+                color: colors.error,
+                marginTop: -scale.fontPixel(10),
+                marginBottom: scale.fontPixel(10),
+              }}
+            />
+          )}
 
           <Text text={"Address"} textStyle={styles.label} />
           <TextInput
@@ -107,7 +129,7 @@ export const Buyer = ({
           <Text text={"Phone Number"} textStyle={styles.label} />
           <TextInput
             textInputStyle={[styles.inputSpace]}
-            //    inputState={}
+            inputState={phone.phoneError && "error"}
             editable={!registerData.loading}
             onChangeText={(text) =>
               updateBuyersState({
@@ -115,13 +137,27 @@ export const Buyer = ({
                 phoneNumber: text,
               })
             }
+            onBlur={() => dispatch(PhoneCheck(buyersState.phoneNumber))}
             maxLength={11}
             keyboardType={"phone-pad"}
-            placeholder={"0XX XX XXX XXX"}
+            placeholder={"0XX XXX XXX XX"}
             textContentType={"telephoneNumber"}
             value={buyersState.phoneNumber}
             autoComplete={"tel-device"}
           />
+          {phone.phoneError && (
+            <Text
+              text={phone.phoneError}
+              numberOfLines={1}
+              ellipsizeMode={"tail"}
+              textStyle={{
+                fontSize: scale.fontPixel(10),
+                color: colors.error,
+                marginTop: -scale.fontPixel(10),
+                marginBottom: scale.fontPixel(10),
+              }}
+            />
+          )}
 
           <View style={styles.subContainer}>
             <View style={{ width: "48%" }}>
@@ -138,6 +174,7 @@ export const Buyer = ({
                       password: textReplace,
                     });
                   }}
+                  autoCapitalize="none"
                   placeholder={"************"}
                   textContentType={"password"}
                   value={buyersState.password}
@@ -167,6 +204,7 @@ export const Buyer = ({
                   textInputStyle={styles.textInputStyle}
                   autoComplete={"password"}
                   //    inputState={}
+                  autoCapitalize="none"
                   editable={!registerData.loading}
                   onChangeText={(text) => {
                     const textReplace = text.replace(/ +/g, "");

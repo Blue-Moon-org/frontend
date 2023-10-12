@@ -1,5 +1,5 @@
 import { View, FlatList, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { styles } from "./styles";
 import { Image } from "expo-image";
@@ -9,8 +9,14 @@ import { scale } from "../../../utils/scale";
 import { colors } from "../../../constants/colorpallette";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
+import { GetOrders } from "../../../Redux/actions/Market/GetOrders";
+import { Lodaing } from "../../../components/primary";
+import { baseURL } from "../../../utils/request";
 
 export const ActiveOrders = () => {
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.activeOrder);
   const activeOrderData = [
     {
       id: 1,
@@ -43,13 +49,25 @@ export const ActiveOrders = () => {
 
   const { navigate } = useNavigation();
 
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      dispatch(GetOrders(navigate));
+    }
+
+    return () => (sub = false);
+  }, []);
+
+  // console.warn(state);
+
   const renderItem = ({ item, index }) => {
     return (
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={() =>
           navigate("OrderDetail", {
-            orderId: item.orderId,
+            orderId: item.tracking_number,
+            item: item,
           })
         }
         style={styles.eachContainer}
@@ -57,7 +75,14 @@ export const ActiveOrders = () => {
         <View style={styles.imageContainer}>
           <Image
             cachePolicy={"memory-disk"}
-            source={{ uri: item.imageUrl }}
+            source={{
+              uri: `${
+                baseURL +
+                item?.order?.order_products?.map(
+                  (each) => each?.product.images[0]?.image
+                )
+              }`,
+            }}
             contentFit="cover"
             style={styles.image}
           />
@@ -69,7 +94,9 @@ export const ActiveOrders = () => {
                 numberOfLines={1}
                 ellipsizeMode={"tail"}
                 textStyle={Fontscales.headingSmallMedium}
-                text={item.title}
+                text={item?.order?.order_products?.map(
+                  (each) => each?.product.title
+                )}
               />
               <Text
                 numberOfLines={1}
@@ -78,12 +105,16 @@ export const ActiveOrders = () => {
                   fontFamily: "Outfit_400Regular",
                   fontSize: scale.fontPixel(10),
                 }}
-                text={item.brandName}
+                text={item.order?.order_products?.map(
+                  (each) => each?.product.owner
+                )}
               />
             </View>
             <Text
               textStyle={Fontscales.labelSmallRegular}
-              text={`Arrives in ${item.arrival}`}
+              text={`Quantity : ${item?.order?.order_products?.map(
+                (each) => each?.quantity
+              )}`}
             />
           </View>
           <View style={styles.iconTextContainer}>
@@ -101,7 +132,7 @@ export const ActiveOrders = () => {
                   color: colors.mainPrimary,
                 },
               ]}
-              text={item.orderId}
+              text={item?.tracking_number}
             />
           </View>
         </View>
@@ -109,22 +140,25 @@ export const ActiveOrders = () => {
     );
   };
   return (
-    <View style={SharedStyles.container}>
-      <View
-        style={{
-          paddingBottom:
-            Constants.statusBarHeight > 30
-              ? scale.pixelSizeVertical(30)
-              : scale.pixelSizeVertical(1),
-        }}
-      >
-        <FlatList
-          data={activeOrderData}
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{}}
-        />
+    <>
+      {state.loading ? <Lodaing /> : null}
+      <View style={SharedStyles.container}>
+        <View
+          style={{
+            paddingBottom:
+              Constants.statusBarHeight > 30
+                ? scale.pixelSizeVertical(30)
+                : scale.pixelSizeVertical(1),
+          }}
+        >
+          <FlatList
+            data={state?.data}
+            renderItem={renderItem}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{}}
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 };

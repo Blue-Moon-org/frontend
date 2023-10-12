@@ -22,6 +22,8 @@ import { DesignerProfile } from "./DesignerProfile/Index";
 import { Comments } from "./Comment";
 import { Reviews } from "./Comment/Reviews";
 import { ImagePreview } from "./ImagePreview";
+import { Feedback } from "./Feedback";
+import { Notification } from "./Notifications";
 
 export {
   PostDetail,
@@ -48,4 +50,6 @@ export {
   Comments,
   ImagePreview,
   Reviews,
+  Feedback,
+  Notification,
 };

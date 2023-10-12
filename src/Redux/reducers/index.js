@@ -36,6 +36,12 @@ import {
   productSearchReducer,
 } from "./Posts/search";
 import { userUpdateReducer } from "./DetailsUpdate";
+import { locationReducer } from "./Permission";
+import { emailCheckReducer, phoneNoCheckReducer } from "./DetailsCheckReducers";
+import { fetchCommentReducer } from "./Posts/CommentReducer";
+import { getOrderReducer } from "./Market/GetOrderReducer";
+import { TrackOrderReducer } from "./Market/TrackOrder";
+import { NotificationReducer } from "./NotificationReducer";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -67,4 +73,11 @@ export const reducers = combineReducers({
   post: postSearchReducer,
   product: productSearchReducer,
   update: userUpdateReducer,
+  location: locationReducer,
+  phone: phoneNoCheckReducer,
+  email: emailCheckReducer,
+  commentList: fetchCommentReducer,
+  activeOrder: getOrderReducer,
+  trackOrder: TrackOrderReducer,
+  notification: NotificationReducer
 });

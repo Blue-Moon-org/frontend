@@ -1,4 +1,4 @@
-import { View, Text as BaseText } from "react-native";
+import { View, Text as BaseText, TextInput as Input } from "react-native";
 import React from "react";
 import {
   Text,
@@ -11,6 +11,8 @@ import { scale } from "../../../utils/scale";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
+import { EmailCheck, PhoneCheck } from "../../../Redux/actions/DetailCheck";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Designer = ({
   updateDesignersState,
@@ -19,6 +21,10 @@ export const Designer = ({
   registerData,
 }) => {
   const { navigate } = useNavigation();
+  const dispatch = useDispatch();
+
+  const phone = useSelector((state) => state.phone);
+  const email = useSelector((state) => state.email);
 
   return (
     <View
@@ -44,6 +50,8 @@ export const Designer = ({
                 autoComplete={"name-given"}
                 autoFocus={true}
                 value={designersState.fullName}
+                onFocus={() => PhoneCheck("object")}
+                // onSubmitEditing={() => console.warn("edit")}
               />
             </View>
 
@@ -67,17 +75,32 @@ export const Designer = ({
           <Text text={"Email"} textStyle={styles.label} />
           <TextInput
             textInputStyle={[styles.inputSpace]}
-            //    inputState={}
+            inputState={email.emailError && "error"}
             editable={!registerData.loading}
             onChangeText={(text) =>
               updateDesignersState({ ...designersState, email: text })
             }
+            onBlur={() => dispatch(EmailCheck(designersState.email))}
             placeholder={"Example@newmail.com"}
             textContentType={"emailAddress"}
             value={designersState.email}
             autoComplete={"email"}
             keyboardType={"email-address"}
           />
+
+          {email.emailError && (
+            <Text
+              text={email.emailError}
+              numberOfLines={1}
+              ellipsizeMode={"tail"}
+              textStyle={{
+                fontSize: scale.fontPixel(10),
+                color: colors.error,
+                marginTop: -scale.fontPixel(10),
+                marginBottom: scale.fontPixel(10),
+              }}
+            />
+          )}
 
           <Text text={"Address"} textStyle={styles.label} />
           <TextInput
@@ -98,14 +121,15 @@ export const Designer = ({
               <Text text={"Phone Number"} textStyle={styles.label} />
               <TextInput
                 textInputStyle={{}}
-                //    inputState={}
+                inputState={phone.phoneError && "error"}
                 editable={!registerData.loading}
                 onChangeText={(text) =>
                   updateDesignersState({ ...designersState, phoneNumber: text })
                 }
+                onBlur={() => dispatch(PhoneCheck(designersState.phoneNumber))}
                 maxLength={11}
                 autoComplete={"tel-device"}
-                placeholder={"0XX XX XXX XXX"}
+                placeholder={"0XX XXX XXX XX"}
                 value={designersState.phoneNumber}
                 textContentType={"telephoneNumber"}
               />
@@ -114,8 +138,10 @@ export const Designer = ({
             <View style={{ width: "48%" }}>
               <Text text={"Other Contact"} textStyle={styles.label} />
               <TextInput
+                maxLength={11}
+                onBlur={() => dispatch(PhoneCheck(designersState.otherContact))}
                 textInputStyle={{}}
-                //    inputState={}
+                inputState={phone.phoneError && "error"}
                 editable={!registerData.loading}
                 onChangeText={(text) =>
                   updateDesignersState({
@@ -125,11 +151,24 @@ export const Designer = ({
                 }
                 value={designersState.otherContact}
                 autoComplete={"tel-device"}
-                placeholder={"+XXX XXX XXXX XXX"}
+                placeholder={"0XX XXX XXX XX"}
                 textContentType={"telephoneNumber"}
               />
             </View>
           </View>
+          {phone.phoneError && (
+            <Text
+              text={phone.phoneError}
+              numberOfLines={1}
+              ellipsizeMode={"tail"}
+              textStyle={{
+                fontSize: scale.fontPixel(10),
+                color: colors.error,
+                marginTop: -scale.fontPixel(10),
+                marginBottom: scale.fontPixel(10),
+              }}
+            />
+          )}
 
           <View style={styles.subContainer}>
             <View style={{ width: "48%" }}>
@@ -145,6 +184,7 @@ export const Designer = ({
                       password: text,
                     })
                   }
+                  autoCapitalize="none"
                   placeholder={"************"}
                   textContentType={"password"}
                   value={designersState.password}
@@ -174,7 +214,6 @@ export const Designer = ({
               <View style={styles.showPassword}>
                 <TextInput
                   textInputStyle={styles.textInputStyle}
-                  autoComplete={"name-family"}
                   //    inputState={}
                   editable={!registerData.loading}
                   onChangeText={(text) =>
@@ -183,8 +222,10 @@ export const Designer = ({
                       confirmPassword: text,
                     })
                   }
+                  autoCapitalize="none"
                   placeholder={"************"}
                   textContentType={"password"}
+                  keyboardType={"default"}
                   value={designersState.confirmPassword}
                   clearButtonMode={false}
                   secureTextEntry={!designersState.showPassword}
