@@ -123,7 +123,7 @@ export const AppHeader = () => {
             style={styles.image}
             cachePolicy={"memory-disk"}
             source={{
-              uri: "https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?w=2000&t=st=1688497523~exp=1688498123~hmac=231d6292720e943c2a7e81a88bbb01be8748b8129b28e86495ab70df0f302c89",
+              uri: `${baseURL + user?.image}`,
             }}
           />
         </TouchableOpacity>

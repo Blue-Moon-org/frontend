@@ -1,10 +1,13 @@
 import { View, FlatList } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { SharedStyles } from "../../../styles";
 import { Text } from "../../../components/common";
 import { styles } from "./styles";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
+import { useDispatch, useSelector } from "react-redux";
+import { Lodaing } from "../../../components/primary";
+import { notification } from "../../../Redux/actions/Notification";
 
 export const Notification = () => {
   const data = [
@@ -53,6 +56,17 @@ export const Notification = () => {
     },
   ];
 
+  const dispatch = useDispatch();
+
+  const state = useSelector((state) => state.notification);
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      dispatch(notification());
+    }
+  }, []);
+
   const RenderItem = ({ item, index }) => {
     return (
       <View
@@ -77,17 +91,20 @@ export const Notification = () => {
     );
   };
   return (
-    <View style={SharedStyles.container}>
-      <FlatList
-        data={data}
-        renderItem={({ item, index }) => (
-          <RenderItem item={item} index={index} />
-        )}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          marginVertical: scale.pixelSizeVertical(10),
-        }}
-      />
-    </View>
+    <>
+      {state.loading ? <Lodaing /> : null}
+      <View style={SharedStyles.container}>
+        <FlatList
+          data={data}
+          renderItem={({ item, index }) => (
+            <RenderItem item={item} index={index} />
+          )}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            marginVertical: scale.pixelSizeVertical(10),
+          }}
+        />
+      </View>
+    </>
   );
 };

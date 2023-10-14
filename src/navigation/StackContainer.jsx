@@ -50,11 +50,11 @@ export const StackContainer = () => {
       {authloaded !== false && (
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {/* {user ? ( */}
-            <Stack.Screen name="Stacks" component={Stacks} />
-            {/* ) : (
+            {user ? (
+              <Stack.Screen name="Stacks" component={Stacks} />
+            ) : (
               <Stack.Screen name="Auth" component={AuthStack} />
-            )} */}
+            )}
           </Stack.Navigator>
         </NavigationContainer>
       )}

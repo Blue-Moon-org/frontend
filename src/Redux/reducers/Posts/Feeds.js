@@ -455,19 +455,21 @@ export const favoritePostReducer = (
       };
 
     case actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_ANKARA:
-      const updatedAnkaraPosts = state.dataAnkara.map((post) => {
-        if (post.id === id) {
-          return {
-            ...post,
-            favs: post.user_has_favorited ? post.favs + 1 : post.favs + 0,
-            user_has_favorited: !post.user_has_favorited,
-          };
-        }
-        return post;
-      });
+      // const updatedAnkaraPosts = state.dataAnkara.map((post) => {
+      //   if (post.id === id) {
+      //     return {
+      //       ...post,
+      //       favs: post.user_has_favorited ? post.favs + 1 : post.favs + 0,
+      //       user_has_favorited: !post.user_has_favorited,
+      //     };
+      //   }
+      //   return post;
+      // });
       return {
         ...state,
-        // dataAll: updatedAnkaraPosts,
+        dataFav: payload,
+        loadingFav: false,
+        errorFav: "",
       };
 
     case actionTypesAddFavorite.ADD_FAVOURITE_SUCCESS:

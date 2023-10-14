@@ -3,7 +3,7 @@ import { fetchPostRequestInit } from "../../utils/requestInit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 
-export const Feedback = (body, goBack) => async (dispatch) => {
+export const feedBack = (body, goBack) => async (dispatch) => {
   // const { navigate } = useNavigation();
   // 4 endpoint, body, content-type, token
   dispatch({
@@ -15,11 +15,12 @@ export const Feedback = (body, goBack) => async (dispatch) => {
   // console.warn(result.access);
 
   await fetchPostRequestInit(
-    `/notification/list/`,
+    `/core/feedback/`,
     {
       title: body.title,
       text: body.message,
     },
+    "application/json",
     `Bearer ${result.access}`
   )
     .then((res) => {

@@ -42,6 +42,7 @@ import { fetchCommentReducer } from "./Posts/CommentReducer";
 import { getOrderReducer } from "./Market/GetOrderReducer";
 import { TrackOrderReducer } from "./Market/TrackOrder";
 import { NotificationReducer } from "./NotificationReducer";
+import { FeedbackReducer } from "./Feedback";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -79,5 +80,6 @@ export const reducers = combineReducers({
   commentList: fetchCommentReducer,
   activeOrder: getOrderReducer,
   trackOrder: TrackOrderReducer,
-  notification: NotificationReducer
+  notification: NotificationReducer,
+  feedback: FeedbackReducer,
 });

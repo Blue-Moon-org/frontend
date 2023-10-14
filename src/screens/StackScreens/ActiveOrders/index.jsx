@@ -17,45 +17,18 @@ import { baseURL } from "../../../utils/request";
 export const ActiveOrders = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.activeOrder);
-  const activeOrderData = [
-    {
-      id: 1,
-      title: "High Quality Caftan",
-      brandName: "E-Ward Fits",
-      arrival: "2 days",
-      orderId: "#353R669",
-      imageUrl:
-        "https://img.freepik.com/free-photo/portrait-women-outdoors-african-attire-fashion_23-2150572691.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
-    },
-    {
-      id: 2,
-      title: "High Quality Caftan",
-      brandName: "E-Ward Fits",
-      arrival: "2 days",
-      orderId: "#353R669",
-      imageUrl:
-        "https://img.freepik.com/free-photo/portrait-women-outdoors-african-attire-fashion_23-2150572691.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
-    },
-    {
-      id: 3,
-      title: "High Quality Caftan",
-      brandName: "E-Ward Fits",
-      arrival: "2 days",
-      orderId: "#353R669",
-      imageUrl:
-        "https://img.freepik.com/free-photo/portrait-women-outdoors-african-attire-fashion_23-2150572691.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
-    },
-  ];
 
-  const { navigate } = useNavigation();
+  const { navigate, addListener } = useNavigation();
 
   useEffect(() => {
-    let sub = true;
-    if (sub) {
+    addListener("focus", () => {
       dispatch(GetOrders(navigate));
-    }
+    });
+    // let sub = true;
+    // if (sub) {
+    // }
 
-    return () => (sub = false);
+    // return () => (sub = false);
   }, []);
 
   // console.warn(state);

@@ -35,7 +35,7 @@
             "cameraPermission": "Allow Blue moon to access your camera."
           },
           {
-            "locationAlwaysAndWhenInUsePermission": "Allow Blue moon use your location."
+            "locationAlwaysAndWhenInUsePermission": "Allow Blue moon to access your location."
           }
         ]
       ],

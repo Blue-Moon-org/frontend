@@ -275,7 +275,7 @@ export const BuyerProfile = () => {
               name="notebook"
               size={scale.fontPixel(20)}
               color="black"
-              onPress={() => _logoutHandler()}
+              // onPress={() => _logoutHandler()}
             />
             <Text
               textStyle={[

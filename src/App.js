@@ -23,7 +23,7 @@ export default function App() {
       <Toast
         position="bottom"
         bottomOffset={scale.pixelSizeVertical(20)}
-        visibilityTime={3000}
+        visibilityTime={6000}
         autoHide={true}
         config={toastConfig}
       />

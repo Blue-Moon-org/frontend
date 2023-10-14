@@ -258,7 +258,7 @@ export const ProfileSettings = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => _logoutHandler()}
+            // onPress={() => _logoutHandler()}
             style={styles.btn}
             activeOpacity={0.7}
           >

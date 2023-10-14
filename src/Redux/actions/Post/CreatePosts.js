@@ -69,7 +69,6 @@ export const createPost = (body, navigate) => async (dispatch) => {
     `Bearer ${result.access}`
   )
     .then((res) => {
-      console.warn(res);
       Alert.alert("Photos Alert", "Post has been created successfully 😊", [
         {
           text: "Go Home",

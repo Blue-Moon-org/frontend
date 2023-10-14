@@ -46,16 +46,11 @@ export const PostDetail = () => {
 
   // let active = "";
   const _handleFav = () => {
-    // makeIsFav(!isFav);
-    // active = true;
-    // console.warn("object");
     dispatch(addFavourite(route.params?.item?.id, allData.dataAll, navigate));
-    // dispatch(postDetail(route.params?.item?.id));
+    dispatch(postDetail(route.params?.item?.id));
   };
-  // console.warn(route?.params?.item);
 
-  const [isFav, makeIsFav] = useState(route.params.item.user_has_favorited);
-  const [favCount, updateFavCount] = useState(route.params.item.favs);
+  console.warn(state);
 
   return (
     <View style={SharedStyles.container}>
@@ -137,7 +132,7 @@ export const PostDetail = () => {
                     color={colors.blackText}
                   />
                   <Text
-                    text={route.params?.item?.likes}
+                    text={posDel?.data?.likes}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={styles.likeShareText}
@@ -150,16 +145,14 @@ export const PostDetail = () => {
                     color={colors.blackText}
                   />
                   <Text
-                    text={route.params?.item.favs}
+                    text={posDel?.data?.favs}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={styles.likeShareText}
                   />
                 </View>
                 <AntDesign
-                  name={
-                    route.params?.item.user_has_favorited ? "star" : "staro"
-                  }
+                  name={state.data?.user_has_favorited ? "star" : "staro"}
                   size={scale.fontPixel(16)}
                   color={colors.blackText}
                   onPress={() => {

@@ -11,6 +11,7 @@ import { colors } from "../../../constants/colorpallette";
 import { LocationCard } from "./LocationCard";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
+import { Text } from "../../../components/common";
 
 export const Find = () => {
   const [state, updateState] = useState({
@@ -24,7 +25,8 @@ export const Find = () => {
     <View>
       <FindHeader />
       <View style={styles.mapContainer}>
-        <MapView
+        <Text text={"Feature under development"} />
+        {/* <MapView
           initialRegion={{
             latitude: location.location?.coords?.latitude,
             longitude: location.location?.coords?.longitude,
@@ -33,8 +35,8 @@ export const Find = () => {
           }}
           // mapType={Platform.OS == "android" ? "none" : "standard"}
           style={styles.map}
-        >
-          {/* {coords.map((item, index) => {
+        > */}
+        {/* {coords.map((item, index) => {
             return (
               <Marker
                 key={index}
@@ -52,7 +54,7 @@ export const Find = () => {
               </Marker>
             );
           })} */}
-        </MapView>
+        {/* </MapView> */}
       </View>
     </View>
   );

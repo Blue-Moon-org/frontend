@@ -12,6 +12,7 @@ export const addComment = (body, id, navigate) => async (dispatch) => {
   const jsonValue = await AsyncStorage.getItem("userTokens");
   let result = JSON.parse(jsonValue);
 
+  console.warn(body, id);
   await fetchPostRequestInit(
     `/post/post-comments/${id}/`,
     {

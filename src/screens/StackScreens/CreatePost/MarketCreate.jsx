@@ -250,6 +250,14 @@ export const MarketCreate = () => {
                     style={{ fontSize: scale.fontPixel(13) }}
                     color={colors.blackText}
                     fontFamily="Outfit_400Regular"
+                    label="Select a category"
+                    value=""
+                    enabled={false}
+                  />
+                  <SelectPicker.Item
+                    style={{ fontSize: scale.fontPixel(13) }}
+                    color={colors.blackText}
+                    fontFamily="Outfit_400Regular"
                     label="Men"
                     value="Men"
                   />

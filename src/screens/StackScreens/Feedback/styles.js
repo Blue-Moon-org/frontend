@@ -30,4 +30,12 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: scale.pixelSizeVertical(30),
   },
+  errorText: {
+    fontSize: scale.fontPixel(13),
+    fontFamily: "Outfit_400Regular",
+    lineHeight: scale.heightPixel(15),
+    paddingTop: scale.pixelSizeVertical(12),
+    paddingLeft: scale.pixelSizeHorizontal(5),
+    color: colors.error,
+  },
 });

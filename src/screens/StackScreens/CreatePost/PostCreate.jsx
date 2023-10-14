@@ -57,7 +57,7 @@ export const PostCreate = () => {
     category: "",
     error: "",
   });
-  console.warn(state.category);
+  // console.warn(state.category);
   const popUp = (error) => {
     Alert.alert("Photos Alert", error, [
       {
@@ -198,6 +198,14 @@ export const PostCreate = () => {
                     setState({ ...state, category: itemValue })
                   }
                 >
+                  <SelectPicker.Item
+                    style={{ fontSize: scale.fontPixel(13) }}
+                    color={colors.blackText}
+                    fontFamily="Outfit_400Regular"
+                    label="Select a category"
+                    value=""
+                    enabled={false}
+                  />
                   <SelectPicker.Item
                     style={{ fontSize: scale.fontPixel(13) }}
                     color={colors.blackText}

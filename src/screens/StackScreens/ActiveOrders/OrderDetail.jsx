@@ -1,4 +1,4 @@
-import { TouchableOpacity, View, Alert } from "react-native";
+import { TouchableOpacity, View, Alert, Keyboard } from "react-native";
 import React, { useState, useEffect } from "react";
 import {
   Button,
@@ -20,13 +20,20 @@ import { Fontscales } from "../../../styles";
 import { colors } from "../../../constants/colorpallette";
 import StarRating from "react-native-star-rating-widget";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { baseURL } from "../../../utils/request";
+import { addComment } from "../../../Redux/actions/Post/AddComment";
+import { useDispatch, useSelector } from "react-redux";
+import { TrackOrders } from "../../../Redux/actions/Market/OrderTracking";
 
 export const OrderDetail = () => {
   const { navigate, setOptions } = useNavigation();
+  const dispatch = useDispatch();
 
   const { params } = useRoute();
 
   const [user, updateUser] = useState("");
+  const [comment, setComment] = useState("");
+  const state = useSelector((state) => state.trackOrder);
 
   const getData = async () => {
     try {
@@ -53,7 +60,11 @@ export const OrderDetail = () => {
   const [reach, setReach] = useState(1);
   const [rating, setRating] = useState(0);
 
-  const alert = () =>
+  const _locationUpdate = (type) => {
+    dispatch(TrackOrders(params?.item?.id, type, navigate));
+  };
+
+  const alert = (type) =>
     Alert.alert(
       "Tracking Order",
       "Are you sure the package has reached this location?",
@@ -63,9 +74,34 @@ export const OrderDetail = () => {
           onPress: () => {},
           style: "cancel",
         },
-        { text: "Yes", onPress: () => setReach(reach + 1) },
+        { text: "Yes", onPress: () => _locationUpdate(type) },
       ]
     );
+
+  let naira = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    notation: "compact",
+    compactDisplay: "short",
+    useGrouping: true,
+  });
+
+  const _commentHandler = () => {
+    if (comment === "") {
+      return;
+    } else {
+      dispatch(
+        addComment(
+          comment,
+          params.item?.order?.order_products
+            ?.map((each) => each?.product.id)
+            .toString(),
+          navigate
+        )
+      );
+      Keyboard.dismiss();
+    }
+  };
 
   return (
     <View style={[SharedStyles.container, styles.container]}>
@@ -78,7 +114,12 @@ export const OrderDetail = () => {
                 cachePolicy={"memory-disk"}
                 contentFit="cover"
                 source={{
-                  uri: "https://img.freepik.com/free-photo/portrait-women-outdoors-african-attire-fashion_23-2150572691.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+                  uri: `${
+                    baseURL +
+                    params.item?.order?.order_products?.map(
+                      (each) => each?.product.images[0]?.image
+                    )
+                  }`,
                 }}
               />
             </View>
@@ -86,7 +127,9 @@ export const OrderDetail = () => {
               <View>
                 <Text
                   textStyle={Fontscales.headingSmallMedium}
-                  text={"High Quality Caftan"}
+                  text={params?.item?.order?.order_products?.map(
+                    (each) => each?.product.title
+                  )}
                   numberOfLines={1}
                   ellipsizeMode={"tail"}
                 />
@@ -95,7 +138,9 @@ export const OrderDetail = () => {
                     fontFamily: "Outfit_400Regular",
                     fontSize: scale.fontPixel(10),
                   }}
-                  text={"E-Ward Fits"}
+                  text={params?.item?.order?.order_products?.map(
+                    (each) => each?.product.owner
+                  )}
                 />
               </View>
               <View style={styles.iconsContainer}>
@@ -127,15 +172,38 @@ export const OrderDetail = () => {
             <View style={styles.stepsContainer}>
               <TouchableOpacity
                 disabled={
-                  reach >= 1 || user.account_type === "Buyer" ? true : false
+                  params?.item.order_status === "Pending" ||
+                  params?.item.order_status === "Processing" ||
+                  params?.item.order_status === "Dispatched" ||
+                  params?.item.order_status === "Shipped" ||
+                  params?.item.order_status === "Delivered" ||
+                  state.data?.data?.order_status === "Pending" ||
+                  state.data?.data?.order_status === "Processing" ||
+                  state.data?.data?.order_status === "Dispatched" ||
+                  state.data?.data?.order_status === "Shipped" ||
+                  state.data?.data?.order_status === "Delivered" ||
+                  user.account_type === "Buyer"
+                    ? true
+                    : false
                 }
-                onPress={() => alert()}
+                onPress={() => alert("Pending")}
                 activeOpacity={0.8}
                 style={[
                   styles.topBottomContainer,
                   {
                     backgroundColor:
-                      reach >= 1 ? colors.mainPrimary : colors.grey2,
+                      params?.item.order_status === "Pending" ||
+                      params?.item.order_status === "Processing" ||
+                      params?.item.order_status === "Dispatched" ||
+                      params?.item.order_status === "Shipped" ||
+                      params?.item.order_status === "Delivered" ||
+                      state.data?.data?.order_status === "Pending" ||
+                      state.data?.data?.order_status === "Processing" ||
+                      state.data?.data?.order_status === "Dispatched" ||
+                      state.data?.data?.order_status === "Shipped" ||
+                      state.data?.data?.order_status === "Delivered"
+                        ? colors.mainPrimary
+                        : colors.grey2,
                   },
                 ]}
               >
@@ -150,19 +218,47 @@ export const OrderDetail = () => {
                   styles.line1,
                   {
                     backgroundColor:
-                      reach > 1 ? colors.mainPrimary : colors.grey2,
+                      params?.item.order_status === "Processing" ||
+                      params?.item.order_status === "Dispatched" ||
+                      params?.item.order_status === "Shipped" ||
+                      params?.item.order_status === "Delivered" ||
+                      state.data?.data?.order_status === "Processing" ||
+                      state.data?.data?.order_status === "Dispatched" ||
+                      state.data?.data?.order_status === "Shipped" ||
+                      state.data?.data?.order_status === "Delivered"
+                        ? colors.mainPrimary
+                        : colors.grey2,
                   },
                 ]}
               />
               <TouchableOpacity
                 disabled={
-                  reach >= 2 || user.account_type === "Buyer" ? true : false
+                  params?.item.order_status === "Processing" ||
+                  params?.item.order_status === "Dispatched" ||
+                  params?.item.order_status === "Shipped" ||
+                  params?.item.order_status === "Delivered" ||
+                  state.data?.data?.order_status === "Processing" ||
+                  state.data?.data?.order_status === "Dispatched" ||
+                  state.data?.data?.order_status === "Shipped" ||
+                  state.data?.data?.order_status === "Delivered" ||
+                  user.account_type === "Buyer"
+                    ? true
+                    : false
                 }
                 activeOpacity={0.8}
-                onPress={() => alert()}
+                onPress={() => alert("Processing")}
                 style={{
                   backgroundColor:
-                    reach >= 2 ? colors.mainPrimary : colors.grey2,
+                    params?.item.order_status === "Processing" ||
+                    params?.item.order_status === "Dispatched" ||
+                    params?.item.order_status === "Shipped" ||
+                    params?.item.order_status === "Delivered" ||
+                    state.data?.data?.order_status === "Processing" ||
+                    state.data?.data?.order_status === "Dispatched" ||
+                    state.data?.data?.order_status === "Shipped" ||
+                    state.data?.data?.order_status === "Delivered"
+                      ? colors.mainPrimary
+                      : colors.grey2,
                   height: 16,
                   width: 16,
                   borderRadius: 4,
@@ -173,19 +269,41 @@ export const OrderDetail = () => {
                   styles.line1,
                   {
                     backgroundColor:
-                      reach > 2 ? colors.mainPrimary : colors.grey2,
+                      params?.item.order_status === "Dispatched" ||
+                      params?.item.order_status === "Shipped" ||
+                      params?.item.order_status === "Delivered" ||
+                      state.data?.data?.order_status === "Dispatched" ||
+                      state.data?.data?.order_status === "Shipped" ||
+                      state.data?.data?.order_status === "Delivered"
+                        ? colors.mainPrimary
+                        : colors.grey2,
                   },
                 ]}
               />
               <TouchableOpacity
                 disabled={
-                  reach >= 3 || user.account_type === "Buyer" ? true : false
+                  params?.item.order_status === "Dispatched" ||
+                  params?.item.order_status === "Shipped" ||
+                  params?.item.order_status === "Delivered" ||
+                  state.data?.data?.order_status === "Dispatched" ||
+                  state.data?.data?.order_status === "Shipped" ||
+                  state.data?.data?.order_status === "Delivered" ||
+                  user.account_type === "Buyer"
+                    ? true
+                    : false
                 }
                 activeOpacity={0.8}
-                onPress={() => alert()}
+                onPress={() => alert("Dispatched")}
                 style={{
                   backgroundColor:
-                    reach >= 3 ? colors.mainPrimary : colors.grey2,
+                    params?.item.order_status === "Dispatched" ||
+                    params?.item.order_status === "Shipped" ||
+                    params?.item.order_status === "Delivered" ||
+                    state.data?.data?.order_status === "Dispatched" ||
+                    state.data?.data?.order_status === "Shipped" ||
+                    state.data?.data?.order_status === "Delivered"
+                      ? colors.mainPrimary
+                      : colors.grey2,
                   height: 16,
                   width: 16,
                   borderRadius: 4,
@@ -196,19 +314,35 @@ export const OrderDetail = () => {
                   styles.line1,
                   {
                     backgroundColor:
-                      reach > 3 ? colors.mainPrimary : colors.grey2,
+                      params?.item.order_status === "Shipped" ||
+                      params?.item.order_status === "Delivered" ||
+                      state.data?.data?.order_status === "Shipped" ||
+                      state.data?.data?.order_status === "Delivered"
+                        ? colors.mainPrimary
+                        : colors.grey2,
                   },
                 ]}
               />
               <TouchableOpacity
                 disabled={
-                  reach >= 4 || user.account_type === "Buyer" ? true : false
+                  params?.item.order_status === "Shipped" ||
+                  params?.item.order_status === "Delivered" ||
+                  state.data?.data?.order_status === "Shipped" ||
+                  state.data?.data?.order_status === "Delivered" ||
+                  user.account_type === "Buyer"
+                    ? true
+                    : false
                 }
                 activeOpacity={0.8}
-                onPress={() => alert()}
+                onPress={() => alert("Shipped")}
                 style={{
                   backgroundColor:
-                    reach >= 4 ? colors.mainPrimary : colors.grey2,
+                    params?.item.order_status === "Shipped" ||
+                    params?.item.order_status === "Delivered" ||
+                    state.data?.data?.order_status === "Shipped" ||
+                    state.data?.data?.order_status === "Delivered"
+                      ? colors.mainPrimary
+                      : colors.grey2,
                   height: 16,
                   width: 16,
                   borderRadius: 4,
@@ -219,21 +353,31 @@ export const OrderDetail = () => {
                   styles.line1,
                   {
                     backgroundColor:
-                      reach > 4 ? colors.mainPrimary : colors.grey2,
+                      params?.item.order_status === "Delivered" ||
+                      state?.data?.data?.order_status === "Delivered"
+                        ? colors.mainPrimary
+                        : colors.grey2,
                   },
                 ]}
               />
               <TouchableOpacity
                 disabled={
-                  reach >= 5 || user.account_type === "Buyer" ? true : false
+                  params?.item.order_status === "Delivered" ||
+                  state?.data?.data?.order_status === "Delivered" ||
+                  user.account_type === "Buyer"
+                    ? true
+                    : false
                 }
                 activeOpacity={0.8}
-                onPress={() => alert()}
+                onPress={() => alert("Delivered")}
                 style={[
                   styles.topBottomContainer,
                   {
                     backgroundColor:
-                      reach === 5 ? colors.mainPrimary : colors.grey2,
+                      params?.item.order_status === "Delivered" ||
+                      state?.data?.data?.order_status === "Delivered"
+                        ? colors.mainPrimary
+                        : colors.grey2,
                   },
                 ]}
               >
@@ -346,11 +490,16 @@ export const OrderDetail = () => {
               <TextInput
                 placeholder={"Leave a comment"}
                 textInputStyle={styles.textInput}
+                value={comment}
+                onChangeText={(text) => {
+                  setComment(text);
+                }}
               />
               <Button
                 title={"Submit"}
                 textStyle={Fontscales.labelSmallMedium}
                 containerStyle={styles.btnContainer}
+                onPress={() => _commentHandler()}
               />
             </View>
           )}
@@ -372,7 +521,7 @@ export const OrderDetail = () => {
               />
               <Text
                 textStyle={Fontscales.labelMediumRegular}
-                text={"#353R669"}
+                text={params?.item?.tracking_number}
               />
             </View>
             <View style={styles.eachDetailContainer}>
@@ -382,7 +531,9 @@ export const OrderDetail = () => {
               />
               <Text
                 textStyle={Fontscales.labelMediumRegular}
-                text={"1x Caftan fit"}
+                text={params?.item?.order?.order_products?.map(
+                  (each) => each?.product.title
+                )}
               />
             </View>
             <View style={styles.eachDetailContainer}>
@@ -392,7 +543,9 @@ export const OrderDetail = () => {
               />
               <Text
                 textStyle={Fontscales.labelMediumRegular}
-                text={"E - Ward Fits"}
+                text={params?.item?.order?.order_products?.map(
+                  (each) => each?.product.owner
+                )}
               />
             </View>
             <View style={styles.eachDetailContainer}>
@@ -402,7 +555,11 @@ export const OrderDetail = () => {
               />
               <Text
                 textStyle={Fontscales.labelMediumRegular}
-                text={"#40, 000.00"}
+                text={naira.format(
+                  params?.item?.order?.order_products?.map(
+                    (each) => each?.product.price
+                  )
+                )}
               />
             </View>
           </View>

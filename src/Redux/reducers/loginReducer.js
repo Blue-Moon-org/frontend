@@ -32,7 +32,7 @@ export const loginReducer = (state = initialState, { type, payload, user }) => {
         ...state,
         user: "",
         loading: false,
-        error: payload,
+        error: "Invalid credentials, try again",
         user: null,
       };
 

@@ -2,7 +2,7 @@ import { actionTypesNotification } from "../constants/Notification";
 import { fetchGetRequestInit } from "../../utils/requestInit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const Notification = (navigate) => async (dispatch) => {
+export const notification = (navigate) => async (dispatch) => {
   // const { navigate } = useNavigation();
   // 4 endpoint, body, content-type, token
   dispatch({
