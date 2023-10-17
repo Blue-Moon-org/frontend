@@ -13,12 +13,13 @@ import { Liked } from "../../BottomTabScreens/Profile/Liked";
 import Constants from "expo-constants";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 export const DesignerProfile = () => {
   const [type, updateType] = useState("Posts");
 
   const { navigate } = useNavigation();
+  const { params } = useRoute();
 
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
@@ -82,7 +83,11 @@ export const DesignerProfile = () => {
           zIndex: 2,
         }}
       >
-        <ProfileHeader designer={false} client={true} />
+        <ProfileHeader
+          detail={params.designerDetail}
+          designer={false}
+          client={true}
+        />
         <View style={styles.background} />
         <View style={styles.background2}>
           <View style={styles.leftSide}>

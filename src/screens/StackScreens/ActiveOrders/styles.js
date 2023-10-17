@@ -93,7 +93,7 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   reportText: {
-    marginTop: scale.pixelSizeVertical(32),
+    marginTop: scale.pixelSizeVertical(40),
     textAlign: "right",
     fontFamily: "Outfit_500Medium",
     fontSize: scale.fontPixel(10),
@@ -139,7 +139,7 @@ export const styles = StyleSheet.create({
   },
   ratingContainer: {
     alignSelf: "center",
-    marginTop: scale.pixelSizeVertical(30),
+    marginTop: scale.pixelSizeVertical(40),
     justifyContent: "center",
     alignItems: "center",
   },

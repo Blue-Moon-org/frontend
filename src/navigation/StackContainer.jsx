@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 import { AuthStack } from "./AuthStack";
@@ -6,13 +6,15 @@ import Stacks from "./Stacks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import { userLocationPermission } from "../Redux/actions/permission/location";
+import { AuthContext } from "../Context";
 
 const Stack = createSharedElementStackNavigator();
 
 export const StackContainer = () => {
-  const isUser = useSelector((state) => state.loginState);
-  const [user, updateUser] = useState(isUser);
   const dispatch = useDispatch();
+  const { currentUser } = useContext(AuthContext);
+
+  const [user, updateUser] = useState(currentUser);
 
   const [authloaded, updateAuthLoaded] = useState(false);
 
@@ -35,7 +37,7 @@ export const StackContainer = () => {
 
   useEffect(() => {
     getUser();
-  }, [isUser]);
+  }, [currentUser]);
 
   useEffect(() => {
     let unsubscribe = true;

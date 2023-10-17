@@ -30,88 +30,81 @@ export const ActiveOrders = () => {
 
     // return () => (sub = false);
   }, []);
+  // console.warn(state?.data?.map((each) => each.order.order_products));
 
-  // console.warn(state);
-
-  const renderItem = ({ item, index }) => {
-    return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={() =>
-          navigate("OrderDetail", {
-            orderId: item.tracking_number,
-            item: item,
-          })
-        }
-        style={styles.eachContainer}
-      >
-        <View style={styles.imageContainer}>
-          <Image
-            cachePolicy={"memory-disk"}
-            source={{
-              uri: `${
-                baseURL +
-                item?.order?.order_products?.map(
-                  (each) => each?.product.images[0]?.image
-                )
-              }`,
-            }}
-            contentFit="cover"
-            style={styles.image}
-          />
-        </View>
-        <View style={styles.innerContainer}>
-          <View style={styles.textContainer}>
-            <View>
-              <Text
-                numberOfLines={1}
-                ellipsizeMode={"tail"}
-                textStyle={Fontscales.headingSmallMedium}
-                text={item?.order?.order_products?.map(
-                  (each) => each?.product.title
-                )}
-              />
-              <Text
-                numberOfLines={1}
-                ellipsizeMode={"tail"}
-                textStyle={{
-                  fontFamily: "Outfit_400Regular",
-                  fontSize: scale.fontPixel(10),
-                }}
-                text={item.order?.order_products?.map(
-                  (each) => each?.product.owner
-                )}
-              />
-            </View>
-            <Text
-              textStyle={Fontscales.labelSmallRegular}
-              text={`Quantity : ${item?.order?.order_products?.map(
-                (each) => each?.quantity
-              )}`}
-            />
-          </View>
-          <View style={styles.iconTextContainer}>
-            <Ionicons
-              name="chevron-forward"
-              size={scale.fontPixel(20)}
-              color={colors.mainPrimary}
-            />
-            <Text
-              numberOfLines={1}
-              ellipsizeMode={"tail"}
-              textStyle={[
-                Fontscales.labelLargeRegular,
-                {
-                  color: colors.mainPrimary,
-                },
-              ]}
-              text={item?.tracking_number}
-            />
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
+  // const RenderItem = ({ item, index }) => {
+  //   console.warn(item.map((e) => e.product.id));
+  //   return (
+  //     <TouchableOpacity
+  //       activeOpacity={0.8}
+  //       onPress={() =>
+  //         navigate("OrderDetail", {
+  //           orderId: item.tracking_number,
+  //           item: item,
+  //         })
+  //       }
+  //       style={styles.eachContainer}
+  //     >
+  //       <View style={styles.imageContainer}>
+  //         <Image
+  //           cachePolicy={"memory-disk"}
+  //           source={{
+  //             uri: `${
+  //               baseURL + item.map((each) => each.product?.images[0]?.image)
+  //             }`,
+  //           }}
+  //           contentFit="cover"
+  //           style={styles.image}
+  //         />
+  //       </View>
+  //       <View style={styles.innerContainer}>
+  //         <View style={styles.textContainer}>
+  //           <View>
+  //             <Text
+  //               numberOfLines={1}
+  //               ellipsizeMode={"tail"}
+  //               textStyle={Fontscales.headingSmallMedium}
+  //               text={item?.product?.title}
+  //             />
+  //             <Text
+  //               numberOfLines={1}
+  //               ellipsizeMode={"tail"}
+  //               textStyle={{
+  //                 fontFamily: "Outfit_400Regular",
+  //                 fontSize: scale.fontPixel(10),
+  //               }}
+  //               text={item?.product?.owner}
+  //             />
+  //           </View>
+  //           <Text
+  //             textStyle={Fontscales.labelSmallRegular}
+  //             text={`Quantity : ${item?.order?.order_products?.map(
+  //               (each) => each?.quantity
+  //             )}`}
+  //           />
+  //         </View>
+  //         <View style={styles.iconTextContainer}>
+  //           <Ionicons
+  //             name="chevron-forward"
+  //             size={scale.fontPixel(20)}
+  //             color={colors.mainPrimary}
+  //           />
+  //           <Text
+  //             numberOfLines={1}
+  //             ellipsizeMode={"tail"}
+  //             textStyle={[
+  //               Fontscales.labelLargeRegular,
+  //               {
+  //                 color: colors.mainPrimary,
+  //               },
+  //             ]}
+  //             text={item?.tracking_number}
+  //           />
+  //         </View>
+  //       </View>
+  //     </TouchableOpacity>
+  //   );
+  // };
   return (
     <>
       {state.loading ? <Lodaing /> : null}
@@ -124,12 +117,81 @@ export const ActiveOrders = () => {
                 : scale.pixelSizeVertical(1),
           }}
         >
-          <FlatList
-            data={state?.data}
-            renderItem={renderItem}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{}}
-          />
+          {state.data?.response?.data?.data?.order_items?.map((each) =>
+            each.order.order_products.map((item, index) => {
+              return (
+                <TouchableOpacity
+                  key={index}
+                  activeOpacity={0.8}
+                  onPress={() =>
+                    navigate("OrderDetail", {
+                      orderId: item.final_price,
+                      item: item,
+                      data: state.data?.response.data?.data.order_items,
+                    })
+                  }
+                  style={styles.eachContainer}
+                >
+                  <View style={styles.imageContainer}>
+                    <Image
+                      cachePolicy={"memory-disk"}
+                      source={{
+                        uri: `${baseURL + item.product?.images[0]?.image}`,
+                      }}
+                      contentFit="cover"
+                      style={styles.image}
+                    />
+                  </View>
+                  <View style={styles.innerContainer}>
+                    <View style={styles.textContainer}>
+                      <View>
+                        <Text
+                          numberOfLines={1}
+                          ellipsizeMode={"tail"}
+                          textStyle={Fontscales.headingSmallMedium}
+                          text={item?.product?.title}
+                        />
+                        <Text
+                          numberOfLines={1}
+                          ellipsizeMode={"tail"}
+                          textStyle={{
+                            fontFamily: "Outfit_400Regular",
+                            fontSize: scale.fontPixel(10),
+                          }}
+                          text={item?.product?.owner}
+                        />
+                      </View>
+                      <Text
+                        textStyle={Fontscales.labelSmallRegular}
+                        text={`Quantity : ${item?.quantity}`}
+                      />
+                    </View>
+                    <View style={styles.iconTextContainer}>
+                      <Ionicons
+                        name="chevron-forward"
+                        size={scale.fontPixel(20)}
+                        color={colors.mainPrimary}
+                      />
+                      <Text
+                        numberOfLines={1}
+                        ellipsizeMode={"tail"}
+                        textStyle={[
+                          Fontscales.labelLargeRegular,
+                          {
+                            color: colors.mainPrimary,
+                          },
+                        ]}
+                        text={item?.tracking_number}
+                      />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              );
+            })
+          )}
+          {/* {state.data?.response?.data?.data?.order_items?.map((each) =>
+            each.order.order_products.map((e) => e)
+          )} */}
         </View>
       </View>
     </>

@@ -22,7 +22,7 @@ export const favoritePostReducer = (
     case actionTypesAddFavorite.ADD_FAVOURITE_SUCCESS:
       return {
         ...state,
-        data: payload,
+        data: payload.response?.data?.data,
         loading: false,
         error: "",
       };

@@ -1,6 +1,7 @@
 import { fetchPostRequestInit } from "../../../utils/requestInit";
 import { actionTypesCheckOut } from "../../constants/Market";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
 
 export const checkOut = (address, billing, navigate) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
@@ -15,7 +16,7 @@ export const checkOut = (address, billing, navigate) => async (dispatch) => {
   await fetchPostRequestInit(
     `/api/checkout/`,
     {
-      payment_method: address,
+      payment_method: "pay_on_delivery",
       // BillingAddress: billing,
       // ShippingAddress: billing,
     },

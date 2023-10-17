@@ -4,6 +4,11 @@ const initialState = {
   data: {},
   error: "",
   loading: false,
+
+  //comment
+  dataComment: {},
+  errorComment: "",
+  loadingComment: false,
 };
 
 export const fetchLikeReducer = (
@@ -33,6 +38,39 @@ export const fetchLikeReducer = (
         data: null,
         loading: false,
         error: error,
+      };
+
+    default:
+      return state;
+  }
+};
+export const fetchCommentLikeReducer = (
+  state = initialState,
+  { type, payload, error }
+) => {
+  switch (type) {
+    case actionTypesLike.LIKE_LOADING:
+      return {
+        ...state,
+        dataComment: null,
+        loadingComment: true,
+        errorComment: "",
+      };
+
+    case actionTypesLike.LIKE_SUCCESS:
+      return {
+        ...state,
+        dataComment: payload,
+        loadingComment: false,
+        errorComment: "",
+      };
+
+    case actionTypesLike.LIKE_ERROR:
+      return {
+        ...state,
+        dataComment: null,
+        loadingComment: false,
+        errorComment: error,
       };
 
     default:

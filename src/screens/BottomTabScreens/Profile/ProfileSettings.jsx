@@ -1,5 +1,5 @@
 import { View, ScrollView, TouchableOpacity } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { ProfileHeader } from "../../../components/primary";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SharedStyles, Fontscales } from "../../../styles";
@@ -16,15 +16,18 @@ import { styles } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { userLogout } from "../../../Redux/actions/loginActions";
 import { useDispatch, useSelector } from "react-redux";
+import { AuthContext } from "../../../Context";
 
 export const ProfileSettings = () => {
-  const { navigate } = useNavigation();
+  const { navigate, replace } = useNavigation();
 
   const [user, updateUser] = useState("");
 
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state.logoutState);
+
+  const { currentUser, updateCurrentUser } = useContext(AuthContext);
 
   // console.warn(state);
 
@@ -47,17 +50,10 @@ export const ProfileSettings = () => {
   }, [user]);
 
   const _logoutHandler = async () => {
-    try {
-      const keys = await AsyncStorage.getAllKeys();
-      await AsyncStorage.multiRemove(keys)
-        .then(() => {})
-        .then(() => {
-          dispatch(userLogout(""));
-        });
-    } catch (e) {
-      console.log("Error: ", e);
-    }
+    dispatch(userLogout("", navigate, replace));
   };
+
+  updateCurrentUser(state.user);
 
   return (
     <SafeAreaView style={SharedStyles.container}>
@@ -258,7 +254,7 @@ export const ProfileSettings = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            // onPress={() => _logoutHandler()}
+            onPress={() => _logoutHandler()}
             style={styles.btn}
             activeOpacity={0.7}
           >

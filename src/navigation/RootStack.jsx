@@ -414,28 +414,7 @@ export const RootStack = () => {
         name="PostCreate"
         component={PostCreate}
       />
-      <Stack.Screen
-        options={
-          {
-            // headerShown: true,
-            // title: "Comment",
-            // headerTitleAlign: "left",
-            // headerTitleAllowFontScaling: true,
-            // headerTitleStyle: Fontscales.paragraphLargeMedium,
-            // headerLeft: () => (
-            //   <MaterialCommunityIcons
-            //     onPress={() => navigate("PostDetail")}
-            //     style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
-            //     name="keyboard-backspace"
-            //     size={scale.fontPixel(24)}
-            //     color="black"
-            //   />
-            // ),
-          }
-        }
-        name="Comments"
-        component={Comments}
-      />
+      <Stack.Screen name="Comments" component={Comments} />
       <Stack.Screen
         options={{
           headerShown: true,

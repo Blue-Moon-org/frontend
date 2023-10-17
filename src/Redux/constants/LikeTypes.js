@@ -3,3 +3,9 @@ export const actionTypesLike = {
   LIKE_SUCCESS: "LIKE_SUCCESS",
   LIKE_ERROR: " LIKE_ERROR",
 };
+
+export const actionTypeCommentLike = {
+  COMMENT_LIKE_LOADING: "COMMENT_LIKE_LOADING",
+  COMMENT_LIKE_SUCCESS: "COMMENT_LIKE_SUCCESS",
+  COMMENT_LIKE_ERROR: " COMMENT_LIKE_ERROR",
+};

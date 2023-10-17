@@ -1,4 +1,4 @@
-import { actionTypesLogin } from "../constants/actionTypes";
+import { actionTypesLogin, actionTypesLogout } from "../constants/actionTypes";
 
 const initialState = {
   user: {},
@@ -46,7 +46,7 @@ export const logoutReducer = (
   { type, payload, user }
 ) => {
   switch (type) {
-    case actionTypesLogin.USER_LOGIN_LOADING:
+    case actionTypesLogout.USER_LOGOUT_LOADING:
       return {
         ...state,
         user: null,
@@ -55,7 +55,7 @@ export const logoutReducer = (
         user: null,
       };
 
-    case actionTypesLogin.USER_LOGIN_SUCCESS:
+    case actionTypesLogout.USER_LOGOUT_SUCCESS:
       return {
         ...state,
         user: null,
@@ -64,7 +64,7 @@ export const logoutReducer = (
         user: null,
       };
 
-    case actionTypesLogin.USER_LOGIN_ERROR:
+    case actionTypesLogout.USER_LOGOUT_ERROR:
       return {
         ...state,
         user: null,

@@ -50,7 +50,6 @@ export const Comments = () => {
     return () => (sub = false);
   }, [page]);
 
-
   const fetchMoreComment = useCallback(() => {
     if (state.isListEnd === null) {
       return;
@@ -77,7 +76,7 @@ export const Comments = () => {
             <CommentList item={item} index={index} />
           )}
           showsVerticalScrollIndicator={false}
-          data={state?.data}
+          data={state.data}
           contentContainerStyle={
             {
               // paddingVertical: scale.pixelSizeVertical(20),

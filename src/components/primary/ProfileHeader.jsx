@@ -9,7 +9,7 @@ import { colors } from "../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
 import { baseURL } from "../../utils/request";
 
-export const ProfileHeader = ({ designer, client, user }) => {
+export const ProfileHeader = ({ designer, client, user, detail }) => {
   const { goBack, navigate } = useNavigation();
 
   // console.warn(baseURL + user.brand_image);
@@ -26,26 +26,43 @@ export const ProfileHeader = ({ designer, client, user }) => {
         />
       )}
       <View style={styles.header}>
-        <View>
-          <Text
-            textStyle={[Fontscales.headingLargeRegular]}
-            text={
-              user?.account_type === "Designer"
-                ? user?.brand_name
-                : user?.fullname
-            }
-          />
-          <BaseText style={[Fontscales.paragraphSmallRegular]}>
-            {user?.account_type === "Designer"
-              ? user?.fullname
-              : user?.firstname}
-            {" - "}
+        {!client ? (
+          <View>
             <Text
-              textStyle={{ color: colors.mainPrimary }}
-              text={user?.account_type}
+              textStyle={[Fontscales.headingLargeRegular]}
+              text={
+                user?.account_type === "Designer"
+                  ? user?.brand_name
+                  : user?.fullname
+              }
             />
-          </BaseText>
-        </View>
+            <BaseText style={[Fontscales.paragraphSmallRegular]}>
+              {user?.account_type === "Designer"
+                ? user?.fullname
+                : user?.firstname}
+              {" - "}
+              <Text
+                textStyle={{ color: colors.mainPrimary }}
+                text={user?.account_type}
+              />
+            </BaseText>
+          </View>
+        ) : (
+          <View>
+            <Text
+              textStyle={[Fontscales.headingLargeRegular]}
+              text={detail.brand_name ?? "Not Provided"}
+            />
+            <BaseText style={[Fontscales.paragraphSmallRegular]}>
+              {detail?.fullname}
+              {" - "}
+              <Text
+                textStyle={{ color: colors.mainPrimary }}
+                text={detail?.account_type ?? "Designer"}
+              />
+            </BaseText>
+          </View>
+        )}
         <View style={styles.iconImage}>
           {designer && (
             <Ionicons
@@ -71,19 +88,32 @@ export const ProfileHeader = ({ designer, client, user }) => {
               }
             />
           )}
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.image}
-              cachePolicy={"memory-disk"}
-              contentFit="cover"
-              source={{
-                uri:
-                  user?.account_type === "Designer"
-                    ? `${baseURL + user?.brand_image}`
-                    : `${baseURL + user?.image}`,
-              }}
-            />
-          </View>
+          {!client ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                cachePolicy={"memory-disk"}
+                contentFit="cover"
+                source={{
+                  uri:
+                    user?.account_type === "Designer"
+                      ? `${baseURL + user?.brand_image}`
+                      : `${baseURL + user?.image}`,
+                }}
+              />
+            </View>
+          ) : (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                cachePolicy={"memory-disk"}
+                contentFit="cover"
+                source={{
+                  uri: `${baseURL + detail?.brand_image}`,
+                }}
+              />
+            </View>
+          )}
         </View>
       </View>
     </>

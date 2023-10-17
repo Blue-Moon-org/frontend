@@ -2,7 +2,7 @@ import { actionTypesLogin, actionTypesLogout } from "../constants/actionTypes";
 import { fetchPostRequestInit } from "../../utils/requestInit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const userLogin = (body, navigate) => async (dispatch) => {
+export const userLogin = (body, navigate, replace) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
   dispatch({
     type: actionTypesLogin.USER_LOGIN_LOADING,
@@ -27,9 +27,9 @@ export const userLogin = (body, navigate) => async (dispatch) => {
         payload: res,
         user: res.response.data.data,
       });
-      storedData(res.response.data.data);
-
-      // navigate("Stacks");
+      storedData(res.response.data.data).then(() => {
+        // replace("Stacks");
+      });
     })
     .catch((err) => {
       console.warn(err);
@@ -37,31 +37,40 @@ export const userLogin = (body, navigate) => async (dispatch) => {
     });
 };
 
-export const userLogout = (body, navigate) => async (dispatch) => {
+export const userLogout = (body, navigate, replace) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
   dispatch({
     type: actionTypesLogout.USER_LOGOUT_LOADING,
   });
 
-  // const storedData = async (value) => {
-  //   try {
-  //     await AsyncStorage.setItem("user", JSON.stringify(value.user_data));
-  //     await AsyncStorage.setItem("userTokens", JSON.stringify(value.tokens));
-  //   } catch (e) {
-  //     console.warn(e);
-  //   }
-  // };
+  const jsonValue = await AsyncStorage.getItem("userTokens");
+  let result = JSON.parse(jsonValue);
 
-  await fetchPostRequestInit(``, {
-    // email: body.email,
-    // password: body.password,
-  })
+  const clearKeys = async () => {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      await AsyncStorage.multiRemove(keys).then(() => {});
+    } catch (e) {
+      console.log("Error: ", e);
+    }
+  };
+
+  await fetchPostRequestInit(
+    `/core/logout/`,
+    {
+      refresh_token: result.refresh,
+    },
+    "application/json",
+    `Bearer ${result.access}`
+  )
     .then((res) => {
+      // replace("Auth");
       dispatch({
         type: actionTypesLogout.USER_LOGOUT_SUCCESS,
-        payload: null,
+        payload: res,
         user: null,
       });
+      clearKeys();
       // storedData(res.response.data.data);
 
       // navigate("Stacks");

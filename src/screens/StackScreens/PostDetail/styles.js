@@ -46,6 +46,7 @@ export const styles = StyleSheet.create({
     width: scale.widthPixel(40),
     borderRadius: scale.fontPixel(4),
     marginRight: scale.pixelSizeHorizontal(8),
+    backgroundColor: colors.mainPrimary,
   },
   imageText: {
     flexDirection: "row",

@@ -9,7 +9,6 @@ import { baseURL } from "../../../utils/request";
 import { scale } from "../../../utils/scale";
 import { useDispatch, useSelector } from "react-redux";
 import { AddToCart } from "../../../Redux/actions/Market/AddToCart";
-import { CartView } from "../../../Redux/actions/Market/CartView";
 import { colors } from "../../../constants/colorpallette";
 
 export const MarketRenderItems = ({ item, index, separator }) => {
@@ -34,7 +33,7 @@ export const MarketRenderItems = ({ item, index, separator }) => {
     updateHasCarted(!hasCarted);
   };
 
-  const { loading, error } = useSelector((state) => state.cartView);
+  const { loading, error, data } = useSelector((state) => state.cartView);
 
   return (
     <TouchableOpacity
@@ -57,7 +56,13 @@ export const MarketRenderItems = ({ item, index, separator }) => {
           />
         ) : (
           <Ionicons
-            name={hasCarted ? "cart" : "cart-outline"}
+            name={
+              data
+                ? data.find((e) => e.product.id === item.id)
+                  ? "cart"
+                  : "cart-outline"
+                : null
+            }
             size={scale.fontPixel(18)}
             color={"white"}
             style={styles.likeIcon}

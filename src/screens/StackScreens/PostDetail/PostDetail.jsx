@@ -1,4 +1,10 @@
-import { View, TextInput, ActivityIndicator, Keyboard } from "react-native";
+import {
+  View,
+  TextInput,
+  ActivityIndicator,
+  Keyboard,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
@@ -14,25 +20,34 @@ import { addComment } from "../../../Redux/actions/Post/AddComment";
 import { useSelector, useDispatch } from "react-redux";
 import { addFavourite } from "../../../Redux/actions/Post/FavoritePost";
 import { postDetail } from "../../../Redux/actions/Post/PostDetail";
+import { fetchLikes } from "../../../Redux/actions";
 
 export const PostDetail = () => {
   const { navigate } = useNavigation();
   const route = useRoute();
-
   const dispatch = useDispatch();
 
   const [values, updateValue] = useState({
     comment: "",
   });
 
+  const [favValues, updateFavValues] = useState({
+    count: route.params?.item?.favs,
+    fav: route.params?.item?.user_has_favorited,
+  });
+
+  const [likeValues, updateLikeValues] = useState({
+    likeCount: route.params?.item?.likes,
+    like: route.params?.item?.user_has_liked,
+  });
+
   const _commentHandler = () => {
     dispatch(addComment(values.comment, route?.params?.item?.id, navigate));
     Keyboard.dismiss();
+    updateValue({ ...values, comment: "" });
   };
 
   const state = useSelector((state) => state.comment);
-  const posDel = useSelector((state) => state.postDetail);
-  const fav = useSelector((state) => state.favourite);
 
   useEffect(() => {
     let sub = true;
@@ -41,16 +56,33 @@ export const PostDetail = () => {
     }
     return () => (sub = false);
   }, [route.params?.item?.id]);
-  const detail = useSelector((state) => state.postDetail);
-  const allData = useSelector((state) => state.fetchFeedsAll);
-
+  // const detail = useSelector((state) => state.postDetail);
+  // const allData = useSelector((state) => state.fetchFeedsAll);
+  // const posDel = useSelector((state) => state.postDetail);
+  // dispatch(postDetail(route.params?.item?.id));
+  // dispatch(postDetail(route.params?.item?.id));
   // let active = "";
+  // const fav = useSelector((state) => state.favourite);
+
   const _handleFav = () => {
-    dispatch(addFavourite(route.params?.item?.id, allData.dataAll, navigate));
-    dispatch(postDetail(route.params?.item?.id));
+    dispatch(addFavourite(route.params?.item?.id, navigate));
+    updateFavValues({
+      ...favValues,
+      count: favValues.fav ? favValues.count - 1 : favValues.count + 1,
+      fav: !favValues.fav,
+    });
   };
 
-  console.warn(state);
+  const _handleLike = () => {
+    dispatch(fetchLikes(route.params?.item?.id));
+    updateLikeValues({
+      ...likeValues,
+      likeCount: likeValues.like
+        ? likeValues.likeCount - 1
+        : likeValues.likeCount + 1,
+      like: !likeValues.like,
+    });
+  };
 
   return (
     <View style={SharedStyles.container}>
@@ -94,11 +126,19 @@ export const PostDetail = () => {
             </View>
 
             <View style={styles.profilecontainer}>
-              <View style={styles.imageText}>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() =>
+                  navigate("DesignerProfile", {
+                    designerDetail: route.params.item.owner,
+                  })
+                }
+                style={styles.imageText}
+              >
                 <View style={styles.userProfileContainer}>
                   <Image
                     source={{
-                      uri: "https://img.freepik.com/free-photo/handsome-man-smiling-happy-face-portrait-close-up_53876-139608.jpg?size=626&ext=jpg&ga=GA1.1.70578014.1688424585&semt=ais",
+                      uri: `${baseURL + route.params.item.owner.brand_image}`,
                     }}
                     style={styles.userProfile}
                     contentFit="cover"
@@ -107,13 +147,13 @@ export const PostDetail = () => {
                 </View>
                 <View style={styles.userdetailContainer}>
                   <Text
-                    text={"E-Ward Fits"}
+                    text={route.params.item.owner.brand_name ?? "Not provided"}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={[styles.brandName, Fontscales.headingSmallBold]}
                   />
                   <Text
-                    text={"Esther Howard"}
+                    text={route.params.item.owner.fullname}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={[
@@ -122,17 +162,18 @@ export const PostDetail = () => {
                     ]}
                   />
                 </View>
-              </View>
+              </TouchableOpacity>
 
               <View style={styles.reactionIcons}>
                 <View style={styles.iconTextContainer}>
                   <AntDesign
-                    name={route.params?.hasLike ? "heart" : "hearto"}
+                    name={likeValues.like ? "heart" : "hearto"}
                     size={scale.fontPixel(16)}
                     color={colors.blackText}
+                    onPress={() => _handleLike()}
                   />
                   <Text
-                    text={posDel?.data?.likes}
+                    text={likeValues.likeCount}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={styles.likeShareText}
@@ -145,14 +186,14 @@ export const PostDetail = () => {
                     color={colors.blackText}
                   />
                   <Text
-                    text={posDel?.data?.favs}
+                    text={favValues.count}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={styles.likeShareText}
                   />
                 </View>
                 <AntDesign
-                  name={state.data?.user_has_favorited ? "star" : "staro"}
+                  name={favValues.fav ? "star" : "staro"}
                   size={scale.fontPixel(16)}
                   color={colors.blackText}
                   onPress={() => {

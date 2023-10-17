@@ -63,7 +63,7 @@ export const SignInWithGoogle = () => {
   const { navigate } = useNavigation();
   return (
     <View style={styles.buttonContainer}>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => {}} //propmtAsync() loginWithGoogle()}
         activeOpacity={0.7}
         style={styles.googleSignInButton}
@@ -74,7 +74,7 @@ export const SignInWithGoogle = () => {
           textStyle={[styles.googleSignUpText, Fontscales.labelSmallRegular]}
           text={"Sign up with Google"}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
         onPress={() => navigate("Register")}
         activeOpacity={0.7}

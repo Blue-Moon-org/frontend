@@ -209,6 +209,14 @@ export const PersonalInfoEdit = () => {
                   style={{ fontSize: scale.fontPixel(13) }}
                   color={colors.blackText}
                   fontFamily="Outfit_400Regular"
+                  label="Select your gender"
+                  value=""
+                  disabled={true}
+                />
+                <SelectPicker.Item
+                  style={{ fontSize: scale.fontPixel(13) }}
+                  color={colors.blackText}
+                  fontFamily="Outfit_400Regular"
                   label="Male"
                   value="Male"
                 />

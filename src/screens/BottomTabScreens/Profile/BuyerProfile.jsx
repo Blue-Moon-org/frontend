@@ -1,5 +1,5 @@
 import { TouchableOpacity, View, ScrollView } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ProfileHeader } from "../../../components/primary";
 import { styles } from "./styles";
@@ -14,16 +14,14 @@ import {
 import { scale } from "../../../utils/scale";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userLogout } from "../../../Redux/actions/loginActions";
 
 export const BuyerProfile = () => {
-  const { navigate } = useNavigation();
+  const { navigate, replace } = useNavigation();
   const [user, updateUser] = useState("");
 
   const dispatch = useDispatch();
-
-  const state = useSelector((state) => state.logoutState);
 
   // console.warn(state);
 
@@ -46,14 +44,7 @@ export const BuyerProfile = () => {
   }, [user]);
 
   const _logoutHandler = async () => {
-    try {
-      const keys = await AsyncStorage.getAllKeys();
-      await AsyncStorage.multiRemove(keys).then(() => {
-        dispatch(userLogout(""));
-      });
-    } catch (e) {
-      console.log("Error: ", e);
-    }
+    dispatch(userLogout("", navigate, replace));
   };
 
   return (
@@ -270,12 +261,15 @@ export const BuyerProfile = () => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
+          <TouchableOpacity
+            onPress={() => _logoutHandler()}
+            style={styles.btn}
+            activeOpacity={0.7}
+          >
             <SimpleLineIcons
               name="notebook"
               size={scale.fontPixel(20)}
               color="black"
-              // onPress={() => _logoutHandler()}
             />
             <Text
               textStyle={[

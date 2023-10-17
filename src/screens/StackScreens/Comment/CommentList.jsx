@@ -6,18 +6,29 @@ import { Text } from "../../../components/common";
 import { AntDesign } from "@expo/vector-icons";
 import { scale } from "../../../utils/scale";
 import { colors } from "../../../constants/colorpallette";
+import { baseURL } from "../../../utils/request";
+import { useDispatch } from "react-redux";
+import { fetchCommentLikes } from "../../../Redux/actions/Post/Like";
 
 export const CommentList = ({ item, index }) => {
-  const [like, updateLike] = useState(item.isLike);
+  const dispatch = useDispatch();
+
+  const [like, updateLike] = useState(item.user_has_liked);
+  const [likeCount, updateLikeCount] = useState(item.likes);
+
+  const _commentLike = () => {
+    dispatch(fetchCommentLikes(item.id, "navigate"));
+    updateLike(!like);
+    updateLikeCount(like ? likeCount - 1 : likeCount + 1);
+  };
+
   return (
     <View style={{ marginVertical: scale.pixelSizeVertical(16) }}>
       <View style={styles.row}>
         <View style={styles.imageContaner}>
           <Image
             source={{
-              uri:
-                item.imageUri ??
-                "https://img.freepik.com/free-photo/blue-user-icon-symbol-website-admin-social-login-element-concept-white-background-3d-rendering_56104-1217.jpg?w=2000&t=st=1697046872~exp=1697047472~hmac=1275d29abfabed47c1ef7cad096553bbbc74f7d7ac3587234d05b70eacc230ac",
+              uri: `${baseURL + item.owner.image}`,
             }}
             cachePolicy={"memory-disk"}
             style={styles.image}
@@ -26,7 +37,10 @@ export const CommentList = ({ item, index }) => {
 
         <View style={styles.commentProfile}>
           <Text
-            text={item.owner}
+            text={
+              item.owner.fullname ??
+              `${item.owner.firstname}``${item.owner.lastname}`
+            }
             textStyle={[
               styles.name,
               {
@@ -37,10 +51,10 @@ export const CommentList = ({ item, index }) => {
           <Text text={item.body} textStyle={styles.body} />
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <AntDesign
-              name={like ? "hearto" : "heart"}
-              size={scale.fontPixel(12)}
-              color={like ? "black" : colors.mainPrimary}
-              onPress={() => updateLike(!like)}
+              name={like ? "heart" : "hearto"}
+              size={scale.fontPixel(16)}
+              color={like ? colors.mainPrimary : "black"}
+              onPress={() => _commentLike()}
             />
             <Text
               textStyle={[
@@ -49,9 +63,18 @@ export const CommentList = ({ item, index }) => {
                   marginLeft: scale.pixelSizeHorizontal(6),
                 },
               ]}
-              text={`${22} likes`}
+              text={`${likeCount} likes`}
             />
           </View>
+          <Text
+            textStyle={[
+              styles.time,
+              {
+                marginLeft: scale.pixelSizeHorizontal(6),
+              },
+            ]}
+            text={`${item.created.slice(0, 10)}`}
+          />
         </View>
       </View>
     </View>

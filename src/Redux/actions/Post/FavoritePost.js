@@ -11,31 +11,6 @@ export const addFavourite = (id, data, navigate) => async (dispatch) => {
   const jsonValue = await AsyncStorage.getItem("userTokens");
   let result = JSON.parse(jsonValue);
 
-  dispatch({
-    type: actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_ALL,
-    id: id,
-    data: data,
-  });
-  dispatch({
-    type: actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_MEN,
-    id: id,
-    data: data,
-  });
-  dispatch({
-    type: actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_WOMEN,
-    id: id,
-    data: data,
-  });
-  dispatch({
-    type: actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_NATIVE,
-    id: id,
-    data: data,
-  });
-  dispatch({
-    type: actionTypesAddFavorite.ITEM_ADDED_TO_FAVOURITE_ANKARA,
-    id: id,
-    data: data,
-  });
   await fetchPostRequestInit(
     `/post/favorite/${id}/`,
     "",

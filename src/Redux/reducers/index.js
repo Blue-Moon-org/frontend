@@ -17,11 +17,11 @@ import {
   fetchFeedsWomenReducer,
   fetchFeedsNativeReducer,
 } from "./Posts/Feeds";
-import { fetchLikeReducer } from "./Posts/Like";
+import { fetchLikeReducer, fetchCommentLikeReducer } from "./Posts/Like";
 import { addCommentReducer } from "./Posts/AddComments";
 import { postDetailReducer } from "./Posts/PostDetail";
 import { createPostReducer } from "./Posts/createPost";
-import { favoritePostReducer } from "./Posts/Feeds";
+import { favoritePostReducer } from "./Posts/FavoritePost";
 
 //market
 import { fetchMarketReducer } from "./Market/market";
@@ -82,4 +82,5 @@ export const reducers = combineReducers({
   trackOrder: TrackOrderReducer,
   notification: NotificationReducer,
   feedback: FeedbackReducer,
+  commentLike: fetchCommentLikeReducer,
 });

@@ -4,15 +4,15 @@ import { colors } from "../../../constants/colorpallette";
 
 export const styles = StyleSheet.create({
   detailContainer: {
-    height: scale.heightPixel(400),
-    marginTop: scale.pixelSizeVertical(15),
+    height: scale.heightPixel(430),
+    marginTop: scale.pixelSizeVertical(13),
     backgroundColor: colors.grey2,
     padding: scale.pixelSizeVertical(16),
     borderRadius: scale.fontPixel(10),
   },
   imagesContainer: {
     flexDirection: "row",
-    height: "70%",
+    height: "69%",
     justifyContent: "space-between",
   },
   mainImageContainer: {
@@ -38,14 +38,15 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: "10%",
-    marginTop: "4%",
+    height: "9%",
+    marginTop: "3%",
   },
   userProfileContainer: {
     height: "100%",
     width: scale.widthPixel(40),
     borderRadius: scale.fontPixel(4),
     marginRight: scale.pixelSizeHorizontal(8),
+    backgroundColor: colors.mainPrimary,
   },
   imageText: {
     flexDirection: "row",

@@ -1,5 +1,5 @@
 import { View, Text as BaseText } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SharedStyles, Fontscales } from "../../../styles";
 import { Button, Text, TextInput } from "../../../components/common";
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../../../Redux/actions";
 import { Lodaing } from "../../../components/primary";
 import { PhoneCheck } from "../../../Redux/actions/DetailCheck";
+import { AuthContext } from "../../../Context";
 
 export const Login = () => {
   const [state, updateState] = useState({
@@ -24,8 +25,10 @@ export const Login = () => {
 
   const dispatch = useDispatch();
 
+  const { currentUser, updateCurrentUser } = useContext(AuthContext);
+
   const loginData = useSelector((state) => state.loginState);
-  const { navigate } = useNavigation();
+  const { navigate, replace } = useNavigation();
 
   const loginHandler = () => {
     if (state.email === "") {
@@ -48,13 +51,10 @@ export const Login = () => {
         ...state,
         error: null,
       });
-      dispatch(userLogin(state, navigate));
+      dispatch(userLogin(state, navigate, replace));
     }
   };
-
-  // useEffect(() => {
-  // }, []);
-
+  updateCurrentUser(loginData.user);
   return (
     <>
       {loginData.loading ? <Lodaing /> : null}
@@ -151,7 +151,7 @@ export const Login = () => {
             <View style={styles.errContainer}>
               <Text
                 textStyle={styles.errorText}
-                text={state.error ?? loginData.error.message}
+                text={state.error ?? loginData.error}
               />
             </View>
 

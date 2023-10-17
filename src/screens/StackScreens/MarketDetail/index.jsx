@@ -1,17 +1,28 @@
-import { View, TextInput, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, ActivityIndicator } from "react-native";
 import React from "react";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Image } from "expo-image";
 import { KeyBoardAvoidingWrapper, Text } from "../../../components/common";
-import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { scale } from "../../../utils/scale";
 import { dataFits } from "../../BottomTabScreens/Home/data";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { baseURL } from "../../../utils/request";
+import { useDispatch, useSelector } from "react-redux";
+import { AddToCart } from "../../../Redux/actions/Market/AddToCart";
+import { colors } from "../../../constants/colorpallette";
 
 export const MarketDetail = () => {
   const route = useRoute();
+  const { navigate } = useNavigation();
+  const dispatch = useDispatch();
+
+  const _cartHandler = () => {
+    dispatch(AddToCart(route.params.item.slug, navigate));
+  };
+
+  const { loading, error, data } = useSelector((state) => state.cartView);
   return (
     <View style={SharedStyles.container}>
       <KeyBoardAvoidingWrapper>
@@ -35,6 +46,7 @@ export const MarketDetail = () => {
                   }}
                   style={styles.sideImage}
                   contentFit="cover"
+                  cachePolicy={"memory-disk"}
                 />
                 <Image
                   source={{
@@ -42,6 +54,7 @@ export const MarketDetail = () => {
                   }}
                   style={styles.sideImage}
                   contentFit="cover"
+                  cachePolicy={"memory-disk"}
                 />
                 <Image
                   source={{
@@ -49,16 +62,25 @@ export const MarketDetail = () => {
                   }}
                   style={styles.sideImage}
                   contentFit="cover"
+                  cachePolicy={"memory-disk"}
                 />
               </View>
             </View>
 
             <View style={styles.profilecontainer}>
-              <View style={styles.imageText}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigate("DesignerProfile", {
+                    designerDetail: route.params.item.user,
+                  })
+                }
+                activeOpacity={0.9}
+                style={styles.imageText}
+              >
                 <View style={styles.userProfileContainer}>
                   <Image
                     source={{
-                      uri: "https://img.freepik.com/free-photo/handsome-man-smiling-happy-face-portrait-close-up_53876-139608.jpg?size=626&ext=jpg&ga=GA1.1.70578014.1688424585&semt=ais",
+                      uri: `${baseURL + route.params.item.user.brand_image}`,
                     }}
                     style={styles.userProfile}
                     contentFit="cover"
@@ -67,13 +89,13 @@ export const MarketDetail = () => {
                 </View>
                 <View style={styles.userdetailContainer}>
                   <Text
-                    text={"E-Ward Fits"}
+                    text={route.params.item?.user?.brand_name ?? "Not provided"}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={[styles.brandName, Fontscales.headingSmallBold]}
                   />
                   <Text
-                    text={"Esther Howard"}
+                    text={route.params.item.owner.fullname ?? "Not Provided"}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={[
@@ -82,21 +104,60 @@ export const MarketDetail = () => {
                     ]}
                   />
                 </View>
-              </View>
-
-              <TouchableOpacity activeOpacity={1} style={styles.reactionIcons}>
-                <Ionicons
-                  name={route.params?.hasCarted ? "cart" : "cart-outline"}
-                  color={"white"}
-                  size={scale.fontPixel(20)}
-                />
-                <Text
-                  text={route.params?.hasCarted ? "In cart" : "Add to cart"}
-                  textStyle={styles.cartText}
-                  numberOfLines={1}
-                  ellipsizeMode={"tail"}
-                />
               </TouchableOpacity>
+
+              {loading === false ? (
+                <TouchableOpacity
+                  onPress={() => _cartHandler()}
+                  activeOpacity={1}
+                  style={styles.reactionIcons}
+                >
+                  <Ionicons
+                    name={
+                      data
+                        ? data.find(
+                            (e) => e.product.id === route.params.item.id
+                          )
+                          ? "cart"
+                          : "cart-outline"
+                        : null
+                    }
+                    color={"white"}
+                    size={scale.fontPixel(20)}
+                  />
+                  <Text
+                    text={
+                      data
+                        ? data.find(
+                            (e) => e.product.id === route.params.item.id
+                          )
+                          ? "In cart"
+                          : "Add to cart"
+                        : null
+                    }
+                    textStyle={styles.cartText}
+                    numberOfLines={1}
+                    ellipsizeMode={"tail"}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  disabled={true}
+                  activeOpacity={1}
+                  style={styles.reactionIcons}
+                >
+                  <ActivityIndicator
+                    color={"white"}
+                    size={scale.fontPixel(20)}
+                  />
+                  <Text
+                    text={!data && "Checking"}
+                    textStyle={styles.cartText}
+                    numberOfLines={1}
+                    ellipsizeMode={"tail"}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
             <View style={styles.aboutContainer}>
               <Text
@@ -106,12 +167,41 @@ export const MarketDetail = () => {
                 numberOfLines={1}
               />
               <Text
-                text={route.params?.item.title}
+                text={route.params?.item.description}
                 textStyle={Fontscales.paragraphSmallRegular}
                 numberOfLines={2}
                 ellipsizeMode={"tail"}
               />
             </View>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => navigate("Reviews")}
+              style={{
+                alignSelf: "flex-end",
+                flexDirection: "row",
+                marginTop: scale.pixelSizeVertical(7),
+                alignItems: "center",
+              }}
+            >
+              <Text
+                textStyle={[
+                  Fontscales.paragraphSmallRegular,
+                  {
+                    color: colors.mainPrimary,
+                    fontSize: scale.fontPixel(11),
+                    marginRight: scale.pixelSizeHorizontal(5),
+                  },
+                ]}
+                numberOfLines={1}
+                ellipsizeMode={"tail"}
+                text={"See product reviews from buyers"}
+              />
+              <AntDesign
+                name="arrowright"
+                size={scale.fontPixel(13)}
+                color={colors.mainPrimary}
+              />
+            </TouchableOpacity>
           </View>
           <View style={styles.seeMoreContainer}>
             <Text

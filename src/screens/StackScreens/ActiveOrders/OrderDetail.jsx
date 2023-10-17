@@ -114,12 +114,7 @@ export const OrderDetail = () => {
                 cachePolicy={"memory-disk"}
                 contentFit="cover"
                 source={{
-                  uri: `${
-                    baseURL +
-                    params.item?.order?.order_products?.map(
-                      (each) => each?.product.images[0]?.image
-                    )
-                  }`,
+                  uri: `${baseURL + params.item?.product.images[0]?.image}`,
                 }}
               />
             </View>
@@ -127,9 +122,7 @@ export const OrderDetail = () => {
               <View>
                 <Text
                   textStyle={Fontscales.headingSmallMedium}
-                  text={params?.item?.order?.order_products?.map(
-                    (each) => each?.product.title
-                  )}
+                  text={params?.item?.product.title}
                   numberOfLines={1}
                   ellipsizeMode={"tail"}
                 />
@@ -138,9 +131,7 @@ export const OrderDetail = () => {
                     fontFamily: "Outfit_400Regular",
                     fontSize: scale.fontPixel(10),
                   }}
-                  text={params?.item?.order?.order_products?.map(
-                    (each) => each?.product.owner
-                  )}
+                  text={params?.item?.product?.owner}
                 />
               </View>
               <View style={styles.iconsContainer}>
@@ -488,7 +479,7 @@ export const OrderDetail = () => {
                 />
               </View>
               <TextInput
-                placeholder={"Leave a comment"}
+                placeholder={"Leave a review"}
                 textInputStyle={styles.textInput}
                 value={comment}
                 onChangeText={(text) => {
@@ -521,7 +512,7 @@ export const OrderDetail = () => {
               />
               <Text
                 textStyle={Fontscales.labelMediumRegular}
-                text={params?.item?.tracking_number}
+                text={params?.item?.tracking_number ?? "N/A"}
               />
             </View>
             <View style={styles.eachDetailContainer}>
@@ -531,9 +522,7 @@ export const OrderDetail = () => {
               />
               <Text
                 textStyle={Fontscales.labelMediumRegular}
-                text={params?.item?.order?.order_products?.map(
-                  (each) => each?.product.title
-                )}
+                text={params?.item?.product?.title}
               />
             </View>
             <View style={styles.eachDetailContainer}>
@@ -543,9 +532,7 @@ export const OrderDetail = () => {
               />
               <Text
                 textStyle={Fontscales.labelMediumRegular}
-                text={params?.item?.order?.order_products?.map(
-                  (each) => each?.product.owner
-                )}
+                text={params?.item?.product?.owner}
               />
             </View>
             <View style={styles.eachDetailContainer}>
@@ -555,11 +542,7 @@ export const OrderDetail = () => {
               />
               <Text
                 textStyle={Fontscales.labelMediumRegular}
-                text={naira.format(
-                  params?.item?.order?.order_products?.map(
-                    (each) => each?.product.price
-                  )
-                )}
+                text={naira.format(params?.item?.product?.price)}
               />
             </View>
           </View>
