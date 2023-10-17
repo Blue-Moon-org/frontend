@@ -14,14 +14,12 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.app.bluemoon",
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "bundleIdentifier": "com.app.bluemoon"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/icon.png",
-        "backgroundColor": "#ffffff",
-        "googleServicesFile": "./google-services.json"
+        "backgroundColor": "#ffffff"
       },
       "plugins": [
         "@react-native-google-signin/google-signin",

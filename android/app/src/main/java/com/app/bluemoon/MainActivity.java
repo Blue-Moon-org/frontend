@@ -1,4 +1,4 @@
-package com.company.bluemoon;
+package com.app.bluemoon;
 
 import android.os.Build;
 import android.os.Bundle;

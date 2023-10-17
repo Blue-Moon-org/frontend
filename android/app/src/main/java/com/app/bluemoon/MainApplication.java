@@ -1,4 +1,4 @@
-package com.company.bluemoon;
+package com.app.bluemoon;
 
 import android.app.Application;
 import android.content.res.Configuration;
