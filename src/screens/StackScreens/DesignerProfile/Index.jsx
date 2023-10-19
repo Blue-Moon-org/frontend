@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, Platform } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ProfileHeader } from "../../../components/primary";
 import { SharedStyles } from "../../../styles";
 import { styles } from "./styles";
@@ -7,19 +7,34 @@ import { topData } from "../../BottomTabScreens/Profile/data";
 import { Text } from "../../../components/common";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
-import { ForSale } from "../../BottomTabScreens/Profile/ForSale";
-import { Posts } from "../../BottomTabScreens/Profile/Posts";
-import { Liked } from "../../BottomTabScreens/Profile/Liked";
+import { ForSale } from "./ForSale";
+import { Posts } from "./Posts";
+import { Liked } from "./Liked";
 import Constants from "expo-constants";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { AuthContext } from "../../../Context";
+import { fetchRating } from "../../../Redux/actions/Post/Rating";
+import { useDispatch, useSelector } from "react-redux";
 
 export const DesignerProfile = () => {
   const [type, updateType] = useState("Posts");
+  const dispatch = useDispatch();
 
   const { navigate } = useNavigation();
   const { params } = useRoute();
+
+  const { currentUser } = useContext(AuthContext);
+
+  const rating = useSelector((state) => state.rating);
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      dispatch(fetchRating(currentUser?.id, navigate));
+    }
+  }, [currentUser?.id]);
 
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
@@ -31,9 +46,9 @@ export const DesignerProfile = () => {
   const Rating = (value) => {
     const stars = Array.from({ length: STAR_COUNT }, () => (
       <FontAwesome
-        style={{ paddingHorizontal: scale.pixelSizeHorizontal(1) }}
+        style={{ paddingHorizontal: scale.pixelSizeHorizontal(3) }}
         name="star-o"
-        size={scale.fontPixel(15)}
+        size={scale.fontPixel(17)}
         color={colors.mainPrimary}
       />
     ));
@@ -42,9 +57,9 @@ export const DesignerProfile = () => {
       // this will loop Math.floor(value) times
       stars[i] = (
         <FontAwesome
-          style={{ paddingHorizontal: scale.pixelSizeHorizontal(1) }}
+          style={{ paddingHorizontal: scale.pixelSizeHorizontal(3) }}
           name="star"
-          size={scale.fontPixel(15)}
+          size={scale.fontPixel(17)}
           color={colors.mainPrimary}
         />
       );
@@ -55,8 +70,8 @@ export const DesignerProfile = () => {
       stars[i - 1] = (
         <FontAwesome
           name="star-half-full"
-          style={{ paddingHorizontal: scale.pixelSizeHorizontal(1) }}
-          size={scale.fontPixel(15)}
+          style={{ paddingHorizontal: scale.pixelSizeHorizontal(3) }}
+          size={scale.fontPixel(17)}
           color={colors.mainPrimary}
         />
       );
@@ -79,7 +94,7 @@ export const DesignerProfile = () => {
           height:
             Platform.OS === "ios"
               ? scale.heightPixel(375) + add
-              : scale.height * 0.45,
+              : scale.height * 0.42,
           zIndex: 2,
         }}
       >
@@ -90,10 +105,10 @@ export const DesignerProfile = () => {
         />
         <View style={styles.background} />
         <View style={styles.background2}>
-          <View style={styles.leftSide}>
-            <Text text={"3.1"} textStyle={styles.ratingText} />
-            {Rating(3.1)}
-            <TouchableOpacity
+          {/* <View style={styles.leftSide}> */}
+          <Text text={rating.data ?? 0} textStyle={styles.ratingText} />
+          {Rating(rating.data ?? 0)}
+          {/* <TouchableOpacity
               onPress={() => navigate("Reviews")}
               style={styles.review}
               activeOpacity={0.8}
@@ -104,9 +119,9 @@ export const DesignerProfile = () => {
                 size={scale.fontPixel(16)}
                 color={colors.mainPrimary}
               />
-            </TouchableOpacity>
-          </View>
-          <View>{Rating(3.1)}</View>
+            </TouchableOpacity> */}
+          {/* </View> */}
+          {/* <View>{Rating(3.1)}</View> */}
         </View>
         <View style={styles.headerOptionContainer}>
           {topData.map((item, index) => {
@@ -150,15 +165,24 @@ export const DesignerProfile = () => {
           height:
             Platform.OS === "ios"
               ? scale.height - scale.heightPixel(455) - add
-              : scale.height * 0.49,
+              : scale.height * 0.53,
         }}
       >
         {type === "Posts" ? (
-          <Posts />
+          <Posts
+            detail={params.designerDetail}
+            designerDetail={params.designerDetail}
+          />
         ) : type === "For Sale" ? (
-          <ForSale />
+          <ForSale
+            detail={params.designerDetail}
+            designerDetail={params.designerDetail}
+          />
         ) : (
-          <Liked />
+          <Liked
+            detail={params.designerDetail}
+            designerDetail={params.designerDetail}
+          />
         )}
       </View>
     </SafeAreaView>

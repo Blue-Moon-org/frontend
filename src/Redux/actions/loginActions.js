@@ -22,14 +22,15 @@ export const userLogin = (body, navigate, replace) => async (dispatch) => {
     password: body.password,
   })
     .then((res) => {
+      console.warn(res);
       dispatch({
         type: actionTypesLogin.USER_LOGIN_SUCCESS,
-        payload: res,
-        user: res.response.data.data,
+        // payload: res,
+        // user: res.response.data.data,
       });
-      storedData(res.response.data.data).then(() => {
-        // replace("Stacks");
-      });
+      // storedData(res.response.data.data).then(() => {
+      //   // replace("Stacks");
+      // });
     })
     .catch((err) => {
       console.warn(err);

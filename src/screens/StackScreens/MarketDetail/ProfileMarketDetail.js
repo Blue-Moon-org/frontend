@@ -12,11 +12,29 @@ import { baseURL } from "../../../utils/request";
 import { useDispatch, useSelector } from "react-redux";
 import { AddToCart } from "../../../Redux/actions/Market/AddToCart";
 import { colors } from "../../../constants/colorpallette";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export const MarketDetail = () => {
+export const ProfileMarketDetail = () => {
   const route = useRoute();
-  const { navigate } = useNavigation();
+  const { navigate, setOptions, goBack } = useNavigation();
   const dispatch = useDispatch();
+
+  setOptions({
+    headerShown: true,
+    title: "Post",
+    headerTitleAlign: "left",
+    headerTitleAllowFontScaling: true,
+    headerTitleStyle: Fontscales.paragraphLargeMedium,
+    headerLeft: () => (
+      <MaterialCommunityIcons
+        onPress={() => goBack()}
+        style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+        name="keyboard-backspace"
+        size={scale.fontPixel(24)}
+        color="black"
+      />
+    ),
+  });
 
   const _cartHandler = () => {
     dispatch(AddToCart(route.params.item.slug, navigate));
@@ -68,15 +86,7 @@ export const MarketDetail = () => {
             </View>
 
             <View style={styles.profilecontainer}>
-              <TouchableOpacity
-                onPress={() =>
-                  navigate("DesignerProfile", {
-                    designerDetail: route.params.item.user,
-                  })
-                }
-                activeOpacity={0.9}
-                style={styles.imageText}
-              >
+              <View style={styles.imageText}>
                 <View style={styles.userProfileContainer}>
                   <Image
                     source={{
@@ -104,7 +114,7 @@ export const MarketDetail = () => {
                     ]}
                   />
                 </View>
-              </TouchableOpacity>
+              </View>
 
               {loading === false ? (
                 <TouchableOpacity

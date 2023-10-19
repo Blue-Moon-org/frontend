@@ -131,9 +131,9 @@ export const EmailVerification = () => {
     });
     const finalTime = +new Date() + targetTimeSeconds * 1000;
 
-    resendTimerInterval = setInterval(
-      () => (calculateTimeLeft(finalTime), 1000)
-    );
+    resendTimerInterval = setInterval(() => {
+      calculateTimeLeft(finalTime);
+    }, 1000);
   };
 
   useEffect(() => {

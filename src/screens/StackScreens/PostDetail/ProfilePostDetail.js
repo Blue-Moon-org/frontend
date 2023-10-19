@@ -1,10 +1,4 @@
-import {
-  View,
-  TextInput,
-  ActivityIndicator,
-  Keyboard,
-  TouchableOpacity,
-} from "react-native";
+import { View, TextInput, ActivityIndicator, Keyboard } from "react-native";
 import React, { useEffect, useState } from "react";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
@@ -21,11 +15,33 @@ import { useSelector, useDispatch } from "react-redux";
 import { addFavourite } from "../../../Redux/actions/Post/FavoritePost";
 import { postDetail } from "../../../Redux/actions/Post/PostDetail";
 import { fetchLikes } from "../../../Redux/actions";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export const PostDetail = () => {
-  const { navigate } = useNavigation();
+export const ProfilePostDetail = () => {
+  const { navigate, setOptions } = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
+
+  setOptions({
+    headerShown: true,
+    title: "Post",
+    headerTitleAlign: "left",
+    headerTitleAllowFontScaling: true,
+    headerTitleStyle: Fontscales.paragraphLargeMedium,
+    headerLeft: () => (
+      <MaterialCommunityIcons
+        onPress={() =>
+          navigate("DesignerProfile", {
+            designerDetail: route.params.designerDetail,
+          })
+        }
+        style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+        name="keyboard-backspace"
+        size={scale.fontPixel(24)}
+        color="black"
+      />
+    ),
+  });
 
   const [values, updateValue] = useState({
     comment: "",
@@ -126,15 +142,7 @@ export const PostDetail = () => {
             </View>
 
             <View style={styles.profilecontainer}>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() =>
-                  navigate("DesignerProfile", {
-                    designerDetail: route.params.item.owner,
-                  })
-                }
-                style={styles.imageText}
-              >
+              <View style={styles.imageText}>
                 <View style={styles.userProfileContainer}>
                   <Image
                     source={{
@@ -162,7 +170,7 @@ export const PostDetail = () => {
                     ]}
                   />
                 </View>
-              </TouchableOpacity>
+              </View>
 
               <View style={styles.reactionIcons}>
                 <View style={styles.iconTextContainer}>
@@ -259,6 +267,7 @@ export const PostDetail = () => {
                 navigate("Comments", {
                   item: route.params.item,
                   hasLike: route.params?.item.likes,
+                  designerDetail: route.params.designerDetail,
                 })
               }
               ellipsizeMode={"tail"}

@@ -2,7 +2,7 @@ import { View, FlatList } from "react-native";
 import React, { useEffect, useState, useCallback, useContext } from "react";
 import { scale } from "../../../utils/scale";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchForSale } from "../../../Redux/actions/ProfileSection";
+import { fetchSelfLike } from "../../../Redux/actions/ProfileSection";
 import {
   HomeListComponentEmpty,
   LoadMore,
@@ -10,57 +10,57 @@ import {
   ErrorMore,
   Lodaing,
 } from "../../../components/primary";
-import { MarketRenderItems } from "../Renders/MarketRenderItems";
+import { HomeRenderItems } from "../../BottomTabScreens/Renders/HomeRenderItems";
 import { AuthContext } from "../../../Context";
 
-export const ForSale = ({ detail, designerDetail }) => {
+export const Liked = ({ detail, designerDetail }) => {
   const dispatch = useDispatch();
 
   const [page, updatePage] = useState(1);
 
-  const state = useSelector((state) => state.forSale);
+  const state = useSelector((state) => state.like);
   const { currentUser } = useContext(AuthContext);
 
-  //   dataForSale: [],
-  // moreLoadingSale: false,
-  // isListEndSale: "",
-  // moreErrorSale: false,
-  // errorForSale: "",
-  // loadingForSale: false,
+  // dataSelfLike: [],
+  // moreLoadingSelfLike: false,
+  // isListEndSelfLike: "",
+  // moreErrorSelfLike: false,
+  // errorSelfLike: "",
+  // loadingSelfLike: false,
 
   useEffect(() => {
     let subscribe = true;
 
     if (subscribe) {
-      dispatch(fetchForSale(detail?.id ?? currentUser?.id, page, "navigate"));
+      dispatch(fetchSelfLike(detail?.id ?? currentUser?.id, page, "navigate"));
     }
 
     return () => (subscribe = false);
   }, [page]);
 
   const fetchMoreFeeds = useCallback(() => {
-    if (state.isListEndSale === null) {
+    if (state.isListEndSelfLike === null) {
       return;
     } else {
-      if (state.moreLoadingSale === false) {
+      if (state.moreLoadingSelfLike === false) {
         updatePage(page + 1);
       }
     }
-  }, [state.isListEndSale]);
+  }, [state.isListEndSelfLike]);
 
   return (
     <>
-      {state.loadingForSale ? <Lodaing /> : null}
+      {state.loadingSelfLike ? <Lodaing /> : null}
       <View>
         <FlatList
           showsVerticalScrollIndicator={false}
           numColumns={3}
-          data={state.dataForSale}
-          renderItem={({ item, index, separators, designerDetail }) => (
-            <MarketRenderItems
-              index={index}
+          data={state.dataSelfLike}
+          renderItem={({ item, index, separators }) => (
+            <HomeRenderItems
               item={item}
-              personalProfile={true}
+              index={index}
+              profile={true}
               separator={separators}
               designerDetail={designerDetail}
             />
@@ -69,13 +69,14 @@ export const ForSale = ({ detail, designerDetail }) => {
           keyExtractor={(item, index) => item.id}
           contentContainerStyle={{
             marginTop: scale.pixelSizeVertical(10),
+            // width: "100%",
           }}
           ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
           onEndReachedThreshold={0.5}
           scrollEventThrottle={16}
           onEndReached={() => fetchMoreFeeds()}
           ListFooterComponent={() =>
-            state.moreErrorSale ? (
+            state.moreErrorSelfLike ? (
               <ErrorMore state={state} />
             ) : (
               <LoadMore loading={state.moreLoadingAll} />

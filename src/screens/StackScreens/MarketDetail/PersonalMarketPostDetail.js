@@ -12,11 +12,29 @@ import { baseURL } from "../../../utils/request";
 import { useDispatch, useSelector } from "react-redux";
 import { AddToCart } from "../../../Redux/actions/Market/AddToCart";
 import { colors } from "../../../constants/colorpallette";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export const MarketDetail = () => {
+export const PersonalMarketPostDetail = () => {
   const route = useRoute();
-  const { navigate } = useNavigation();
+  const { navigate, setOptions, goBack } = useNavigation();
   const dispatch = useDispatch();
+
+  setOptions({
+    headerShown: true,
+    title: "Post",
+    headerTitleAlign: "left",
+    headerTitleAllowFontScaling: true,
+    headerTitleStyle: Fontscales.paragraphLargeMedium,
+    headerLeft: () => (
+      <MaterialCommunityIcons
+        onPress={() => goBack()}
+        style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+        name="keyboard-backspace"
+        size={scale.fontPixel(24)}
+        color="black"
+      />
+    ),
+  });
 
   const _cartHandler = () => {
     dispatch(AddToCart(route.params.item.slug, navigate));
@@ -68,19 +86,11 @@ export const MarketDetail = () => {
             </View>
 
             <View style={styles.profilecontainer}>
-              <TouchableOpacity
-                onPress={() =>
-                  navigate("DesignerProfile", {
-                    designerDetail: route.params.item.user,
-                  })
-                }
-                activeOpacity={0.9}
-                style={styles.imageText}
-              >
+              <View style={styles.imageText}>
                 <View style={styles.userProfileContainer}>
                   <Image
                     source={{
-                      uri: `${baseURL + route.params.item.user.brand_image}`,
+                      uri: `${baseURL + route.params.item.owner.brand_image}`,
                     }}
                     style={styles.userProfile}
                     contentFit="cover"
@@ -89,13 +99,15 @@ export const MarketDetail = () => {
                 </View>
                 <View style={styles.userdetailContainer}>
                   <Text
-                    text={route.params.item?.user?.brand_name ?? "Not provided"}
+                    text={
+                      route.params.item?.owner?.brand_name ?? "Not provided"
+                    }
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={[styles.brandName, Fontscales.headingSmallBold]}
                   />
                   <Text
-                    text={route.params.item.user.fullname ?? "Not Provided"}
+                    text={route.params.item.owner.fullname ?? "Not Provided"}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                     textStyle={[
@@ -104,7 +116,7 @@ export const MarketDetail = () => {
                     ]}
                   />
                 </View>
-              </TouchableOpacity>
+              </View>
 
               {loading === false ? (
                 <TouchableOpacity

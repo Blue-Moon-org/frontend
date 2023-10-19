@@ -11,7 +11,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../../../Redux/actions";
 import { Lodaing } from "../../../components/primary";
-import { PhoneCheck } from "../../../Redux/actions/DetailCheck";
 import { AuthContext } from "../../../Context";
 
 export const Login = () => {
@@ -54,7 +53,14 @@ export const Login = () => {
       dispatch(userLogin(state, navigate, replace));
     }
   };
-  updateCurrentUser(loginData.user);
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      updateCurrentUser(loginData.user);
+    }
+    return () => (sub = false);
+  }, [loginData.user]);
+
   return (
     <>
       {loginData.loading ? <Lodaing /> : null}

@@ -43,6 +43,12 @@ import { getOrderReducer } from "./Market/GetOrderReducer";
 import { TrackOrderReducer } from "./Market/TrackOrder";
 import { NotificationReducer } from "./NotificationReducer";
 import { FeedbackReducer } from "./Feedback";
+import {
+  fetchSForSaleReducer,
+  fetchSelfLikeReducer,
+  fetchSelfPostReducer,
+} from "./ProfileSection";
+import { fetchRatingReducer } from "./Posts/Rating";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -83,4 +89,8 @@ export const reducers = combineReducers({
   notification: NotificationReducer,
   feedback: FeedbackReducer,
   commentLike: fetchCommentLikeReducer,
+  selfPost: fetchSelfPostReducer,
+  forSale: fetchSForSaleReducer,
+  like: fetchSelfLikeReducer,
+  rating: fetchRatingReducer,
 });

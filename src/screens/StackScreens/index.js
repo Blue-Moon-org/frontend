@@ -1,5 +1,9 @@
 import { PostDetail } from "./PostDetail/PostDetail";
+import { ProfilePostDetail } from "./PostDetail/ProfilePostDetail";
+import { PersonalProfilePostDetail } from "./PostDetail/PersonalProfilePostDetail";
 import { MarketDetail } from "./MarketDetail";
+import { ProfileMarketDetail } from "./MarketDetail/ProfileMarketDetail";
+import { PersonalMarketPostDetail } from "./MarketDetail/PersonalMarketPostDetail";
 import { Cart } from "./Cart";
 import { Checkout } from "./Checkout";
 import { ActiveOrders } from "./ActiveOrders";
@@ -52,4 +56,8 @@ export {
   Reviews,
   Feedback,
   Notification,
+  ProfilePostDetail,
+  ProfileMarketDetail,
+  PersonalMarketPostDetail,
+  PersonalProfilePostDetail,
 };

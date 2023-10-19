@@ -19,14 +19,12 @@ export const AuthStack = () => {
       <Stack.Screen name="Oboard" component={Onbording} />
       <Stack.Screen
         name="Register"
-        
         component={Register}
         options={{
           headerShown: false,
           presentation: "card",
           animationTypeForReplace: "push",
           animation: "slide_from_right",
-        
         }}
       />
       <Stack.Screen

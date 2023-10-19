@@ -27,10 +27,16 @@ export const Comments = () => {
     headerLeft: () => (
       <MaterialCommunityIcons
         onPress={() =>
-          navigate("PostDetail", {
-            item: route.params.item,
-            hasLike: route.params.hasLike,
-          })
+          route.params.designerDetail
+            ? navigate("ProfilePostDetail", {
+                item: route.params.item,
+                hasLike: route.params.hasLike,
+                designerDetail: route.params.designerDetail,
+              })
+            : navigate("PostDetail", {
+                item: route.params.item,
+                hasLike: route.params.hasLike,
+              })
         }
         style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
         name="keyboard-backspace"

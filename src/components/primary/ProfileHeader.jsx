@@ -51,7 +51,7 @@ export const ProfileHeader = ({ designer, client, user, detail }) => {
           <View>
             <Text
               textStyle={[Fontscales.headingLargeRegular]}
-              text={detail.brand_name ?? "Not Provided"}
+              text={detail?.brand_name ?? "Not Provided"}
             />
             <BaseText style={[Fontscales.paragraphSmallRegular]}>
               {detail?.fullname}

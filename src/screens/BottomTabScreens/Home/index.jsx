@@ -120,7 +120,7 @@ export const Home = () => {
               ? scale.height -
                 (scale.heightPixel(380) + Constants.statusBarHeight) -
                 add
-              : scale.height * 0.594 + Constants.statusBarHeight - 94,
+              : scale.height * 0.5832 + Constants.statusBarHeight - 94,
         }}
       >
         {type === "All" ? (
@@ -134,20 +134,20 @@ export const Home = () => {
         ) : (
           <Ankara />
         )}
-        {user?.account_type === "Designer" && (
-          <TouchableOpacity
-            onPress={() =>
-              navigate("RootStack", {
-                screen: "PostCreate",
-              })
-            }
-            activeOpacity={0.8}
-            style={styles.plusSign}
-          >
-            <Feather name="plus" size={24} color="white" />
-          </TouchableOpacity>
-        )}
       </View>
+      {user?.account_type === "Designer" && (
+        <TouchableOpacity
+          onPress={() =>
+            navigate("RootStack", {
+              screen: "PostCreate",
+            })
+          }
+          activeOpacity={0.8}
+          style={styles.plusSign}
+        >
+          <Feather name="plus" size={24} color="white" />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

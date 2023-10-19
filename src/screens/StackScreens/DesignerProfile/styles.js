@@ -10,11 +10,9 @@ export const styles = StyleSheet.create({
     borderRadius: scale.fontPixel(9),
   },
   background2: {
-    width: "100%",
-    height: scale.heightPixel(85),
+    height: scale.heightPixel(75),
     marginTop: scale.pixelSizeVertical(10),
-    paddingHorizontal: scale.pixelSizeHorizontal(44),
-    flexDirection: "row",
+    alignItems: "center",
   },
   leftSide: {
     alignItems: "center",
@@ -22,12 +20,13 @@ export const styles = StyleSheet.create({
   ratingText: {
     fontFamily: "Outfit_600SemiBold",
     fontSize: scale.fontPixel(32),
+    marginBottom: scale.fontPixel(5),
   },
   headerOptionContainer: {
-    marginTop: scale.pixelSizeVertical(20),
+    marginTop: scale.pixelSizeVertical(10),
     flexDirection: "row",
     width: scale.widthPixel(200),
-    marginTop: scale.pixelSizeVertical(32),
+    marginTop: scale.pixelSizeVertical(22),
   },
   options: {
     borderBottomWidth: scale.widthPixel(2),

@@ -1,72 +1,85 @@
 import { View, FlatList, Platform } from "react-native";
-import React from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import { dataAnkara } from "../Home/data";
-import { Text } from "../../../components/common";
 import { scale } from "../../../utils/scale";
-import { Image } from "expo-image";
-import { colors } from "../../../constants/colorpallette";
-import { AntDesign } from "@expo/vector-icons";
-import { styles } from "./styles";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSelfPosts } from "../../../Redux/actions/ProfileSection";
+import {
+  HomeListComponentEmpty,
+  LoadMore,
+  Error,
+  ErrorMore,
+  Lodaing,
+} from "../../../components/primary";
+import { HomeRenderItems } from "../Renders/HomeRenderItems";
+import { AuthContext } from "../../../Context";
 
-export const Posts = () => {
-  const renderItem = ({ item, index, separator }) => {
-    return (
-      <View style={styles.itemContainer}>
-        <View style={styles.innerContainer}>
-          <Image
-            source={{ uri: item.imageUrl }}
-            contentFit="cover"
-            cachePolicy={"memory-disk"}
-            style={styles.image}
-          />
-          <AntDesign
-            name={item.like ? "heart" : "hearto"}
-            size={scale.fontPixel(18)}
-            color={"white"}
-            style={styles.likeIcon}
-          />
-        </View>
-        <View style={styles.bottomContainer}>
-          <Text
-            textStyle={styles.text}
-            ellipsizeMode={"tail"}
-            numberOfLines={1}
-            text={item.name}
-          />
-          <Text
-            text={item.subText}
-            textStyle={styles.subText}
-            ellipsizeMode={"tail"}
-            numberOfLines={2}
-          />
-        </View>
-      </View>
-    );
-  };
-  return (
-    <View
-      style={
-        {
-          // height:
-          //   Platform.OS === "ios"
-          //     ? scale.height - scale.heightPixel(495)
-          //     : scale.height - scale.heightPixel(450),
-        }
+export const Posts = ({ detail, designerDetail }) => {
+  const dispatch = useDispatch();
+
+  const [page, updatePage] = useState(1);
+
+  const state = useSelector((state) => state.selfPost);
+  const { currentUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    let subscribe = true;
+
+    if (subscribe) {
+      dispatch(fetchSelfPosts(detail?.id ?? currentUser?.id, page, "navigate"));
+    }
+
+    return () => (subscribe = false);
+  }, [page]);
+
+  const fetchMoreFeeds = useCallback(() => {
+    if (state.isListEndPost === null) {
+      return;
+    } else {
+      if (state.moreLoadingPost === false) {
+        updatePage(page + 1);
       }
-    >
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        numColumns={3}
-        data={dataAnkara}
-        renderItem={renderItem}
-        columnWrapperStyle={{ justifyContent: "space-between" }}
-        keyExtractor={(item, index) => item.id}
-        contentContainerStyle={{
-          marginTop: scale.pixelSizeVertical(10),
-          // width: "100%",
-        }}
-      />
-      {/* <View style={{ height: scale.heightPixel(30) }} /> */}
-    </View>
+    }
+  }, [state.isListEndPost]);
+
+  return (
+    <>
+      {state.loadingPost ? <Lodaing /> : null}
+      <View style={{}}>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          numColumns={3}
+          data={state.dataPost}
+          renderItem={({ item, index, separators }) => (
+            <HomeRenderItems
+              item={item}
+              index={index}
+              personalProfile={true}
+              separator={separators}
+              designerDetail={designerDetail}
+            />
+          )}
+          columnWrapperStyle={{ gap: scale.pixelSizeHorizontal(17) }}
+          keyExtractor={(item, index) => item.id}
+          contentContainerStyle={{
+            marginTop: scale.pixelSizeVertical(10),
+            // width: "100%",
+          }}
+          ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
+          onEndReachedThreshold={0.5}
+          scrollEventThrottle={16}
+          onEndReached={() => fetchMoreFeeds()}
+          ListFooterComponent={() =>
+            state.moreErrorPost ? (
+              <ErrorMore state={state} />
+            ) : (
+              <LoadMore loading={state.moreLoadingAll} />
+            )
+          }
+        />
+      </View>
+    </>
   );
 };
+
+// />

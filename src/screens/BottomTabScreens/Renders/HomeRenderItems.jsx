@@ -1,5 +1,5 @@
 import { View, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "expo-image";
 import { styles } from "../Home/styles";
@@ -8,14 +8,24 @@ import { Text } from "../../../components/common";
 import { baseURL } from "../../../utils/request";
 import { scale } from "../../../utils/scale";
 import { fetchLikes } from "../../../Redux/actions";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { AuthContext } from "../../../Context";
 
-export const HomeRenderItems = ({ item, index, separator }) => {
+export const HomeRenderItems = ({
+  item,
+  index,
+  separator,
+  profile,
+  designerDetail,
+  personalProfile,
+}) => {
   const { navigate } = useNavigation();
 
   const dispatch = useDispatch();
 
   const [hasLike, updatLike] = useState(item?.user_has_liked);
+
+  const { currentUser } = useContext(AuthContext);
 
   const likeHanlder = (id) => {
     updatLike(!hasLike);
@@ -25,15 +35,28 @@ export const HomeRenderItems = ({ item, index, separator }) => {
   // const state = useSelector((state) => state.like);
 
   const _detailHandler = () => {
-    navigate("RootStack", {
-      screen: "PostDetail",
-      params: {
-        item,
-        hasLike,
-      },
-    });
+    personalProfile === true
+      ? navigate("RootStack", {
+          screen: "PersonalProfilePostDetail",
+          params: {
+            item,
+            hasLike,
+          },
+        })
+      : profile
+      ? navigate("ProfilePostDetail", {
+          item,
+          hasLike,
+          designerDetail,
+        })
+      : navigate("RootStack", {
+          screen: "PostDetail",
+          params: {
+            item,
+            hasLike,
+          },
+        });
   };
-
 
   return (
     <TouchableOpacity

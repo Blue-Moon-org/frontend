@@ -16,7 +16,6 @@ import { styles } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { userLogout } from "../../../Redux/actions/loginActions";
 import { useDispatch, useSelector } from "react-redux";
-import { AuthContext } from "../../../Context";
 
 export const ProfileSettings = () => {
   const { navigate, replace } = useNavigation();
@@ -26,8 +25,6 @@ export const ProfileSettings = () => {
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state.logoutState);
-
-  const { currentUser, updateCurrentUser } = useContext(AuthContext);
 
   // console.warn(state);
 
@@ -52,8 +49,6 @@ export const ProfileSettings = () => {
   const _logoutHandler = async () => {
     dispatch(userLogout("", navigate, replace));
   };
-
-  updateCurrentUser(state.user);
 
   return (
     <SafeAreaView style={SharedStyles.container}>

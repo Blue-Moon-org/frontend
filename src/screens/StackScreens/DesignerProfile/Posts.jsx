@@ -2,7 +2,7 @@ import { View, FlatList } from "react-native";
 import React, { useEffect, useState, useCallback, useContext } from "react";
 import { scale } from "../../../utils/scale";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchForSale } from "../../../Redux/actions/ProfileSection";
+import { fetchSelfPosts } from "../../../Redux/actions/ProfileSection";
 import {
   HomeListComponentEmpty,
   LoadMore,
@@ -10,57 +10,50 @@ import {
   ErrorMore,
   Lodaing,
 } from "../../../components/primary";
-import { MarketRenderItems } from "../Renders/MarketRenderItems";
+import { HomeRenderItems } from "../../BottomTabScreens/Renders/HomeRenderItems";
 import { AuthContext } from "../../../Context";
 
-export const ForSale = ({ detail, designerDetail }) => {
+export const Posts = ({ detail, designerDetail }) => {
   const dispatch = useDispatch();
 
   const [page, updatePage] = useState(1);
 
-  const state = useSelector((state) => state.forSale);
+  const state = useSelector((state) => state.selfPost);
   const { currentUser } = useContext(AuthContext);
-
-  //   dataForSale: [],
-  // moreLoadingSale: false,
-  // isListEndSale: "",
-  // moreErrorSale: false,
-  // errorForSale: "",
-  // loadingForSale: false,
 
   useEffect(() => {
     let subscribe = true;
 
     if (subscribe) {
-      dispatch(fetchForSale(detail?.id ?? currentUser?.id, page, "navigate"));
+      dispatch(fetchSelfPosts(detail?.id ?? currentUser?.id, page, "navigate"));
     }
 
     return () => (subscribe = false);
   }, [page]);
 
   const fetchMoreFeeds = useCallback(() => {
-    if (state.isListEndSale === null) {
+    if (state.isListEndPost === null) {
       return;
     } else {
-      if (state.moreLoadingSale === false) {
+      if (state.moreLoadingPost === false) {
         updatePage(page + 1);
       }
     }
-  }, [state.isListEndSale]);
+  }, [state.isListEndPost]);
 
   return (
     <>
-      {state.loadingForSale ? <Lodaing /> : null}
-      <View>
+      {state.loadingPost ? <Lodaing /> : null}
+      <View style={{}}>
         <FlatList
           showsVerticalScrollIndicator={false}
           numColumns={3}
-          data={state.dataForSale}
-          renderItem={({ item, index, separators, designerDetail }) => (
-            <MarketRenderItems
-              index={index}
+          data={state.dataPost}
+          renderItem={({ item, index, separators }) => (
+            <HomeRenderItems
               item={item}
-              personalProfile={true}
+              index={index}
+              profile={true}
               separator={separators}
               designerDetail={designerDetail}
             />
@@ -69,13 +62,14 @@ export const ForSale = ({ detail, designerDetail }) => {
           keyExtractor={(item, index) => item.id}
           contentContainerStyle={{
             marginTop: scale.pixelSizeVertical(10),
+            // width: "100%",
           }}
           ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
           onEndReachedThreshold={0.5}
           scrollEventThrottle={16}
           onEndReached={() => fetchMoreFeeds()}
           ListFooterComponent={() =>
-            state.moreErrorSale ? (
+            state.moreErrorPost ? (
               <ErrorMore state={state} />
             ) : (
               <LoadMore loading={state.moreLoadingAll} />
@@ -86,3 +80,5 @@ export const ForSale = ({ detail, designerDetail }) => {
     </>
   );
 };
+
+// />

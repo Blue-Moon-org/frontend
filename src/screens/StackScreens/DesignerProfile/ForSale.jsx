@@ -10,7 +10,7 @@ import {
   ErrorMore,
   Lodaing,
 } from "../../../components/primary";
-import { MarketRenderItems } from "../Renders/MarketRenderItems";
+import { MarketRenderItems } from "../../BottomTabScreens/Renders/MarketRenderItems";
 import { AuthContext } from "../../../Context";
 
 export const ForSale = ({ detail, designerDetail }) => {
@@ -60,7 +60,7 @@ export const ForSale = ({ detail, designerDetail }) => {
             <MarketRenderItems
               index={index}
               item={item}
-              personalProfile={true}
+              profile={true}
               separator={separators}
               designerDetail={designerDetail}
             />

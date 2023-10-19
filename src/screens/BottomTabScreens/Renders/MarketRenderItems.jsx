@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, ActivityIndicator } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "expo-image";
 import { styles } from "../Home/styles";
@@ -10,22 +10,45 @@ import { scale } from "../../../utils/scale";
 import { useDispatch, useSelector } from "react-redux";
 import { AddToCart } from "../../../Redux/actions/Market/AddToCart";
 import { colors } from "../../../constants/colorpallette";
+import { AuthContext } from "../../../Context";
 
-export const MarketRenderItems = ({ item, index, separator }) => {
+export const MarketRenderItems = ({
+  item,
+  index,
+  separator,
+  profile,
+  designerDetail,
+  personalProfile,
+}) => {
   const { navigate } = useNavigation();
 
   const dispatch = useDispatch();
 
   const [hasCarted, updateHasCarted] = useState(item.user_has_carted);
+  const { currentUser } = useContext(AuthContext);
 
   const detailHandler = () => {
-    navigate("RootStack", {
-      screen: "MarketDetail",
-      params: {
-        item,
-        hasCarted,
-      },
-    });
+    !personalProfile
+      ? profile
+        ? navigate("ProfileMarketDetail", {
+            item,
+            hasCarted,
+            designerDetail,
+          })
+        : navigate("RootStack", {
+            screen: "MarketDetail",
+            params: {
+              item,
+              hasCarted,
+            },
+          })
+      : navigate("RootStack", {
+          screen: "PersonalMarketPostDetail",
+          params: {
+            item,
+            hasCarted,
+          },
+        });
   };
 
   const cartHandler = () => {

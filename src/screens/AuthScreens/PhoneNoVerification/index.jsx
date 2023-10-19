@@ -48,8 +48,6 @@ export const PhoneNoVerification = () => {
     }
   };
 
-  console.warn(route.params);
-
   useEffect(() => {
     updateOtpState(
       {
@@ -147,9 +145,9 @@ export const PhoneNoVerification = () => {
     });
     const finalTime = +new Date() + targetTimeSeconds * 1000;
 
-    resendTimerInterval = setInterval(
-      () => (calculateTimeLeft(finalTime), 1000)
-    );
+    resendTimerInterval = setInterval(() => {
+      calculateTimeLeft(finalTime);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -159,6 +157,7 @@ export const PhoneNoVerification = () => {
       clearInterval(resendTimerInterval);
     };
   }, []);
+  
 
   // console.warn(route.params.email);
 
@@ -175,7 +174,7 @@ export const PhoneNoVerification = () => {
         <Text
           text={"Skip"}
           onPress={() => navigate("Login")}
-          textStyle={[styles.skip, Fontscales.labelSmallRegular]}
+          textStyle={[styles.skip, Fontscales.labelNormalRegular]}
         />
         <Pressable
           style={{

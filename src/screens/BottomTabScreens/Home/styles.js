@@ -42,11 +42,12 @@ export const styles = StyleSheet.create({
   plusSign: {
     backgroundColor: colors.mainPrimary,
     position: "absolute",
-    paddingVertical: scale.pixelSizeVertical(8),
-    paddingHorizontal: scale.pixelSizeHorizontal(8),
+    paddingVertical: scale.pixelSizeVertical(12),
+    paddingHorizontal: scale.pixelSizeHorizontal(12),
     right: scale.pixelSizeHorizontal(16),
-    bottom: scale.pixelSizeVertical(15),
+    bottom: scale.pixelSizeVertical(100),
     borderRadius: scale.fontPixel(10),
+    zIndex: 100,
   },
 
   itemContainer: {

@@ -3,6 +3,8 @@ import { createSharedElementStackNavigator } from "react-navigation-shared-eleme
 import {
   PostDetail,
   MarketDetail,
+  ProfileMarketDetail,
+  ProfilePostDetail,
   Cart,
   Checkout,
   ActiveOrders,
@@ -27,6 +29,8 @@ import {
   Reviews,
   Feedback,
   Notification,
+  PersonalMarketPostDetail,
+  PersonalProfilePostDetail,
 } from "../screens/StackScreens";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -86,6 +90,26 @@ export const RootStack = () => {
         component={PostDetail}
       />
       <Stack.Screen
+        // options={{
+        //   headerShown: true,
+        //   title: "Post",
+        //   headerTitleAlign: "left",
+        //   headerTitleAllowFontScaling: true,
+        //   headerTitleStyle: Fontscales.paragraphLargeMedium,
+        //   headerLeft: () => (
+        //     <MaterialCommunityIcons
+        //       onPress={() => navigate("DesignerProfile")}
+        //       style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+        //       name="keyboard-backspace"
+        //       size={scale.fontPixel(24)}
+        //       color="black"
+        //     />
+        //   ),
+        // }}
+        name="ProfilePostDetail"
+        component={ProfilePostDetail}
+      />
+      <Stack.Screen
         options={{
           headerShown: true,
           title: "About",
@@ -104,6 +128,66 @@ export const RootStack = () => {
         }}
         name="MarketDetail"
         component={MarketDetail}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "About",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => goBack()}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="PersonalMarketPostDetail"
+        component={PersonalMarketPostDetail}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "About",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => navigate("DesignerProfile")}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="ProfileMarketDetail"
+        component={ProfileMarketDetail}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "About",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => navigate("DesignerProfile")}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="PersonalProfilePostDetail"
+        component={PersonalProfilePostDetail}
       />
       <Stack.Screen
         options={{

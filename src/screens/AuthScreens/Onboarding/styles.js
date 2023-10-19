@@ -69,5 +69,7 @@ export const styles = StyleSheet.create({
     color: colors.mainPrimary,
     paddingLeft: scale.pixelSizeHorizontal(10),
   },
-  buttonContainer: {},
+  buttonContainer: {
+    // flexDirection: "row",
+  },
 });

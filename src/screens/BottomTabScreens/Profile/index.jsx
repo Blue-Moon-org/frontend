@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, Platform } from "react-native";
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { ProfileHeader } from "../../../components/primary";
 import { SharedStyles } from "../../../styles";
 import { styles } from "./styles";
@@ -11,35 +11,49 @@ import { Posts } from "./Posts";
 import { ForSale } from "./ForSale";
 import { Liked } from "./Liked";
 import Constants from "expo-constants";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRating } from "../../../Redux/actions/Post/Rating";
+import { AuthContext } from "../../../Context";
 
 export const Profile = () => {
   const [type, updateType] = useState("Posts");
+  const dispatch = useDispatch();
+
+  const { currentUser } = useContext(AuthContext);
+
+  const rating = useSelector((state) => state.rating);
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      dispatch(fetchRating(currentUser?.id, navigate));
+    }
+  }, [currentUser?.id]);
 
   const { navigate } = useNavigation();
-        const [user, updateUser] = useState("");
+  const [user, updateUser] = useState("");
 
-        const getData = async () => {
-          try {
-            const jsonValue = await AsyncStorage.getItem("user");
-            updateUser(JSON.parse(jsonValue));
-          } catch (e) {
-            // error reading value
-          }
-        };
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("user");
+      updateUser(JSON.parse(jsonValue));
+    } catch (e) {
+      // error reading value
+    }
+  };
 
-        useEffect(() => {
-          let sub = true;
-          if (sub) {
-            getData();
-          }
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      getData();
+    }
 
-          return () => (sub = false);
-        }, [user]);
-
+    return () => (sub = false);
+  }, [user]);
 
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
@@ -51,9 +65,9 @@ export const Profile = () => {
   const Rating = (value) => {
     const stars = Array.from({ length: STAR_COUNT }, () => (
       <FontAwesome
-        style={{ paddingHorizontal: scale.pixelSizeHorizontal(1) }}
+        style={{ paddingHorizontal: scale.pixelSizeHorizontal(3) }}
         name="star-o"
-        size={scale.fontPixel(15)}
+        size={scale.fontPixel(17)}
         color={colors.mainPrimary}
       />
     ));
@@ -62,9 +76,9 @@ export const Profile = () => {
       // this will loop Math.floor(value) times
       stars[i] = (
         <FontAwesome
-          style={{ paddingHorizontal: scale.pixelSizeHorizontal(1) }}
+          style={{ paddingHorizontal: scale.pixelSizeHorizontal(3) }}
           name="star"
-          size={scale.fontPixel(15)}
+          size={scale.fontPixel(17)}
           color={colors.mainPrimary}
         />
       );
@@ -75,13 +89,14 @@ export const Profile = () => {
       stars[i - 1] = (
         <FontAwesome
           name="star-half-full"
-          style={{ paddingHorizontal: scale.pixelSizeHorizontal(1) }}
-          size={scale.fontPixel(15)}
+          style={{ paddingHorizontal: scale.pixelSizeHorizontal(3) }}
+          size={scale.fontPixel(17)}
           color={colors.mainPrimary}
         />
       );
     return (
       <View
+        key={value}
         style={{
           flexDirection: "row",
           marginTop: scale.pixelSizeVertical(5),
@@ -99,17 +114,17 @@ export const Profile = () => {
           height:
             Platform.OS === "ios"
               ? scale.heightPixel(350) + add
-              : scale.height * 0.411,
+              : scale.height * 0.39,
           zIndex: 2,
         }}
       >
         <ProfileHeader designer={true} user={user} />
         <View style={styles.background} />
         <View style={styles.background2}>
-          <View style={styles.leftSide}>
-            <Text text={"3.1"} textStyle={styles.ratingText} />
-            {Rating(3.1)}
-            <TouchableOpacity
+          <Text text={rating.data ?? 0} textStyle={styles.ratingText} />
+          {Rating(rating.data ?? 0)}
+          {/* <View style={styles.leftSide}> */}
+          {/* <TouchableOpacity
               onPress={() =>
                 navigate("RootStack", {
                   screen: "Reviews",
@@ -124,9 +139,8 @@ export const Profile = () => {
                 size={scale.fontPixel(16)}
                 color={colors.mainPrimary}
               />
-            </TouchableOpacity>
-          </View>
-          <View>{Rating(3.1)}</View>
+            </TouchableOpacity> */}
+          {/* </View> */}
         </View>
         <View style={styles.headerOptionContainer}>
           {topData.map((item, index) => {
@@ -170,7 +184,7 @@ export const Profile = () => {
           height:
             Platform.OS === "ios"
               ? scale.height - scale.heightPixel(500) - add
-              : scale.height * 0.45,
+              : scale.height * 0.4611,
         }}
       >
         {type === "Posts" ? (
