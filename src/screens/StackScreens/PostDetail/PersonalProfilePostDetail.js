@@ -142,7 +142,7 @@ export const PersonalProfilePostDetail = () => {
                 <View style={styles.userProfileContainer}>
                   <Image
                     source={{
-                      uri: `${baseURL + route.params.item.owner.brand_image}`,
+                      uri: `${route.params.item.owner.brand_image}`,
                     }}
                     style={styles.userProfile}
                     contentFit="cover"

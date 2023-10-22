@@ -71,7 +71,7 @@ export const MarketRenderItems = ({
           cachePolicy={"memory-disk"}
           style={styles.image}
         />
-        {loading ? (
+        {personalProfile ? null : loading ? (
           <ActivityIndicator
             style={styles.likeIcon}
             color={colors.grey1}

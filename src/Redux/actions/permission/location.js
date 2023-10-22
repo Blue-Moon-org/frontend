@@ -1,6 +1,7 @@
 import { actionTypesLocationPermission } from "../../constants/index";
 import { Linking, Platform } from "react-native";
 import * as Location from "expo-location";
+import { Alert } from "react-native";
 
 export const userLocationPermission = () => async (dispatch) => {
   // 4 endpoint, body, content-type, token

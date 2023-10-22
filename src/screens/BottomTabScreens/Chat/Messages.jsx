@@ -1,5 +1,11 @@
-import { FlatList, Platform, TouchableOpacity, View } from "react-native";
-import React from "react";
+import {
+  FlatList,
+  Platform,
+  RefreshControl,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useState } from "react";
 import { Text } from "../../../components/common";
 import { Fontscales } from "../../../styles";
 import { messagesData } from "./data";
@@ -7,6 +13,7 @@ import { scale } from "../../../utils/scale";
 import { Image } from "expo-image";
 import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
+import { colors } from "../../../constants/colorpallette";
 
 export const Messages = ({ user }) => {
   const { navigate } = useNavigation();
@@ -53,6 +60,15 @@ export const Messages = ({ user }) => {
       </TouchableOpacity>
     );
   };
+
+  const [refresh, setRefresh] = useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefresh(true);
+    setTimeout(() => {
+      setRefresh(false);
+    }, 2000);
+  }, []);
+
   return (
     <View>
       <View>
@@ -64,6 +80,19 @@ export const Messages = ({ user }) => {
           contentContainerStyle={{
             marginTop: scale.pixelSizeVertical(10),
           }}
+          refreshControl={
+            <RefreshControl
+              refreshing={refresh}
+              onRefresh={onRefresh}
+              color={colors.blackText}
+              colors={
+                Platform.OS === "android"
+                  ? [colors.mainPrimary, colors.blackText, colors.fadedPrimary]
+                  : colors.mainPrimary
+              }
+              tintColor={colors.mainPrimary}
+            />
+          }
         />
       </View>
     </View>

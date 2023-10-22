@@ -8,12 +8,34 @@ import { Fontscales } from "../../styles";
 import { colors } from "../../constants/colorpallette";
 import { useNavigation } from "@react-navigation/native";
 import { baseURL } from "../../utils/request";
+import { useDispatch } from "react-redux";
+import { createChat } from "../../Redux/actions/Chat/ChatCreate";
+import Toast from "react-native-toast-message";
 
 export const ProfileHeader = ({ designer, client, user, detail }) => {
   const { goBack, navigate } = useNavigation();
+  const dispatch = useDispatch();
 
   // console.warn(baseURL + user.brand_image);
 
+  const _createChatHandler = () => {
+    if (detail.chat_created === true) {
+      navigate("BottomTabStack", {
+        screen: "Chat",
+      });
+    } else if (detail.id && detail.chat_created === false) {
+      dispatch(createChat(detail.id, navigate));
+    } else {
+      Toast.show({
+        position: "top",
+        text1: "Error occured",
+        text2: "Something went wrong, try again",
+        topOffset: scale.pixelSizeVertical(25),
+        type: "error",
+      });
+    }
+  };
+  // console.warn(detail.chat_created)
   return (
     <>
       {!designer && (
@@ -81,11 +103,7 @@ export const ProfileHeader = ({ designer, client, user, detail }) => {
               name="chatbox-ellipses-outline"
               size={scale.fontPixel(24)}
               color={colors.mainPrimary}
-              onPress={() =>
-                navigate("BottomTabStack", {
-                  screen: "Chat",
-                })
-              }
+              onPress={() => _createChatHandler()}
             />
           )}
           {!client ? (

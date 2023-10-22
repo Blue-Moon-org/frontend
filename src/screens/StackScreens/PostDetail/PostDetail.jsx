@@ -72,7 +72,6 @@ export const PostDetail = () => {
       fav: !favValues.fav,
     });
   };
-
   const _handleLike = () => {
     dispatch(fetchLikes(route.params?.item?.id));
     updateLikeValues({
@@ -138,7 +137,7 @@ export const PostDetail = () => {
                 <View style={styles.userProfileContainer}>
                   <Image
                     source={{
-                      uri: `${baseURL + route.params.item.owner.brand_image}`,
+                      uri: `${route.params.item.owner.brand_image}`,
                     }}
                     style={styles.userProfile}
                     contentFit="cover"

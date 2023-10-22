@@ -1,6 +1,6 @@
 import { View, TouchableOpacity, Platform } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
-import { ProfileHeader } from "../../../components/primary";
+import { Lodaing, ProfileHeader } from "../../../components/primary";
 import { SharedStyles } from "../../../styles";
 import { styles } from "./styles";
 import { topData } from "../../BottomTabScreens/Profile/data";
@@ -87,28 +87,32 @@ export const DesignerProfile = () => {
     );
   };
 
+  const createChatData = useSelector((state) => state.createChat);
+
   return (
-    <SafeAreaView style={[SharedStyles.container]}>
-      <View
-        style={{
-          height:
-            Platform.OS === "ios"
-              ? scale.heightPixel(375) + add
-              : scale.height * 0.42,
-          zIndex: 2,
-        }}
-      >
-        <ProfileHeader
-          detail={params.designerDetail}
-          designer={false}
-          client={true}
-        />
-        <View style={styles.background} />
-        <View style={styles.background2}>
-          {/* <View style={styles.leftSide}> */}
-          <Text text={rating.data ?? 0} textStyle={styles.ratingText} />
-          {Rating(rating.data ?? 0)}
-          {/* <TouchableOpacity
+    <>
+      {createChatData.loading ? <Lodaing /> : null}
+      <SafeAreaView style={[SharedStyles.container]}>
+        <View
+          style={{
+            height:
+              Platform.OS === "ios"
+                ? scale.heightPixel(375) + add
+                : scale.height * 0.42,
+            zIndex: 2,
+          }}
+        >
+          <ProfileHeader
+            detail={params.designerDetail}
+            designer={false}
+            client={true}
+          />
+          <View style={styles.background} />
+          <View style={styles.background2}>
+            {/* <View style={styles.leftSide}> */}
+            <Text text={rating.data ?? 0} textStyle={styles.ratingText} />
+            {Rating(rating.data ?? 0)}
+            {/* <TouchableOpacity
               onPress={() => navigate("Reviews")}
               style={styles.review}
               activeOpacity={0.8}
@@ -120,71 +124,74 @@ export const DesignerProfile = () => {
                 color={colors.mainPrimary}
               />
             </TouchableOpacity> */}
-          {/* </View> */}
-          {/* <View>{Rating(3.1)}</View> */}
-        </View>
-        <View style={styles.headerOptionContainer}>
-          {topData.map((item, index) => {
-            return (
-              <TouchableOpacity
-                activeOpacity={0.8}
-                style={[
-                  styles.options,
-                  {
-                    borderColor:
-                      item.name === type ? colors.mainPrimary : colors.grey2,
-                  },
-                ]}
-                onPress={() => updateType(item.name)}
-                key={item.id}
-              >
-                <Text
-                  numberOfLines={1}
-                  ellipsizeMode={"tail"}
-                  textStyle={[
-                    styles.optionsText,
+            {/* </View> */}
+            {/* <View>{Rating(3.1)}</View> */}
+          </View>
+          <View style={styles.headerOptionContainer}>
+            {topData.map((item, index) => {
+              return (
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={[
+                    styles.options,
                     {
-                      color:
-                        item.name === type ? colors.mainPrimary : colors.grey1,
-                      paddingLeft:
-                        item.name === type
-                          ? scale.pixelSizeHorizontal(5)
-                          : scale.pixelSizeHorizontal(5),
+                      borderColor:
+                        item.name === type ? colors.mainPrimary : colors.grey2,
                     },
                   ]}
-                  text={item.name}
-                />
-              </TouchableOpacity>
-            );
-          })}
+                  onPress={() => updateType(item.name)}
+                  key={item.id}
+                >
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode={"tail"}
+                    textStyle={[
+                      styles.optionsText,
+                      {
+                        color:
+                          item.name === type
+                            ? colors.mainPrimary
+                            : colors.grey1,
+                        paddingLeft:
+                          item.name === type
+                            ? scale.pixelSizeHorizontal(5)
+                            : scale.pixelSizeHorizontal(5),
+                      },
+                    ]}
+                    text={item.name}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         </View>
-      </View>
 
-      <View
-        style={{
-          height:
-            Platform.OS === "ios"
-              ? scale.height - scale.heightPixel(455) - add
-              : scale.height * 0.53,
-        }}
-      >
-        {type === "Posts" ? (
-          <Posts
-            detail={params.designerDetail}
-            designerDetail={params.designerDetail}
-          />
-        ) : type === "For Sale" ? (
-          <ForSale
-            detail={params.designerDetail}
-            designerDetail={params.designerDetail}
-          />
-        ) : (
-          <Liked
-            detail={params.designerDetail}
-            designerDetail={params.designerDetail}
-          />
-        )}
-      </View>
-    </SafeAreaView>
+        <View
+          style={{
+            height:
+              Platform.OS === "ios"
+                ? scale.height - scale.heightPixel(455) - add
+                : scale.height * 0.53,
+          }}
+        >
+          {type === "Posts" ? (
+            <Posts
+              detail={params.designerDetail}
+              designerDetail={params.designerDetail}
+            />
+          ) : type === "For Sale" ? (
+            <ForSale
+              detail={params.designerDetail}
+              designerDetail={params.designerDetail}
+            />
+          ) : (
+            <Liked
+              detail={params.designerDetail}
+              designerDetail={params.designerDetail}
+            />
+          )}
+        </View>
+      </SafeAreaView>
+    </>
   );
 };

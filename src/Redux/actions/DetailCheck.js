@@ -13,6 +13,7 @@ export const PhoneCheck = (phone) => async (dispatch) => {
 
   await fetchGetRequestInit(`/core/checkphone/${phone}/`)
     .then((res) => {
+      console.warn(res);
       dispatch({
         type: actionTypesPhoneNoCheck.USER_PHONENO_CHECK_SUCCESS,
         status: res,
@@ -30,7 +31,6 @@ export const PhoneCheck = (phone) => async (dispatch) => {
 export const EmailCheck = (email) => async (dispatch) => {
   // const { navigate } = useNavigation();
   // 4 endpoint, body, content-type, token
-  console.warn(email);
 
   dispatch({
     type: actionTypesEmailCheck.USER_EMAIL_CHECK_LOADING,
@@ -38,7 +38,6 @@ export const EmailCheck = (email) => async (dispatch) => {
 
   await fetchGetRequestInit(`/core/checkemail/${email}/`)
     .then((res) => {
-      console.warn(res);
       dispatch({
         type: actionTypesEmailCheck.USER_EMAIL_CHECK_SUCCESS,
         status: res,

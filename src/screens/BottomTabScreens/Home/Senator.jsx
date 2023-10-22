@@ -50,7 +50,7 @@ export const Senator = () => {
           renderItem={({ item, index }) => (
             <HomeRenderItems item={item} index={index} />
           )}
-          columnWrapperStyle={{ gap: scale.pixelSizeHorizontal(17) }}
+          columnWrapperStyle={{ gap: scale.pixelSizeHorizontal(10) }}
           keyExtractor={(item, index) => item.id}
           ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
           contentContainerStyle={{

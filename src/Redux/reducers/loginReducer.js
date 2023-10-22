@@ -26,6 +26,12 @@ export const loginReducer = (state = initialState, { type, payload, user }) => {
         error: "",
         user: user,
       };
+    case actionTypesLogin.VERIFY_EMAIL_LOGIN:
+      return {
+        ...state,
+        loading: false,
+        error: "",
+      };
 
     case actionTypesLogin.USER_LOGIN_ERROR:
       return {

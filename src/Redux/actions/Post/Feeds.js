@@ -212,7 +212,7 @@ export const fetchFeedsAnkara = (type, page, navigate) => async (dispatch) => {
 
   const jsonValue = await AsyncStorage.getItem("userTokens");
   let result = JSON.parse(jsonValue);
-  console.warn(result.access);
+  // console.warn(result.access);
 
   await fetchGetRequestInit(
     `/post/feed/${type}/?page=${page}`,

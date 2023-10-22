@@ -65,7 +65,7 @@ export const Liked = ({ detail, designerDetail }) => {
               designerDetail={designerDetail}
             />
           )}
-          columnWrapperStyle={{ gap: scale.pixelSizeHorizontal(17) }}
+          columnWrapperStyle={{ gap: scale.pixelSizeHorizontal(10) }}
           keyExtractor={(item, index) => item.id}
           contentContainerStyle={{
             marginTop: scale.pixelSizeVertical(10),

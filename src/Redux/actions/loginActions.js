@@ -1,6 +1,8 @@
 import { actionTypesLogin, actionTypesLogout } from "../constants/actionTypes";
 import { fetchPostRequestInit } from "../../utils/requestInit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
+import { resendEmailOtp } from "./resendEmailOtp";
 
 export const userLogin = (body, navigate, replace) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
@@ -17,20 +19,50 @@ export const userLogin = (body, navigate, replace) => async (dispatch) => {
     }
   };
 
+  const popUp = (error) => {
+    Alert.alert(
+      "Email Verification",
+      "This email has been registered with an account, But, It is yet to be verified",
+      [
+        {
+          text: "Close",
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: "Proceed, To verify",
+          onPress: () => {
+            navigate("EmailVerification", {
+              email: body.email,
+            });
+            dispatch(resendEmailOtp(body.email, navigate));
+          },
+        },
+      ]
+    );
+  };
+
   await fetchPostRequestInit(`/core/login/`, {
     email: body.email,
     password: body.password,
   })
     .then((res) => {
       console.warn(res);
-      dispatch({
-        type: actionTypesLogin.USER_LOGIN_SUCCESS,
-        // payload: res,
-        // user: res.response.data.data,
-      });
-      // storedData(res.response.data.data).then(() => {
-      //   // replace("Stacks");
-      // });
+      if (res.response?.data?.data?.user_data?.email_verified) {
+        dispatch({
+          type: actionTypesLogin.USER_LOGIN_SUCCESS,
+          payload: res,
+          user: res.response.data.data,
+        });
+        storedData(res.response.data.data).then(() => {
+          // replace("Stacks");
+        });
+      } else {
+        dispatch({
+          type: actionTypesLogin.VERIFY_EMAIL_LOGIN,
+        });
+        popUp();
+      }
     })
     .catch((err) => {
       console.warn(err);

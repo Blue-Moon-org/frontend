@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     top: scale.pixelSizeVertical(10),
     right: scale.pixelSizeHorizontal(10),
-    marginTop: Constants.statusBarHeight,
+    marginTop: Constants.statusBarHeight + scale.pixelSizeVertical(5),
   },
   titleText: {
     marginTop: scale.pixelSizeVertical(50),

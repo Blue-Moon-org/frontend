@@ -118,7 +118,7 @@ export const PersonalMarketPostDetail = () => {
                 </View>
               </View>
 
-              {loading === false ? (
+              {/* {loading === false ? (
                 <TouchableOpacity
                   onPress={() => _cartHandler()}
                   activeOpacity={1}
@@ -169,7 +169,7 @@ export const PersonalMarketPostDetail = () => {
                     ellipsizeMode={"tail"}
                   />
                 </TouchableOpacity>
-              )}
+              )} */}
             </View>
             <View style={styles.aboutContainer}>
               <Text

@@ -51,8 +51,8 @@ export const styles = StyleSheet.create({
   },
 
   itemContainer: {
-    width: "30%",
-    height: scale.heightPixel(182),
+    width: "31.5%",
+    height: scale.heightPixel(200),
     borderRadius: scale.fontPixel(10),
     marginBottom: scale.pixelSizeVertical(20),
     backgroundColor: colors.mainPrimary,
@@ -63,11 +63,10 @@ export const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 4.65,
-
     elevation: 8,
   },
   innerContainer: {
-    height: "73%",
+    height: "70%",
     width: "100%",
   },
   image: {
@@ -83,7 +82,7 @@ export const styles = StyleSheet.create({
     top: scale.pixelSizeHorizontal(8),
   },
   text: {
-    fontSize: scale.fontPixel(13),
+    fontSize: scale.fontPixel(14),
     marginBottom: scale.pixelSizeVertical(2),
     fontFamily: "Outfit_500Medium",
     color: "white",
@@ -93,9 +92,9 @@ export const styles = StyleSheet.create({
     marginTop: scale.pixelSizeVertical(4),
   },
   subText: {
-    fontSize: scale.fontPixel(9),
+    fontSize: scale.fontPixel(11),
     color: "white",
     marginBottom: scale.pixelSizeVertical(5),
-    fontFamily: "Outfit_500Medium",
+    fontFamily: "Outfit_400Regular",
   },
 });

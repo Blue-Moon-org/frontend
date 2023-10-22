@@ -8,13 +8,11 @@ import { Fontscales, SharedStyles } from "../../../styles";
 import { Button, Text, TextInput } from "../../../components/common";
 import { colors } from "../../../constants/colorpallette";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import {
-  emailVerify,
-  phoneVerify,
-  resendPhoneOtp,
-} from "../../../Redux/actions";
+import { phoneVerify, resendPhoneOtp } from "../../../Redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Lodaing } from "../../../components/primary";
+import { TouchableOpacity } from "react-native";
+import { Verifyphone } from "../../../Redux/actions/phoneVerify";
 
 export const PhoneNoVerification = () => {
   const [otpState, updateOtpState] = useState({
@@ -29,7 +27,9 @@ export const PhoneNoVerification = () => {
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state.phoneNoVerify);
-  const dataEmailVerify = useSelector((state) => state.emailVerify);
+  const verPhone = useSelector((state) => state.verifyPhone);
+
+  console.warn(verPhone);
 
   const route = useRoute();
 
@@ -40,7 +40,7 @@ export const PhoneNoVerification = () => {
         error: "Inavlid code",
       });
     } else {
-      dispatch(emailVerify(otpState, route.params, "login", navigate));
+      dispatch(phoneVerify(route.params, otpState.code, navigate));
       updateOtpState({
         ...otpState,
         error: null,
@@ -107,7 +107,7 @@ export const PhoneNoVerification = () => {
   useEffect(() => {
     let sub = true;
     if (sub) {
-      dispatch(phoneVerify(route.params));
+      dispatch(Verifyphone(route.params));
     }
     return () => (sub = false);
   }, []);
@@ -157,7 +157,6 @@ export const PhoneNoVerification = () => {
       clearInterval(resendTimerInterval);
     };
   }, []);
-  
 
   // console.warn(route.params.email);
 
@@ -169,13 +168,21 @@ export const PhoneNoVerification = () => {
 
   return (
     <>
-      {data.loading || dataEmailVerify.loading ? <Lodaing /> : null}
+      {data.loading || verPhone.loadingVerifyPhone ? <Lodaing /> : null}
       <SafeAreaView style={SharedStyles.container}>
-        <Text
-          text={"Skip"}
-          onPress={() => navigate("Login")}
-          textStyle={[styles.skip, Fontscales.labelNormalRegular]}
-        />
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => {
+            console.warn("object");
+            navigate("Login");
+          }}
+          style={{ zIndex: 30 }}
+        >
+          <Text
+            text={"Skip"}
+            textStyle={[styles.skip, Fontscales.labelNormalRegular]}
+          />
+        </TouchableOpacity>
         <Pressable
           style={{
             height: "100%",

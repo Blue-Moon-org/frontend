@@ -37,7 +37,7 @@ export const Native = ({ page, updatePage, state, data, type }) => {
         renderItem={({ item, index, separator }) => (
           <MarketRenderItems item={item} index={index} separator={separator} />
         )}
-        columnWrapperStyle={{ gap: scale.pixelSizeHorizontal(17) }}
+        columnWrapperStyle={{ gap: scale.pixelSizeHorizontal(10) }}
         keyExtractor={(item, index) => item.id}
         contentContainerStyle={{
           marginTop: scale.pixelSizeVertical(5),

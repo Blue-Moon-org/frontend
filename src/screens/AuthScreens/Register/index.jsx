@@ -45,11 +45,13 @@ export const Register = () => {
     error: registerData?.error?.message,
     accountType: "Buyer",
     coords: locationDetail?.location?.coords,
-    country: locationDetail?.address?.country,
-    city: locationDetail?.address?.city,
-    address: locationDetail?.address?.address,
-    region: locationDetail?.address?.region,
-    subRegion: locationDetail?.address?.subregion,
+    country: locationDetail?.address ? locationDetail?.address[0]?.country : "",
+    city: locationDetail?.address ? locationDetail?.address[0]?.city : "",
+    address: locationDetail?.address ? locationDetail?.address[0]?.address : "",
+    region: locationDetail?.address ? locationDetail?.address[0]?.region : "",
+    subRegion: locationDetail?.address
+      ? locationDetail?.address[0]?.subregion
+      : "",
   });
 
   const dispatch = useDispatch();
@@ -76,6 +78,11 @@ export const Register = () => {
         ...buyersState,
         error: "Phone number not valid",
       });
+    } else if (buyersState.phoneNumber.length < 11) {
+      updateBuyersState({
+        ...buyersState,
+        error: "Phone number should not be less than 11, starting with 0",
+      });
     } else if (
       buyersState.password === "" &&
       buyersState.confirmPassword === ""
@@ -83,6 +90,22 @@ export const Register = () => {
       updateBuyersState({
         ...buyersState,
         error: "Passwords must not be blank",
+      });
+    } else if (
+      buyersState.password.length < 8 &&
+      buyersState.confirmPassword.length < 8
+    ) {
+      updateBuyersState({
+        ...buyersState,
+        error: "Passwords must not be less than 8",
+      });
+    } else if (
+      buyersState.password.length < 8 &&
+      buyersState.confirmPassword.length < 8
+    ) {
+      updateBuyersState({
+        ...buyersState,
+        error: "Passwords must not be less than 8 characters",
       });
     } else if (buyersState.password !== buyersState.confirmPassword) {
       updateBuyersState({
@@ -97,7 +120,7 @@ export const Register = () => {
     } else if (locationDetail.location === null) {
       updateBuyersState({
         ...buyersState,
-        error: `Unable to find you location, Please give permission to your location`,
+        error: `Unable to find your location, Please give permission to your location`,
       });
     } else if (locationDetail.address === null) {
       updateBuyersState({
@@ -105,6 +128,11 @@ export const Register = () => {
         error: `Please check your internet connection`,
       });
     } else if (phone.phoneStatus === null || email.emailStatus === null) {
+      updateBuyersState({
+        ...buyersState,
+        error: `Please check your internet connection`,
+      });
+    } else if (phone.phoneStatus === false || email.emailStatus === false) {
       updateBuyersState({
         ...buyersState,
         error: `Email or Phone Number already exist`,
@@ -132,11 +160,13 @@ export const Register = () => {
     error: registerData?.error?.message,
     accountType: "Designer",
     coords: locationDetail?.location?.coords,
-    country: locationDetail?.address?.country,
-    city: locationDetail?.address?.city,
-    address: locationDetail?.address?.address,
-    region: locationDetail?.address?.region,
-    subRegion: locationDetail?.address?.subregion,
+    country: locationDetail?.address ? locationDetail?.address[0]?.country : "",
+    city: locationDetail?.address ? locationDetail?.address[0]?.city : "",
+    address: locationDetail?.address ? locationDetail?.address[0]?.address : "",
+    region: locationDetail?.address ? locationDetail?.address[0]?.region : "",
+    subRegion: locationDetail?.address
+      ? locationDetail?.address[0]?.subregion
+      : "",
   });
 
   const submitDesignersAccount = () => {
@@ -160,6 +190,11 @@ export const Register = () => {
         ...designersState,
         error: "Phone number not valid",
       });
+    } else if (designersState.phoneNumber.length < 11) {
+      updateDesignersState({
+        ...designersState,
+        error: "Phone number must not be less than 11, starting with 0",
+      });
     } else if (
       designersState.password === "" &&
       designersState.confirmPassword === ""
@@ -167,6 +202,14 @@ export const Register = () => {
       updateDesignersState({
         ...designersState,
         error: "Passwords must not be blank",
+      });
+    } else if (
+      designersState.password.length < 8 &&
+      designersState.confirmPassword.length < 8
+    ) {
+      updateDesignersState({
+        ...designersState,
+        error: "Passwords must not be less than 8 characters",
       });
     } else if (designersState.password !== designersState.confirmPassword) {
       updateDesignersState({
@@ -181,7 +224,7 @@ export const Register = () => {
     } else if (locationDetail.location === null) {
       updateDesignersState({
         ...designersState,
-        error: `Unable to find you location, Please give permission to your location`,
+        error: `Unable to find your location, Please give permission to your location`,
       });
     } else if (locationDetail.address === null) {
       updateDesignersState({
@@ -189,6 +232,11 @@ export const Register = () => {
         error: `Please check your internet connection`,
       });
     } else if (phone.phoneStatus === null || email.emailStatus === null) {
+      updateBuyersState({
+        ...buyersState,
+        error: `Please check your internet connection`,
+      });
+    } else if (phone.phoneStatus === false || email.emailStatus === false) {
       updateBuyersState({
         ...buyersState,
         error: `Email or Phone Number already exist`,

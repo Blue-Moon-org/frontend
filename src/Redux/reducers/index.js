@@ -8,7 +8,7 @@ import {
 } from "./forgotPasswordReducers";
 import { resendPhoneNoOtpReducer } from "./resendPhoneNoOtpReducer";
 import { resendEmailOtpReducer } from "./resendEmailOtpReducer";
-import { phoneNoVerifyReducer } from "./phoneVerifyReducer";
+import { phoneNoVerifyReducer, verifyPhoneReducer } from "./phoneVerifyReducer";
 // Post
 import {
   fetchFeedsReducer,
@@ -49,6 +49,8 @@ import {
   fetchSelfPostReducer,
 } from "./ProfileSection";
 import { fetchRatingReducer } from "./Posts/Rating";
+import { createChatReducer } from "./chat/CreateChat";
+import { actionTypesVerifyPhone } from "../constants/actionTypes";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -93,4 +95,6 @@ export const reducers = combineReducers({
   forSale: fetchSForSaleReducer,
   like: fetchSelfLikeReducer,
   rating: fetchRatingReducer,
+  createChat: createChatReducer,
+  verifyPhone: verifyPhoneReducer,
 });

@@ -1,9 +1,16 @@
-import { actionTypesPhoneNoVerify } from "../constants/actionTypes";
+import {
+  actionTypesPhoneNoVerify,
+  actionTypesVerifyPhone,
+} from "../constants/actionTypes";
 
 const initialState = {
   data: null,
   error: null,
   loading: false,
+
+  dataVerifyPhone: null,
+  errorVerifyPhone: null,
+  loadingVerifyPhone: false,
 };
 
 export const phoneNoVerifyReducer = (
@@ -33,6 +40,37 @@ export const phoneNoVerifyReducer = (
         data: null,
         loading: false,
         error: payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const verifyPhoneReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
+    case actionTypesVerifyPhone.USER_VERIFY_PHONE_LOADING:
+      return {
+        ...state,
+        dataVerifyPhone: null,
+        errorVerifyPhone: null,
+        loadingVerifyPhone: true,
+      };
+
+    case actionTypesVerifyPhone.USER_VERIFY_PHONE_SUCCESS:
+      return {
+        ...state,
+        dataVerifyPhone: payload,
+        errorVerifyPhone: null,
+        loadingVerifyPhone: false,
+      };
+
+    case actionTypesVerifyPhone.USER_VERIFY_PHONE_ERROR:
+      return {
+        ...state,
+        dataVerifyPhone: null,
+        errorVerifyPhone: payload,
+        loadingVerifyPhone: false,
       };
 
     default:
