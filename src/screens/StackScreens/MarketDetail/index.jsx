@@ -120,7 +120,7 @@ export const MarketDetail = () => {
                           )
                           ? "cart"
                           : "cart-outline"
-                        : null
+                        : "cart-outline"
                     }
                     color={"white"}
                     size={scale.fontPixel(20)}
@@ -133,7 +133,7 @@ export const MarketDetail = () => {
                           )
                           ? "In cart"
                           : "Add to cart"
-                        : null
+                        : "Add to cart"
                     }
                     textStyle={styles.cartText}
                     numberOfLines={1}

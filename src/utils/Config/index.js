@@ -13,7 +13,7 @@ export const toastConfig = {
       {...props}
       style={{
         borderRadius: scale.fontPixel(7),
-        borderTopColor: colors.success,
+        borderLeftColor: colors.success,
       }}
       contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
@@ -30,7 +30,6 @@ export const toastConfig = {
       text2NumberOfLines={1}
       activeOpacity={0.9}
       onPress={() => {}}
-      
     />
   ),
   /*
@@ -40,7 +39,35 @@ export const toastConfig = {
   error: (props) => (
     <ErrorToast
       {...props}
-      style={{ borderRadius: scale.fontPixel(7), borderTopColor: colors.error }}
+      style={{
+        borderRadius: scale.fontPixel(7),
+        borderLeftColor: colors.error,
+      }}
+      contentContainerStyle={{ paddingHorizontal: 15 }}
+      text1Style={{
+        fontSize: scale.fontPixel(14),
+        fontWeight: "400",
+        fontFamily: "Outfit_400Regular",
+      }}
+      text2Style={{
+        fontSize: scale.fontPixel(12),
+        fontWeight: "400",
+        fontFamily: "Outfit_400Regular",
+      }}
+      text1NumberOfLines={1}
+      text2NumberOfLines={1}
+      activeOpacity={0.9}
+      onPress={() => {}}
+    />
+  ),
+
+  warn: (props) => (
+    <ErrorToast
+      {...props}
+      style={{
+        borderRadius: scale.fontPixel(7),
+        borderLeftColor: colors.lightPrimary,
+      }}
       contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
         fontSize: scale.fontPixel(14),

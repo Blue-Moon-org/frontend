@@ -10,6 +10,9 @@ import { scale } from "../../../utils/scale";
 export const Interactions = ({
   isMeasurementModalActive,
   setIsMeasurementModalActive,
+  updateMsg,
+  msg,
+  _messageHandler,
 }) => {
   const [height, updateHeight] = useState(scale.heightPixel(40));
   return (
@@ -64,6 +67,10 @@ export const Interactions = ({
           onContentSizeChange={(e) =>
             updateHeight(e.nativeEvent.contentSize.height)
           }
+          onChangeText={(text) => {
+            updateMsg(text);
+          }}
+          value={msg}
         />
 
         <Pressable
@@ -72,8 +79,12 @@ export const Interactions = ({
             {
               height:
                 height < scale.heightPixel(40) ? scale.heightPixel(40) : height,
+              backgroundColor:
+                msg.length < 1 ? colors.grey1 : colors.mainPrimary,
             },
           ]}
+          disabled={msg.length < 1 ? true : false}
+          onPress={() => _messageHandler()}
         >
           <Feather name="send" size={scale.fontPixel(20)} color="black" />
         </Pressable>

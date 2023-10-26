@@ -84,7 +84,7 @@ export const MarketRenderItems = ({
                 ? data.find((e) => e.product.id === item.id)
                   ? "cart"
                   : "cart-outline"
-                : null
+                : "cart-outline"
             }
             size={scale.fontPixel(18)}
             color={"white"}

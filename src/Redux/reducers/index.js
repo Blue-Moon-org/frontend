@@ -49,8 +49,10 @@ import {
   fetchSelfPostReducer,
 } from "./ProfileSection";
 import { fetchRatingReducer } from "./Posts/Rating";
-import { createChatReducer } from "./chat/CreateChat";
+import { chatListReducer, createChatReducer } from "./chat/CreateChat";
 import { actionTypesVerifyPhone } from "../constants/actionTypes";
+import { chatLogReducer } from "./chat/ChatLog";
+import { chatsReducer } from "./chat/ChatsReducers";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -97,4 +99,7 @@ export const reducers = combineReducers({
   rating: fetchRatingReducer,
   createChat: createChatReducer,
   verifyPhone: verifyPhoneReducer,
+  chatList: chatListReducer,
+  chatLog: chatLogReducer,
+  chats: chatsReducer,
 });

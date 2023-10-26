@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, Linking, Platform, Alert } from "react-native";
 import { Text } from "../../../components/common";
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,11 +12,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { userRegistration } from "../../../Redux/actions";
 import { useNavigation } from "@react-navigation/native";
 import { Lodaing } from "../../../components/primary";
+import * as Location from "expo-location";
 
 export const Register = () => {
   const [accountId, updateAccountId] = useState(1);
+  const [locDel, updateLocDel] = useState({
+    location: "",
+    address: "",
+  });
 
-  const { navigate } = useNavigation();
+  const { navigate, addListener } = useNavigation();
 
   const data = [
     {
@@ -28,7 +33,6 @@ export const Register = () => {
       name: "Designer’s Account",
     },
   ];
-  const locationDetail = useSelector((state) => state.location);
   const phone = useSelector((state) => state.phone);
   const email = useSelector((state) => state.email);
 
@@ -44,14 +48,12 @@ export const Register = () => {
     confirmPassword: "",
     error: registerData?.error?.message,
     accountType: "Buyer",
-    coords: locationDetail?.location?.coords,
-    country: locationDetail?.address ? locationDetail?.address[0]?.country : "",
-    city: locationDetail?.address ? locationDetail?.address[0]?.city : "",
-    address: locationDetail?.address ? locationDetail?.address[0]?.address : "",
-    region: locationDetail?.address ? locationDetail?.address[0]?.region : "",
-    subRegion: locationDetail?.address
-      ? locationDetail?.address[0]?.subregion
-      : "",
+    coords: locDel?.location?.coords,
+    country: locDel?.address[0]?.country,
+    city: locDel?.address[0]?.city,
+    address: locDel?.address[0]?.address,
+    region: locDel?.address[0]?.region,
+    subRegion: locDel?.address[0]?.subregion,
   });
 
   const dispatch = useDispatch();
@@ -117,15 +119,30 @@ export const Register = () => {
         ...buyersState,
         error: "Privacy policy must be read and checked",
       });
-    } else if (locationDetail.location === null) {
+    } else if (locDel.location === "") {
       updateBuyersState({
         ...buyersState,
-        error: `Unable to find your location, Please give permission to your location`,
-      });
-    } else if (locationDetail.address === null) {
-      updateBuyersState({
-        ...buyersState,
-        error: `Please check your internet connection`,
+        error: `Unable to find your location, ${(
+          <TouchableOpacity
+            accessibilityActions={0.8}
+            onPress={() => {
+              if (Platform.OS === "ios") {
+                Linking.openURL("app-settings:");
+              } else {
+                Linking.openSettings();
+              }
+            }}
+          >
+            <Text
+              textStyle={{
+                backgroundColor: colors.grey2,
+                fontSize: scale.fontPixel(12),
+                fontFamily: "Outfit_400Regular",
+              }}
+              text={"Please click here to grant permission to your location"}
+            />
+          </TouchableOpacity>
+        )}`,
       });
     } else if (phone.phoneStatus === null || email.emailStatus === null) {
       updateBuyersState({
@@ -146,6 +163,58 @@ export const Register = () => {
     }
   };
 
+  const pers = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync({
+      accuracy: "fine",
+    });
+    if (status !== "granted") {
+      Alert.alert(
+        "Location Alert",
+        "You may not be able to use some features with location access denied",
+        [
+          {
+            text: "Open settings",
+            onPress: () => {
+              if (Platform.OS === "ios") {
+                Linking.openURL("app-settings:");
+              } else {
+                Linking.openSettings();
+              }
+            },
+          },
+        ]
+      );
+      return;
+    }
+
+    const location = await Location.getCurrentPositionAsync({
+      accuracy: 3,
+    });
+    updateLocDel({
+      ...locDel,
+      location: location,
+    });
+    await Location.reverseGeocodeAsync({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    })
+      .then((res) => {
+        updateLocDel({
+          ...locDel,
+          address: res,
+        });
+      })
+      .catch((err) => {
+        console.warn(err);
+      });
+  };
+
+  useEffect(() => {
+    addListener("focus", () => {
+      pers();
+    });
+  }, []);
+
   const [designersState, updateDesignersState] = useState({
     showPassword: false,
     policy: false,
@@ -159,14 +228,12 @@ export const Register = () => {
     confirmPassword: "",
     error: registerData?.error?.message,
     accountType: "Designer",
-    coords: locationDetail?.location?.coords,
-    country: locationDetail?.address ? locationDetail?.address[0]?.country : "",
-    city: locationDetail?.address ? locationDetail?.address[0]?.city : "",
-    address: locationDetail?.address ? locationDetail?.address[0]?.address : "",
-    region: locationDetail?.address ? locationDetail?.address[0]?.region : "",
-    subRegion: locationDetail?.address
-      ? locationDetail?.address[0]?.subregion
-      : "",
+    coords: locDel?.location?.coords,
+    country: locDel?.address[0]?.country,
+    city: locDel?.address[0]?.city,
+    address: locDel?.address[0]?.address,
+    region: locDel?.address[0]?.region,
+    subRegion: locDel?.address[0]?.subregion,
   });
 
   const submitDesignersAccount = () => {
@@ -221,15 +288,30 @@ export const Register = () => {
         ...designersState,
         error: "Privacy policy must be read and checked",
       });
-    } else if (locationDetail.location === null) {
-      updateDesignersState({
-        ...designersState,
-        error: `Unable to find your location, Please give permission to your location`,
-      });
-    } else if (locationDetail.address === null) {
-      updateDesignersState({
-        ...designersState,
-        error: `Please check your internet connection`,
+    } else if (locDel.location === "") {
+      updateBuyersState({
+        ...buyersState,
+        error: `Unable to find your location, ${(
+          <TouchableOpacity
+            accessibilityActions={0.8}
+            onPress={() => {
+              if (Platform.OS === "ios") {
+                Linking.openURL("app-settings:");
+              } else {
+                Linking.openSettings();
+              }
+            }}
+          >
+            <Text
+              textStyle={{
+                backgroundColor: colors.grey2,
+                fontSize: scale.fontPixel(12),
+                fontFamily: "Outfit_400Regular",
+              }}
+              text={"Please click here to grant permission to your location"}
+            />
+          </TouchableOpacity>
+        )}`,
       });
     } else if (phone.phoneStatus === null || email.emailStatus === null) {
       updateBuyersState({
@@ -304,6 +386,7 @@ export const Register = () => {
         </View>
         {accountId === 1 ? (
           <Buyer
+            pers={pers}
             buyersState={buyersState}
             updateBuyersState={updateBuyersState}
             submitBuyersAccount={submitBuyersAccount}
@@ -311,6 +394,7 @@ export const Register = () => {
           />
         ) : (
           <Designer
+            pers={pers}
             designersState={designersState}
             updateDesignersState={updateDesignersState}
             submitDesignersAccount={submitDesignersAccount}

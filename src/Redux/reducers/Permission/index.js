@@ -13,14 +13,14 @@ export const locationReducer = (
   { type, address, location, error }
 ) => {
   switch (type) {
-    case actionTypesLocationPermission.LOCATION_PERMISSION_LOADING:
-      return {
-        ...state,
-        location: null,
-        address: null,
-        loading: false,
-        error: "",
-      };
+    // case actionTypesLocationPermission.LOCATION_PERMISSION_LOADING:
+    //   return {
+    //     ...state,
+    //     location: null,
+    //     address: null,
+    //     loading: true,
+    //     error: "",
+    //   };
 
     case actionTypesLocationPermission.LOCATION_PERMISSION_SUCCESS:
       return {
@@ -38,7 +38,6 @@ export const locationReducer = (
         address: null,
         loading: false,
         error: "Check you location permission or internet connection",
-  
       };
 
     default:

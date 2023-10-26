@@ -4,7 +4,10 @@ import { Alert } from "react-native";
 
 export const locationPermission = () => {
   async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
+    let { status } = await Location.requestForegroundPermissionsAsync({
+      accuracy: "fine",
+    });
+
     if (status !== "granted") {
       Alert.alert(
         "Location Alert",
@@ -26,6 +29,7 @@ export const locationPermission = () => {
     })
       .then((res) => {
         address = res;
+        console.warn(Location, res);
       })
       .catch((err) => {
         console.warn(err);

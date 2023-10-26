@@ -1,9 +1,17 @@
-import { actionTypesCreateChat } from "../../constants/Chat";
+import {
+  actionTypesCreateChat,
+  actionTypesChatList,
+} from "../../constants/Chat";
 
 const initialState = {
   data: {},
   error: "",
   loading: false,
+
+  // chatlist
+  dataChatList: {},
+  errorChatList: "",
+  loadingChatList: false,
 };
 
 export const createChatReducer = (state = initialState, { type, payload }) => {
@@ -30,6 +38,37 @@ export const createChatReducer = (state = initialState, { type, payload }) => {
         data: null,
         loading: false,
         error: payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const chatListReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
+    case actionTypesChatList.CHAT_LIST_LOADING:
+      return {
+        ...state,
+        dataChatList: null,
+        errorChatList: "",
+        loadingChatList: true,
+      };
+
+    case actionTypesChatList.CHAT_LIST_SUCCESS:
+      return {
+        ...state,
+        dataChatList: payload.response.data.data,
+        errorChatList: "",
+        loadingChatList: false,
+      };
+
+    case actionTypesChatList.CHAT_LIST_ERROR:
+      return {
+        ...state,
+        dataChatList: null,
+        errorChatList: payload,
+        loadingChatList: false,
       };
 
     default:

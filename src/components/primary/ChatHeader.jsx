@@ -12,8 +12,9 @@ import {
   MenuOption,
   MenuTrigger,
 } from "react-native-popup-menu";
+import { baseURL } from "../../utils/request";
 
-export const ChatHeader = ({ user }) => {
+export const ChatHeader = ({ user, otherUser }) => {
   const data = [
     {
       id: 1,
@@ -47,7 +48,7 @@ export const ChatHeader = ({ user }) => {
         <View style={styles.imageContainer}>
           <Image
             source={{
-              uri: "https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?size=626&ext=jpg&ga=GA1.2.70578014.1688424585&semt=sph",
+              uri: `${baseURL + otherUser[0]?.profile_pic}`,
             }}
             contentFit="cover"
             cachePolicy={"memory-disk"}
@@ -56,7 +57,7 @@ export const ChatHeader = ({ user }) => {
         </View>
         <View style={styles.nameContainer}>
           <Text
-            text={user?.firstname ? user?.firstname : user?.fullname}
+            text={otherUser[0]?.fullname}
             textStyle={[styles.name, Fontscales.paragraphLargeMedium]}
           />
         </View>
@@ -154,6 +155,7 @@ const styles = StyleSheet.create({
     height: scale.heightPixel(40),
     width: scale.widthPixel(40),
     borderRadius: scale.fontPixel(8),
+    backgroundColor: colors.mainPrimary,
   },
   image: {
     height: "100%",

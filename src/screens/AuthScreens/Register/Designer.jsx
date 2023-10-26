@@ -19,6 +19,7 @@ export const Designer = ({
   designersState,
   submitDesignersAccount,
   registerData,
+  pers,
 }) => {
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ export const Designer = ({
             <View style={{ width: "48%" }}>
               <Text text={"Full Name"} textStyle={styles.label} />
               <TextInput
+                onBlur={() => pers()}
                 textInputStyle={{}}
                 //    inputState={}
                 editable={!registerData.loading}
@@ -259,12 +261,13 @@ export const Designer = ({
               }
               size={scale.fontPixel(20)}
               color={colors.fadedPrimary}
-              onPress={() =>
+              onPress={() => {
+                pers();
                 updateDesignersState({
                   ...designersState,
                   policy: !designersState.policy,
-                })
-              }
+                });
+              }}
             />
             <BaseText style={[styles.baseCheckText, styles.textScale]}>
               By ticking this box, you’ve agreed to out{" "}

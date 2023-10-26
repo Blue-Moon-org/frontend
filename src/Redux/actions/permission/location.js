@@ -5,11 +5,13 @@ import { Alert } from "react-native";
 
 export const userLocationPermission = () => async (dispatch) => {
   // 4 endpoint, body, content-type, token
-  dispatch({
-    type: actionTypesLocationPermission.LOCATION_PERMISSION_LOADING,
-  });
+  // dispatch({
+  //   type: actionTypesLocationPermission.LOCATION_PERMISSION_LOADING,
+  // });
 
-  let { status } = await Location.requestForegroundPermissionsAsync();
+  let { status } = await Location.requestForegroundPermissionsAsync({
+    accuracy: "fine",
+  });
   if (status !== "granted") {
     Alert.alert(
       "Location Alert",

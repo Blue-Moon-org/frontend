@@ -19,6 +19,7 @@ export const Buyer = ({
   buyersState,
   submitBuyersAccount,
   registerData,
+  pers,
 }) => {
   const { navigate } = useNavigation();
 
@@ -49,6 +50,7 @@ export const Buyer = ({
                     firstName: text,
                   })
                 }
+                onBlur={() => pers()}
                 placeholder={"Enter your first name"}
                 textContentType={"givenName"}
                 autoComplete={"name-given"}
@@ -246,12 +248,13 @@ export const Buyer = ({
               }
               size={scale.fontPixel(20)}
               color={colors.fadedPrimary}
-              onPress={() =>
+              onPress={() => {
+                pers();
                 updateBuyersState({
                   ...buyersState,
                   policy: !buyersState.policy,
-                })
-              }
+                });
+              }}
             />
             <BaseText style={[styles.baseCheckText, styles.textScale]}>
               By ticking this box, you’ve agreed to out{" "}

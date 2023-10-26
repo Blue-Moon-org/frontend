@@ -1,80 +1,36 @@
-import {
-  FlatList,
-  Platform,
-  RefreshControl,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { useState } from "react";
-import { Text } from "../../../components/common";
-import { Fontscales } from "../../../styles";
+import { FlatList, Platform, RefreshControl, View } from "react-native";
+import React, { useCallback } from "react";
 import { messagesData } from "./data";
 import { scale } from "../../../utils/scale";
-import { Image } from "expo-image";
-import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../../../constants/colorpallette";
+import RenderMessages from "./RenderMessages";
+import { useDispatch, useSelector } from "react-redux";
+import { chatList } from "../../../Redux/actions/Chat/ChatList";
 
-export const Messages = ({ user }) => {
+export const Messages = ({ user, data }) => {
   const { navigate } = useNavigation();
-  const renderMessages = ({ item, index }) => {
-    return (
-      <TouchableOpacity
-        activeOpacity={0.9}
-        onPress={() =>
-          navigate("RootStack", {
-            screen: "Chat",
-          })
-        }
-        style={styles.messageContainer}
-      >
-        <View style={styles.profilePictureContainer}>
-          <Image
-            source={{ uri: item.profilePicture }}
-            style={styles.profilePicture}
-            contentFit="cover"
-            cachePolicy={"memory-disk"}
-          />
-        </View>
-        <View style={styles.messagesContainer}>
-          <Text
-            text={item.name}
-            textStyle={[
-              Fontscales.paragraphMediumRegular,
-              { marginBottom: scale.pixelSizeVertical(4) },
-            ]}
-          />
-          <Text
-            ellipsizeMode={"tail"}
-            numberOfLines={2}
-            text={item.text}
-            textStyle={styles.message}
-          />
-        </View>
-        <View style={styles.timeContainer}>
-          <Text text={"25 mins"} textStyle={styles.timeAgo} />
-          <View style={styles.noOfMessagesContainer}>
-            <Text text={"2"} textStyle={styles.text} />
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.chatList);
 
-  const [refresh, setRefresh] = useState(false);
-  const onRefresh = React.useCallback(() => {
-    setRefresh(true);
-    setTimeout(() => {
-      setRefresh(false);
-    }, 2000);
+  const onRefresh = useCallback(() => {
+    dispatch(chatList());
   }, []);
+
+  // dataChatList: null,
+  // errorChatList: payload,
+  // loadingChatList: false,
+  // console.warn(data.map((ea) => ea.participants));
+
 
   return (
     <View>
       <View>
         <FlatList
-          data={messagesData}
-          renderItem={renderMessages}
+          data={data}
+          renderItem={({ item, index }) => (
+            <RenderMessages index={index} item={item} />
+          )}
           showsVerticalScrollIndicator={false}
           key={(item, index) => item.id}
           contentContainerStyle={{
@@ -82,7 +38,7 @@ export const Messages = ({ user }) => {
           }}
           refreshControl={
             <RefreshControl
-              refreshing={refresh}
+              refreshing={state.loadingChatList}
               onRefresh={onRefresh}
               color={colors.blackText}
               colors={
