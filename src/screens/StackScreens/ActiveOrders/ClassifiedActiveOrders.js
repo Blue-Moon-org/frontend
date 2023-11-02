@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, FlatList } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { styles } from "./styles";
 import { Image } from "expo-image";
@@ -8,23 +8,38 @@ import { Ionicons } from "@expo/vector-icons";
 import { scale } from "../../../utils/scale";
 import { colors } from "../../../constants/colorpallette";
 import Constants from "expo-constants";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
+import { GetOrders } from "../../../Redux/actions/Market/GetOrders";
+import { Lodaing } from "../../../components/primary";
 import { baseURL } from "../../../utils/request";
 
-export const ActiveOrders = () => {
-  const { params } = useRoute();
+export const ClassifiedActiveOrders = () => {
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.activeOrder);
 
-  const { navigate } = useNavigation();
+  const { navigate, addListener } = useNavigation();
+
+  useEffect(() => {
+    addListener("focus", () => {
+      dispatch(GetOrders(navigate));
+    });
+    // let sub = true;
+    // if (sub) {
+    // }
+
+    // return () => (sub = false);
+  }, []);
+  // console.warn(state?.data?.map((each) => each.order.order_products));
 
   const RenderItem = ({ item, index }) => {
+    console.warn(item);
     return (
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={() =>
-          navigate("OrderDetail", {
-            orderId: item.tracking_number,
-            item: params.item,
-            productItem: item,
+          navigate("ActiveOrders", {
+            item: item,
           })
         }
         style={styles.eachContainer}
@@ -33,7 +48,7 @@ export const ActiveOrders = () => {
           <Image
             cachePolicy={"memory-disk"}
             source={{
-              uri: `${baseURL + item.product?.images[0]?.image}`,
+              uri: item?.seller?.brand_image,
             }}
             contentFit="cover"
             style={styles.image}
@@ -46,7 +61,7 @@ export const ActiveOrders = () => {
                 numberOfLines={1}
                 ellipsizeMode={"tail"}
                 textStyle={Fontscales.headingSmallMedium}
-                text={item?.product?.title}
+                text={item?.seller?.brand_name}
               />
               <Text
                 numberOfLines={1}
@@ -55,12 +70,12 @@ export const ActiveOrders = () => {
                   fontFamily: "Outfit_400Regular",
                   fontSize: scale.fontPixel(10),
                 }}
-                text={params.item?.seller?.brand_name}
+                text={item?.seller?.account_type ?? "Designer"}
               />
             </View>
             <Text
               textStyle={Fontscales.labelSmallRegular}
-              text={` Quantity : ${params.item?.quantity}`}
+              text={`${item?.quantity} item(s) ordered`}
             />
           </View>
           <View style={styles.iconTextContainer}>
@@ -78,7 +93,7 @@ export const ActiveOrders = () => {
                   color: colors.mainPrimary,
                 },
               ]}
-              text={params.item?.tracking_number}
+              text={item?.tracking_number}
             />
           </View>
         </View>
@@ -87,6 +102,7 @@ export const ActiveOrders = () => {
   };
   return (
     <>
+      {state.loading ? <Lodaing /> : null}
       <View style={SharedStyles.container}>
         <View
           style={{
@@ -97,11 +113,14 @@ export const ActiveOrders = () => {
           }}
         >
           <FlatList
-            data={params.item.products}
-            renderItem={({ item, index }) => (
-              <RenderItem item={item} index={index} />
-            )}
-            showsVerticalScrollIndicator={false}
+            data={state.data}
+            renderItem={({ item, index, separators }) => {
+              return <RenderItem item={item} index={index} />;
+            }}
+            // renderItem={({ item, index }) => (
+            //   <RenderItem item={item} index={index} />
+            // )}
+            // showsVerticalScrollIndicator={false}
           />
         </View>
       </View>

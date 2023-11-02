@@ -10,7 +10,7 @@ export const ChatHeading = () => {
     <View>
       <Text
         text={
-          "Lorem ipsum dolor sit amet consectetur. Sit blandit blandit enim urna euismod ut. Amet laoreet nunc sit "
+          "Welcome to our DM chat ! 😊 We're thrilled to have you here. Feel free to chat, connect with others, and share your thoughts. "
         }
         textStyle={[
           Fontscales.labelSmallRegular,

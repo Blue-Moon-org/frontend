@@ -1,4 +1,10 @@
-import { TouchableOpacity, View, Alert, Keyboard } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  Alert,
+  Keyboard,
+  ActivityIndicator,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import {
   Button,
@@ -24,6 +30,7 @@ import { baseURL } from "../../../utils/request";
 import { addComment } from "../../../Redux/actions/Post/AddComment";
 import { useDispatch, useSelector } from "react-redux";
 import { TrackOrders } from "../../../Redux/actions/Market/OrderTracking";
+import { CheckOrder } from "../../../Redux/actions/Market/GetOrders";
 
 export const OrderDetail = () => {
   const { navigate, setOptions } = useNavigation();
@@ -34,6 +41,8 @@ export const OrderDetail = () => {
   const [user, updateUser] = useState("");
   const [comment, setComment] = useState("");
   const state = useSelector((state) => state.trackOrder);
+  const status = useSelector((state) => state.status);
+  // console.warn(status);
 
   const getData = async () => {
     try {
@@ -48,16 +57,29 @@ export const OrderDetail = () => {
     let sub = true;
     if (sub) {
       getData();
+      dispatch(CheckOrder(params.item.tracking_number, navigate));
     }
 
     return () => (sub = false);
-  }, [user]);
+  }, [params.item.tracking_number]);
 
   setOptions({
-    title: `Order ${params.orderId}`,
+    title: `Order ${params.item.tracking_number}`,
+    headerLeft: () => (
+      <MaterialCommunityIcons
+        onPress={() =>
+          navigate("ActiveOrders", {
+            item: params.item,
+          })
+        }
+        style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+        name="keyboard-backspace"
+        size={scale.fontPixel(24)}
+        color="black"
+      />
+    ),
   });
 
-  const [reach, setReach] = useState(1);
   const [rating, setRating] = useState(0);
 
   const _locationUpdate = (type) => {
@@ -114,7 +136,9 @@ export const OrderDetail = () => {
                 cachePolicy={"memory-disk"}
                 contentFit="cover"
                 source={{
-                  uri: `${baseURL + params.item?.product.images[0]?.image}`,
+                  uri: `${
+                    baseURL + params.productItem?.product.images[0]?.image
+                  }`,
                 }}
               />
             </View>
@@ -122,7 +146,7 @@ export const OrderDetail = () => {
               <View>
                 <Text
                   textStyle={Fontscales.headingSmallMedium}
-                  text={params?.item?.product.title}
+                  text={params?.productItem?.product.title}
                   numberOfLines={1}
                   ellipsizeMode={"tail"}
                 />
@@ -131,13 +155,14 @@ export const OrderDetail = () => {
                     fontFamily: "Outfit_400Regular",
                     fontSize: scale.fontPixel(10),
                   }}
-                  text={params?.item?.product?.owner}
+                  text={params?.item?.seller?.brand_name}
                 />
               </View>
               <View style={styles.iconsContainer}>
                 <TouchableOpacity
                   style={styles.chatIconContainer}
                   activeOpacity={0.8}
+                  disabled={params.item.seller.id === user.id ? true : false}
                 >
                   <Ionicons
                     name="chatbox-ellipses-outline"
@@ -148,6 +173,7 @@ export const OrderDetail = () => {
                 <TouchableOpacity
                   style={styles.callIconContainer}
                   activeOpacity={0.8}
+                  disabled={params.item.seller.id === user.id ? true : false}
                 >
                   <Ionicons
                     name="call-outline"
@@ -163,11 +189,11 @@ export const OrderDetail = () => {
             <View style={styles.stepsContainer}>
               <TouchableOpacity
                 disabled={
-                  params?.item.order_status === "Pending" ||
-                  params?.item.order_status === "Processing" ||
-                  params?.item.order_status === "Dispatched" ||
-                  params?.item.order_status === "Shipped" ||
-                  params?.item.order_status === "Delivered" ||
+                  status.statuData?.order_status === "Pending" ||
+                  status.statuData?.order_status === "Processing" ||
+                  status.statuData?.order_status === "Dispatched" ||
+                  status.statuData?.order_status === "Shipped" ||
+                  status.statuData?.order_status === "Delivered" ||
                   state.data?.data?.order_status === "Pending" ||
                   state.data?.data?.order_status === "Processing" ||
                   state.data?.data?.order_status === "Dispatched" ||
@@ -183,11 +209,11 @@ export const OrderDetail = () => {
                   styles.topBottomContainer,
                   {
                     backgroundColor:
-                      params?.item.order_status === "Pending" ||
-                      params?.item.order_status === "Processing" ||
-                      params?.item.order_status === "Dispatched" ||
-                      params?.item.order_status === "Shipped" ||
-                      params?.item.order_status === "Delivered" ||
+                      status.statuData?.order_status === "Pending" ||
+                      status.statuData?.order_status === "Processing" ||
+                      status.statuData?.order_status === "Dispatched" ||
+                      status.statuData?.order_status === "Shipped" ||
+                      status.statuData?.order_status === "Delivered" ||
                       state.data?.data?.order_status === "Pending" ||
                       state.data?.data?.order_status === "Processing" ||
                       state.data?.data?.order_status === "Dispatched" ||
@@ -198,21 +224,28 @@ export const OrderDetail = () => {
                   },
                 ]}
               >
-                <MaterialCommunityIcons
-                  name="cart-check"
-                  size={scale.fontPixel(18)}
-                  color="white"
-                />
+                {status.statusLoading || state.loading ? (
+                  <ActivityIndicator
+                    color={colors.blackText}
+                    size={scale.fontPixel(19)}
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="cart-check"
+                    size={scale.fontPixel(18)}
+                    color="white"
+                  />
+                )}
               </TouchableOpacity>
               <View
                 style={[
                   styles.line1,
                   {
                     backgroundColor:
-                      params?.item.order_status === "Processing" ||
-                      params?.item.order_status === "Dispatched" ||
-                      params?.item.order_status === "Shipped" ||
-                      params?.item.order_status === "Delivered" ||
+                      status.statuData?.order_status === "Processing" ||
+                      status.statuData?.order_status === "Dispatched" ||
+                      status.statuData?.order_status === "Shipped" ||
+                      status.statuData?.order_status === "Delivered" ||
                       state.data?.data?.order_status === "Processing" ||
                       state.data?.data?.order_status === "Dispatched" ||
                       state.data?.data?.order_status === "Shipped" ||
@@ -224,10 +257,10 @@ export const OrderDetail = () => {
               />
               <TouchableOpacity
                 disabled={
-                  params?.item.order_status === "Processing" ||
-                  params?.item.order_status === "Dispatched" ||
-                  params?.item.order_status === "Shipped" ||
-                  params?.item.order_status === "Delivered" ||
+                  status.statuData?.order_status === "Processing" ||
+                  status.statuData?.order_status === "Dispatched" ||
+                  status.statuData?.order_status === "Shipped" ||
+                  status.statuData?.order_status === "Delivered" ||
                   state.data?.data?.order_status === "Processing" ||
                   state.data?.data?.order_status === "Dispatched" ||
                   state.data?.data?.order_status === "Shipped" ||
@@ -240,10 +273,10 @@ export const OrderDetail = () => {
                 onPress={() => alert("Processing")}
                 style={{
                   backgroundColor:
-                    params?.item.order_status === "Processing" ||
-                    params?.item.order_status === "Dispatched" ||
-                    params?.item.order_status === "Shipped" ||
-                    params?.item.order_status === "Delivered" ||
+                    status.statuData?.order_status === "Processing" ||
+                    status.statuData?.order_status === "Dispatched" ||
+                    status.statuData?.order_status === "Shipped" ||
+                    status.statuData?.order_status === "Delivered" ||
                     state.data?.data?.order_status === "Processing" ||
                     state.data?.data?.order_status === "Dispatched" ||
                     state.data?.data?.order_status === "Shipped" ||
@@ -260,9 +293,9 @@ export const OrderDetail = () => {
                   styles.line1,
                   {
                     backgroundColor:
-                      params?.item.order_status === "Dispatched" ||
-                      params?.item.order_status === "Shipped" ||
-                      params?.item.order_status === "Delivered" ||
+                      status.statuData?.order_status === "Dispatched" ||
+                      status.statuData?.order_status === "Shipped" ||
+                      status.statuData?.order_status === "Delivered" ||
                       state.data?.data?.order_status === "Dispatched" ||
                       state.data?.data?.order_status === "Shipped" ||
                       state.data?.data?.order_status === "Delivered"
@@ -273,9 +306,9 @@ export const OrderDetail = () => {
               />
               <TouchableOpacity
                 disabled={
-                  params?.item.order_status === "Dispatched" ||
-                  params?.item.order_status === "Shipped" ||
-                  params?.item.order_status === "Delivered" ||
+                  status.statuData?.order_status === "Dispatched" ||
+                  status.statuData?.order_status === "Shipped" ||
+                  status.statuData?.order_status === "Delivered" ||
                   state.data?.data?.order_status === "Dispatched" ||
                   state.data?.data?.order_status === "Shipped" ||
                   state.data?.data?.order_status === "Delivered" ||
@@ -287,9 +320,9 @@ export const OrderDetail = () => {
                 onPress={() => alert("Dispatched")}
                 style={{
                   backgroundColor:
-                    params?.item.order_status === "Dispatched" ||
-                    params?.item.order_status === "Shipped" ||
-                    params?.item.order_status === "Delivered" ||
+                    status.statuData?.order_status === "Dispatched" ||
+                    status.statuData?.order_status === "Shipped" ||
+                    status.statuData?.order_status === "Delivered" ||
                     state.data?.data?.order_status === "Dispatched" ||
                     state.data?.data?.order_status === "Shipped" ||
                     state.data?.data?.order_status === "Delivered"
@@ -305,8 +338,8 @@ export const OrderDetail = () => {
                   styles.line1,
                   {
                     backgroundColor:
-                      params?.item.order_status === "Shipped" ||
-                      params?.item.order_status === "Delivered" ||
+                      status.statuData?.order_status === "Shipped" ||
+                      status.statuData?.order_status === "Delivered" ||
                       state.data?.data?.order_status === "Shipped" ||
                       state.data?.data?.order_status === "Delivered"
                         ? colors.mainPrimary
@@ -316,8 +349,8 @@ export const OrderDetail = () => {
               />
               <TouchableOpacity
                 disabled={
-                  params?.item.order_status === "Shipped" ||
-                  params?.item.order_status === "Delivered" ||
+                  status.statuData?.order_status === "Shipped" ||
+                  status.statuData?.order_status === "Delivered" ||
                   state.data?.data?.order_status === "Shipped" ||
                   state.data?.data?.order_status === "Delivered" ||
                   user.account_type === "Buyer"
@@ -328,8 +361,8 @@ export const OrderDetail = () => {
                 onPress={() => alert("Shipped")}
                 style={{
                   backgroundColor:
-                    params?.item.order_status === "Shipped" ||
-                    params?.item.order_status === "Delivered" ||
+                    status.statuData?.order_status === "Shipped" ||
+                    status.statuData?.order_status === "Delivered" ||
                     state.data?.data?.order_status === "Shipped" ||
                     state.data?.data?.order_status === "Delivered"
                       ? colors.mainPrimary
@@ -344,7 +377,7 @@ export const OrderDetail = () => {
                   styles.line1,
                   {
                     backgroundColor:
-                      params?.item.order_status === "Delivered" ||
+                      status.statuData?.order_status === "Delivered" ||
                       state?.data?.data?.order_status === "Delivered"
                         ? colors.mainPrimary
                         : colors.grey2,
@@ -353,7 +386,7 @@ export const OrderDetail = () => {
               />
               <TouchableOpacity
                 disabled={
-                  params?.item.order_status === "Delivered" ||
+                  status.statuData?.order_status === "Delivered" ||
                   state?.data?.data?.order_status === "Delivered" ||
                   user.account_type === "Buyer"
                     ? true
@@ -365,7 +398,7 @@ export const OrderDetail = () => {
                   styles.topBottomContainer,
                   {
                     backgroundColor:
-                      params?.item.order_status === "Delivered" ||
+                      status.statuData?.order_status === "Delivered" ||
                       state?.data?.data?.order_status === "Delivered"
                         ? colors.mainPrimary
                         : colors.grey2,
@@ -452,7 +485,7 @@ export const OrderDetail = () => {
               </View>
             </View>
           </View>
-          {user.account_type === "Buyer" && (
+          {user.account_type === "Buyer" && status.statuData.order_status ? (
             <View>
               <View style={styles.ratingContainer}>
                 <Text
@@ -493,7 +526,7 @@ export const OrderDetail = () => {
                 onPress={() => _commentHandler()}
               />
             </View>
-          )}
+          ) : null}
 
           <Text
             textStyle={[
@@ -522,7 +555,7 @@ export const OrderDetail = () => {
               />
               <Text
                 textStyle={Fontscales.labelMediumRegular}
-                text={params?.item?.product?.title}
+                text={params?.productItem?.product?.title}
               />
             </View>
             <View style={styles.eachDetailContainer}>
@@ -532,7 +565,7 @@ export const OrderDetail = () => {
               />
               <Text
                 textStyle={Fontscales.labelMediumRegular}
-                text={params?.item?.product?.owner}
+                text={params?.productItem?.product?.owner}
               />
             </View>
             <View style={styles.eachDetailContainer}>
@@ -542,7 +575,7 @@ export const OrderDetail = () => {
               />
               <Text
                 textStyle={Fontscales.labelMediumRegular}
-                text={naira.format(params?.item?.product?.price)}
+                text={naira.format(params?.productItem?.product?.price)}
               />
             </View>
           </View>

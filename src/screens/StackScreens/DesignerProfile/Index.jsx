@@ -88,10 +88,11 @@ export const DesignerProfile = () => {
   };
 
   const createChatData = useSelector((state) => state.createChat);
+  const state = useSelector((state) => state.chatList);
 
   return (
     <>
-      {createChatData.loading ? <Lodaing /> : null}
+      {createChatData.loading || state.loadingChatList ? <Lodaing /> : null}
       <SafeAreaView style={[SharedStyles.container]}>
         <View
           style={{

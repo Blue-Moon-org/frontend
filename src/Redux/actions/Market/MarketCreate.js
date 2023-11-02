@@ -10,8 +10,8 @@ export const createMarket = (body, navigate) => async (dispatch) => {
   form.append("images", {
     name:
       Platform.OS === "android"
-        ? body.Images[4].image.uri
-        : body.Images[4].image.fileName,
+        ? body.Images[1].image.uri
+        : body.Images[1].image.fileName,
     type: "image/jpeg",
     uri:
       Platform.OS === "android"
@@ -21,8 +21,8 @@ export const createMarket = (body, navigate) => async (dispatch) => {
   form.append("images", {
     name:
       Platform.OS === "android"
-        ? body.Images[4].image.uri
-        : body.Images[4].image.fileName,
+        ? body.Images[2].image.uri
+        : body.Images[2].image.fileName,
     type: "image/jpeg",
     uri:
       Platform.OS === "android"
@@ -32,8 +32,8 @@ export const createMarket = (body, navigate) => async (dispatch) => {
   form.append("images", {
     name:
       Platform.OS === "android"
-        ? body.Images[4].image.uri
-        : body.Images[4].image.fileName,
+        ? body.Images[3].image.uri
+        : body.Images[3].image.fileName,
     type: "image/jpeg",
     uri:
       Platform.OS === "android"

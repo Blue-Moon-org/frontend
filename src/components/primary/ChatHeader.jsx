@@ -2,7 +2,7 @@ import { StyleSheet, View, Platform, Pressable } from "react-native";
 import React from "react";
 import { Image } from "expo-image";
 import { Text } from "../common";
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { scale } from "../../utils/scale";
 import { colors } from "../../constants/colorpallette";
 import { Fontscales } from "../../styles";
@@ -13,8 +13,17 @@ import {
   MenuTrigger,
 } from "react-native-popup-menu";
 import { baseURL } from "../../utils/request";
+import { useDispatch } from "react-redux";
+import { setMessages } from "../../Redux/actions/Chat/Chats";
 
-export const ChatHeader = ({ user, otherUser }) => {
+export const ChatHeader = ({
+  user,
+  otherUser,
+  goBack,
+  disconnect,
+  updateMsg,
+}) => {
+  const dispatch = useDispatch();
   const data = [
     {
       id: 1,
@@ -45,6 +54,16 @@ export const ChatHeader = ({ user, otherUser }) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.imageTextContainer}>
+        <Entypo
+          name="chevron-left"
+          size={scale.fontPixel(30)}
+          color="black"
+          style={{ marginRight: scale.pixelSizeHorizontal(5) }}
+          onPress={() => {
+            goBack();
+            dispatch(setMessages([]));
+          }}
+        />
         <View style={styles.imageContainer}>
           <Image
             source={{
@@ -58,12 +77,12 @@ export const ChatHeader = ({ user, otherUser }) => {
         <View style={styles.nameContainer}>
           <Text
             text={otherUser[0]?.fullname}
-            textStyle={[styles.name, Fontscales.paragraphLargeMedium]}
+            textStyle={[styles.name, Fontscales.labelLargeMedium]}
           />
         </View>
       </View>
       <View style={styles.imageTextContainer}>
-        <Pressable
+        {/* <Pressable
           // onPress={() => {
           //   console.warn("object");
           // }}
@@ -74,7 +93,7 @@ export const ChatHeader = ({ user, otherUser }) => {
             size={scale.fontPixel(18)}
             color="black"
           />
-        </Pressable>
+        </Pressable> */}
         <Pressable
           // onPress={() => {
           //   console.warn("object");

@@ -22,35 +22,32 @@ export const Messages = ({ user, data }) => {
   // loadingChatList: false,
   // console.warn(data.map((ea) => ea.participants));
 
-
   return (
-    <View>
-      <View>
-        <FlatList
-          data={data}
-          renderItem={({ item, index }) => (
-            <RenderMessages index={index} item={item} />
-          )}
-          showsVerticalScrollIndicator={false}
-          key={(item, index) => item.id}
-          contentContainerStyle={{
-            marginTop: scale.pixelSizeVertical(10),
-          }}
-          refreshControl={
-            <RefreshControl
-              refreshing={state.loadingChatList}
-              onRefresh={onRefresh}
-              color={colors.blackText}
-              colors={
-                Platform.OS === "android"
-                  ? [colors.mainPrimary, colors.blackText, colors.fadedPrimary]
-                  : colors.mainPrimary
-              }
-              tintColor={colors.mainPrimary}
-            />
-          }
-        />
-      </View>
+    <View style={{ height: "100%" }}>
+      <FlatList
+        data={data}
+        renderItem={({ item, index }) => (
+          <RenderMessages index={index} item={item} />
+        )}
+        showsVerticalScrollIndicator={false}
+        key={(item, index) => item.id}
+        contentContainerStyle={{
+          marginTop: scale.pixelSizeVertical(10),
+        }}
+        refreshControl={
+          <RefreshControl
+            refreshing={state.loadingChatList}
+            onRefresh={onRefresh}
+            color={colors.blackText}
+            colors={
+              Platform.OS === "android"
+                ? [colors.mainPrimary, colors.blackText, colors.fadedPrimary]
+                : colors.mainPrimary
+            }
+            tintColor={colors.mainPrimary}
+          />
+        }
+      />
     </View>
   );
 };

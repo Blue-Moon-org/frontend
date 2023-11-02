@@ -1,5 +1,5 @@
 import { View, TouchableOpacity } from "react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import { Text } from "../../../components/common";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "./styles";
@@ -13,7 +13,7 @@ const RenderMessages = ({ item, index }) => {
   const { navigate } = useNavigation();
 
   const otherUser = item.participants.filter((each) => each.owner === false);
-  // console.warn(item);
+  // console.warn(item?.last_message?.timestamp?.slice(11, 16));
   return (
     <TouchableOpacity
       activeOpacity={0.9}
@@ -44,27 +44,36 @@ const RenderMessages = ({ item, index }) => {
             { marginBottom: scale.pixelSizeVertical(8) },
           ]}
         />
-        {item.msg_type === "text" ? (
+        {item.last_message?.msg_type === "text" ? (
           <Text
             ellipsizeMode={"tail"}
             numberOfLines={1}
             text={item.last_message ? item.last_message.content : " "}
             textStyle={styles.message}
           />
-        ) : (
+        ) : item.last_message?.msg_type === "measure" ? (
           <Text
             ellipsizeMode={"tail"}
             numberOfLines={1}
             text={"Measurement"}
             textStyle={styles.message}
           />
+        ) : item.last_message?.msg_type === "image" ? (
+          <Text
+            ellipsizeMode={"tail"}
+            numberOfLines={1}
+            text={"Image"}
+            textStyle={styles.message}
+          />
+        ) : (
+          ""
         )}
       </View>
       <View style={styles.timeContainer}>
         <Text
           text={
             item.last_message.timestamp
-              ? renderTimestamp(item.last_message.timestamp)
+              ? item?.last_message?.timestamp?.slice(11, 16)
               : ""
           }
           textStyle={styles.timeAgo}

@@ -1,25 +1,36 @@
 import { View, KeyboardAvoidingView, Platform, FlatList } from "react-native";
-import React, { useRef, useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useContext,
+} from "react";
 import { ChatHeader } from "../../../components/primary/ChatHeader";
 import { Interactions } from "./Interactions";
 import { styles } from "./styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useKeyboardHeight } from "../../../customHooks";
 import { scale } from "../../../utils/scale";
-import { chatData } from "./data";
 import { RenderChat } from "./RenderChat";
 import { ChatHeading } from "./ChatHeading";
 import { Measurements } from "./Measurements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRoute } from "@react-navigation/native";
-import { Websocket } from "../../../utils/Socket/Websocket";
-import { useSelector } from "react-redux";
+import { useRoute, useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
 import Toast from "react-native-toast-message";
+import { AuthContext } from "../../../Context";
+import * as Progress from "react-native-progress";
+import { colors } from "../../../constants/colorpallette";
+import { setMessages } from "../../../Redux/actions/Chat/Chats";
 
 export const Chat = () => {
   const { keyboardHeight, show } = useKeyboardHeight();
   const [isMeasurementModalActive, setIsMeasurementModalActive] =
     useState(false);
+
+  const [progress, updateProgress] = useState(0);
+
   const [measurs, setMeasurs] = useState([
     {
       part: "",
@@ -39,6 +50,9 @@ export const Chat = () => {
   ]);
 
   const [msg, updateMsg] = useState("");
+  const { addListener, goBack } = useNavigation();
+
+  const dispatch = useDispatch();
 
   const scrollRef = useRef();
 
@@ -75,6 +89,60 @@ export const Chat = () => {
     return () => (sub = false);
   }, [user]);
 
+  const fetchMessages = (chatId) => {
+    sendMessage({
+      command: "fetch_messages",
+      chatId: chatId,
+      room_name: params.item.room_name,
+    });
+  };
+
+  const newMessage = useCallback(
+    (from, chatId, message) => {
+      const PasRep = message.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+      sendMessage({
+        command: "new_message",
+        from: from,
+        msg_type: "text",
+        chatId: chatId,
+        message: PasRep,
+        room_name: params.item.room_name,
+      });
+      updateMsg("");
+    },
+    [user.id, params.item?.id, msg]
+  );
+
+  const newMeasureMessage = (from, chatId, message) => {
+    sendMessage({
+      command: "new_message",
+      from: from,
+      msg_type: "measure",
+      chatId: chatId,
+      message: message,
+      room_name: params.item?.room_name,
+    });
+  };
+
+  const {
+    addCallbacks,
+    cb,
+    connect,
+    disconnect,
+    socketNewMessage,
+    state: chatState,
+    ref,
+  } = useContext(AuthContext);
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      fetchMessages(params.item.id, params.item.room_name);
+    }
+
+    return () => (sub = false);
+  }, [params.item.room_name]);
+
   const sendMessage = (data) => {
     if (ref.current) {
       try {
@@ -88,92 +156,15 @@ export const Chat = () => {
     }
   };
 
-  const fetchMessages = (chatId) => {
-    sendMessage({
-      command: "fetch_messages",
-      chatId: chatId,
-    });
-  };
-
-  const newMessage = (from, chatId, message) => {
-    sendMessage({
-      command: "new_message",
-      from: from,
-      msg_type: "text",
-      chatId: chatId,
-      message: message,
-    });
-    updateMsg("");
-  };
-
-  const newMeasureMessage = (from, chatId, message) => {
-    sendMessage({
-      command: "new_message",
-      from: from,
-      msg_type: "measure",
-      chatId: chatId,
-      message: message,
-    });
-    updateMsg("");
-  };
-
-  const {
-    addCallbacks,
-    cb,
-    connect,
-    disconnect,
-    socketNewMessage,
-    ref,
-    state,
-    chatData: dataChat,
-  } = Websocket(params.item.room_name);
-
-  // console.warn(dataChat);
-
-  const chatInitialization = () => {
-    waitForSocketConnection(() => {
-      fetchMessages(params.item.id);
-    });
-    connect();
-  };
-
-  useEffect(() => {
-    let sub = true;
-    if (sub) {
-      chatInitialization();
-    }
-
-    return () => (sub = false);
-  }, [params.item.id]);
-
-  const waitForSocketConnection = (callb) => {
-    setTimeout(() => {
-      if (state() === 1) {
-        console.warn("connection established");
-        callb();
-        return;
-      } else {
-        console.warn("waiting for connection");
-        waitForSocketConnection(callb);
-      }
-    }, 100);
-  };
-
   // console.warn("socketRef", ref);
-  const _messageHandler = () => {
+  const _messageHandler = useCallback(() => {
     newMessage(user.id, params.item?.id, msg);
-    // updateMsg("");
-  };
+    updateMsg("");
+  });
 
   const _measureHandler = () => {
-    // const newMeasure = measurs.map(({ id, ...rest }) => rest);
-    // newMeasure.map((each, index) => {
-    //   if (each.part === "") {
-    //     console.warn("object");
-    //   } else {
-    //     console.warn("n0");
-    //   }
-    // });
+    const newMeasure = measurs.map(({ id, ...rest }) => rest);
+
     if (newMeasure[0].part === "" || newMeasure[0].size === "") {
       Toast.show({
         type: "warn",
@@ -185,13 +176,9 @@ export const Chat = () => {
       newMeasureMessage(user.id, params.item?.id, newMeasure);
       setIsMeasurementModalActive(false);
     }
-    // console.warn(newMeasure);
   };
-  // console.warn(user.id);
   const chatD = useSelector((state) => state.chats);
-
-
-  
+  const imageD = useSelector((state) => state.chatImage);
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View
@@ -200,7 +187,12 @@ export const Chat = () => {
           paddingBottom: 2,
         }}
       >
-        <ChatHeader user={user} otherUser={params.otherUser} />
+        <ChatHeader
+          user={user}
+          otherUser={params.otherUser}
+          goBack={goBack}
+          updateMsg={updateMsg}
+        />
       </View>
       <View
         style={{
@@ -219,29 +211,43 @@ export const Chat = () => {
               : 1,
         }}
       >
-        {chatData && (
-          <FlatList
-            ref={scrollRef}
-            ListFooterComponent={ChatHeading}
-            data={chatD.messages}
-            renderItem={({ item, index, separators }) => (
-              <RenderChat
-                user={params.otherUser[0]}
-                item={item}
-                index={index}
-                separator={separators}
-              />
-            )}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              marginHorizontal: scale.pixelSizeHorizontal(16),
-            }}
-            inverted={-1}
-            scrollEventThrottle={16}
-            // onLayout={() => layout()}
-            // contentOffset={{ y: 2000 }}
-            // onContentSizeChange={() => scroll()}
-          />
+        <FlatList
+          ref={scrollRef}
+          ListFooterComponent={ChatHeading}
+          data={chatD.messages}
+          renderItem={({ item, index, separators }) => (
+            <RenderChat
+              progress={progress}
+              updateProgress={updateProgress}
+              user={params.otherUser[0]}
+              item={item}
+              index={index}
+              separator={separators}
+            />
+          )}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            marginHorizontal: scale.pixelSizeHorizontal(16),
+          }}
+          inverted={-1}
+          scrollEventThrottle={16}
+          keyExtractor={(item, index) => item.id + index + item.timestamp}
+          // onLayout={() => layout()}
+          // contentOffset={{ y: 2000 }}
+          // onContentSizeChange={() => scroll()}
+        />
+        {progress === 0 || progress === 100 ? null : (
+          <View style={{ alignSelf: "center" }}>
+            <Progress.Bar
+              color={colors.mainPrimary}
+              unfilledColor={colors.lightPrimary}
+              borderWidth={scale.fontPixel(1)}
+              borderColor={colors.mainPrimary}
+              progress={progress / 100}
+              width={scale.widthPixel(250)}
+              height={scale.heightPixel(7)}
+            />
+          </View>
         )}
       </View>
       {isMeasurementModalActive && (
@@ -289,6 +295,12 @@ export const Chat = () => {
           ]}
         >
           <Interactions
+            progress={progress}
+            updateProgress={updateProgress}
+            innerRef={ref}
+            id={params.item?.id}
+            userId={user.id}
+            room_name={params.item.room_name}
             _messageHandler={_messageHandler}
             isMeasurementModalActive={isMeasurementModalActive}
             setIsMeasurementModalActive={setIsMeasurementModalActive}

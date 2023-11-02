@@ -39,7 +39,10 @@ import { userUpdateReducer } from "./DetailsUpdate";
 import { locationReducer } from "./Permission";
 import { emailCheckReducer, phoneNoCheckReducer } from "./DetailsCheckReducers";
 import { fetchCommentReducer } from "./Posts/CommentReducer";
-import { getOrderReducer } from "./Market/GetOrderReducer";
+import {
+  getOrderReducer,
+  getOrderStatusReducer,
+} from "./Market/GetOrderReducer";
 import { TrackOrderReducer } from "./Market/TrackOrder";
 import { NotificationReducer } from "./NotificationReducer";
 import { FeedbackReducer } from "./Feedback";
@@ -49,10 +52,14 @@ import {
   fetchSelfPostReducer,
 } from "./ProfileSection";
 import { fetchRatingReducer } from "./Posts/Rating";
-import { chatListReducer, createChatReducer } from "./chat/CreateChat";
-import { actionTypesVerifyPhone } from "../constants/actionTypes";
+import {
+  chatImageReducer,
+  chatListReducer,
+  createChatReducer,
+} from "./chat/CreateChat";
 import { chatLogReducer } from "./chat/ChatLog";
 import { chatsReducer } from "./chat/ChatsReducers";
+import { getCompletedOrderReducer } from "./Market/CompletedOrders";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -102,4 +109,7 @@ export const reducers = combineReducers({
   chatList: chatListReducer,
   chatLog: chatLogReducer,
   chats: chatsReducer,
+  status: getOrderStatusReducer,
+  chatImage: chatImageReducer,
+  completedOrder: getCompletedOrderReducer,
 });

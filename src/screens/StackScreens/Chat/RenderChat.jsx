@@ -1,12 +1,17 @@
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Text } from "../../../components/common";
 import { styles } from "./styles";
-import { renderTimestamp } from "../../../utils/Socket/timeStampConverter";
 import { scale } from "../../../utils/scale";
 import { colors } from "../../../constants/colorpallette";
+import { Image } from "expo-image";
+import { baseURL } from "../../../utils/request";
+import { useNavigation } from "@react-navigation/native";
 
-export const RenderChat = ({ item, index, separator, user }) => {
+export const RenderChat = ({ item, index, separator, user, progress }) => {
+  const { navigate } = useNavigation();
+  // console.warn(item);
+
   // console.warn(item);
   return (
     <View>
@@ -15,11 +20,11 @@ export const RenderChat = ({ item, index, separator, user }) => {
           <View style={styles.meMessageContainer}>
             <Text text={item.content} textStyle={styles.meMessage} />
             <Text
-              text={renderTimestamp(item.timestamp)}
+              text={item.timestamp.slice(11, 16)}
               textStyle={styles.meMessageTime}
             />
           </View>
-        ) : (
+        ) : item.msg_type === "measure" ? (
           <View style={styles.meMeasureContainer}>
             {item.content?.map((each) => {
               return (
@@ -62,21 +67,47 @@ export const RenderChat = ({ item, index, separator, user }) => {
               );
             })}
             <Text
-              text={renderTimestamp(item.timestamp)}
+              text={item.timestamp.slice(11, 16)}
               textStyle={styles.meMessageTime}
             />
           </View>
-        )
+        ) : item.msg_type === "image" ? (
+          item.content?.map((e) => (
+            <TouchableOpacity
+              onPress={() =>
+                navigate("ImagePreview", {
+                  image: `${baseURL + e}`,
+                })
+              }
+              activeOpacity={0.6}
+              style={styles.mePicContainer}
+            >
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{ uri: `${baseURL + e}` }}
+                  style={styles.image}
+                  cachePolicy={"memory-disk"}
+                  contentFit="cover"
+                />
+              </View>
+
+              <Text
+                text={item.timestamp.slice(11, 16)}
+                textStyle={styles.mePicTime}
+              />
+            </TouchableOpacity>
+          ))
+        ) : null
       ) : user?.fullname === item.author ? (
         item.msg_type === "text" ? (
           <View style={styles.youMessageContainer}>
             <Text text={item.content} textStyle={styles.youMessage} />
             <Text
-              text={renderTimestamp(item.timestamp)}
+              text={item.timestamp.slice(11, 16)}
               textStyle={styles.youMessageTime}
             />
           </View>
-        ) : (
+        ) : item.msg_type === "measure" ? (
           <View style={styles.youMeasureContainer}>
             {item.content?.map((each) => {
               return (
@@ -119,11 +150,37 @@ export const RenderChat = ({ item, index, separator, user }) => {
               );
             })}
             <Text
-              text={renderTimestamp(item.timestamp)}
+              text={item?.timestamp.slice(11, 16)}
               textStyle={styles.meMessageTime}
             />
           </View>
-        )
+        ) : item.msg_type === "image" ? (
+          item.content?.map((e) => (
+            <TouchableOpacity
+              onPress={() =>
+                navigate("ImagePreview", {
+                  image: `${baseURL + e}`,
+                })
+              }
+              activeOpacity={0.6}
+              style={styles.youPicContainer}
+            >
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{ uri: `${baseURL + e}` }}
+                  style={styles.image}
+                  cachePolicy={"memory-disk"}
+                  contentFit="cover"
+                />
+              </View>
+
+              <Text
+                text={item.timestamp.slice(11, 16)}
+                textStyle={styles.youPicTime}
+              />
+            </TouchableOpacity>
+          ))
+        ) : null
       ) : null}
     </View>
   );

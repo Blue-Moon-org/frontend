@@ -94,7 +94,7 @@ export const ProfileSettings = () => {
           <TouchableOpacity
             onPress={() =>
               navigate("RootStack", {
-                screen: "ActiveOrders",
+                screen: "ClassifiedActiveOrders",
               })
             }
             style={styles.btn}

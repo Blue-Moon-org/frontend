@@ -31,6 +31,8 @@ import {
   Notification,
   PersonalMarketPostDetail,
   PersonalProfilePostDetail,
+  ClassifiedActiveOrders,
+  DActiveOrders,
 } from "../screens/StackScreens";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -255,13 +257,7 @@ export const RootStack = () => {
           headerTitleStyle: Fontscales.paragraphLargeMedium,
           headerLeft: () => (
             <MaterialCommunityIcons
-              onPress={() =>
-                user.account_type === "Buyer"
-                  ? navigate("BottomTabStack", {
-                      screen: "BuyerProfile",
-                    })
-                  : navigate("ProfileSettings")
-              }
+              onPress={() => navigate("ClassifiedActiveOrders")}
               style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
               name="keyboard-backspace"
               size={scale.fontPixel(24)}
@@ -284,6 +280,33 @@ export const RootStack = () => {
         }}
         name="ActiveOrders"
         component={ActiveOrders}
+      />
+
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Active Orders",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() =>
+                user.account_type === "Buyer"
+                  ? navigate("BottomTabStack", {
+                      screen: "BuyerProfile",
+                    })
+                  : navigate("ProfileSettings")
+              }
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="ClassifiedActiveOrders"
+        component={ClassifiedActiveOrders}
       />
       <Stack.Screen
         options={{
@@ -327,15 +350,6 @@ export const RootStack = () => {
           headerTitleAlign: "left",
           headerTitleAllowFontScaling: true,
           headerTitleStyle: Fontscales.paragraphLargeMedium,
-          headerLeft: () => (
-            <MaterialCommunityIcons
-              onPress={() => navigate("ActiveOrders")}
-              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
-              name="keyboard-backspace"
-              size={scale.fontPixel(24)}
-              color="black"
-            />
-          ),
         }}
         name="OrderDetail"
         component={OrderDetail}

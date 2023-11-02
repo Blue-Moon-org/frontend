@@ -15,6 +15,7 @@ import { colors } from "../../../constants/colorpallette";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import { checkOut } from "../../../Redux/actions/Market/CheckOut";
+import { Lodaing } from "../../../components/primary";
 
 export const Checkout = () => {
   const [picked, setPicked] = useState(1);
@@ -33,6 +34,8 @@ export const Checkout = () => {
   const route = useRoute();
 
   const dispatch = useDispatch();
+
+  const state = useSelector((state) => state.checkOut);
 
   const _checkOutHandler = () => {
     let address = addressData.filter((item) => {
@@ -77,224 +80,230 @@ export const Checkout = () => {
   ];
 
   return (
-    <View style={[SharedStyles.container]}>
-      <View style={{ marginBottom: scale.heightPixel(200) }}>
-        <ScrollView>
-          <Text
-            textStyle={[
-              Fontscales.labelSmallMedium,
-              {
-                marginVertical: scale.pixelSizeVertical(10),
-              },
-            ]}
-            text={"Delivery address"}
-          />
-          <View style={styles.addressContainer}>
-            {addressData.map((item, index) => {
-              return (
-                <TouchableOpacity
-                  onPress={() => setPicked(item.id)}
-                  activeOpacity={1}
-                  key={index}
-                  style={[
-                    styles.eachContainer,
-                    {
-                      opacity: item.id === picked ? 1 : 0.5,
-                    },
-                  ]}
-                >
-                  <MaterialCommunityIcons
-                    name={
-                      item.id === picked
-                        ? "checkbox-multiple-blank-circle"
-                        : "checkbox-multiple-blank-circle-outline"
-                    }
-                    size={24}
-                    color={colors.mainPrimary}
-                    style={styles.selectedIndicator}
-                  />
-                  <View style={styles.homeTextContainer}>
-                    <View style={styles.iconTextContainer}>
-                      <View style={styles.iconContainer}>
-                        <FontAwesome5
-                          name="warehouse"
-                          size={scale.fontPixel(24)}
-                          color="white"
-                        />
-                      </View>
-                      <View
-                        style={{
-                          width: "80%",
-                          marginLeft: scale.pixelSizeHorizontal(7),
-                        }}
-                      >
-                        <Text
-                          textStyle={Fontscales.labelMediumRegular}
-                          text={item.title}
-                        />
-                        <Text
-                          textStyle={{
-                            fontFamily: "Outfit_400Regular",
-                            fontSize: scale.fontPixel(10),
-                            marginTop: scale.pixelSizeVertical(3),
+    <>
+      {state.loading ? <Lodaing /> : null}
+      <View style={[SharedStyles.container]}>
+        <View style={{ marginBottom: scale.heightPixel(200) }}>
+          <ScrollView>
+            <Text
+              textStyle={[
+                Fontscales.labelSmallMedium,
+                {
+                  marginVertical: scale.pixelSizeVertical(10),
+                },
+              ]}
+              text={"Delivery address"}
+            />
+            <View style={styles.addressContainer}>
+              {addressData.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => setPicked(item.id)}
+                    activeOpacity={1}
+                    key={index}
+                    style={[
+                      styles.eachContainer,
+                      {
+                        opacity: item.id === picked ? 1 : 0.5,
+                      },
+                    ]}
+                  >
+                    <MaterialCommunityIcons
+                      name={
+                        item.id === picked
+                          ? "checkbox-multiple-blank-circle"
+                          : "checkbox-multiple-blank-circle-outline"
+                      }
+                      size={24}
+                      color={colors.mainPrimary}
+                      style={styles.selectedIndicator}
+                    />
+                    <View style={styles.homeTextContainer}>
+                      <View style={styles.iconTextContainer}>
+                        <View style={styles.iconContainer}>
+                          <FontAwesome5
+                            name="warehouse"
+                            size={scale.fontPixel(24)}
+                            color="white"
+                          />
+                        </View>
+                        <View
+                          style={{
+                            width: "80%",
+                            marginLeft: scale.pixelSizeHorizontal(7),
                           }}
-                          text={item.address}
-                        />
+                        >
+                          <Text
+                            textStyle={Fontscales.labelMediumRegular}
+                            text={item.title}
+                          />
+                          <Text
+                            textStyle={{
+                              fontFamily: "Outfit_400Regular",
+                              fontSize: scale.fontPixel(10),
+                              marginTop: scale.pixelSizeVertical(3),
+                            }}
+                            text={item.address}
+                          />
+                        </View>
                       </View>
                     </View>
-                  </View>
-                  <Feather
-                    name="edit"
-                    size={scale.fontPixel(18)}
-                    color={colors.mainPrimary}
-                    style={{
-                      marginRight: scale.pixelSizeHorizontal(4),
-                    }}
-                  />
-                </TouchableOpacity>
-              );
-            })}
-            <Text
-              textStyle={{
-                marginVertical: scale.pixelSizeVertical(10),
-                fontFamily: "Outfit_400Regular",
-                fontSize: scale.fontPixel(10),
-                marginTop: scale.pixelSizeVertical(9),
-                color: colors.mainPrimary,
-              }}
-              text={"Add another address"}
-              onPress={() => {}}
-            />
-          </View>
+                    <Feather
+                      name="edit"
+                      size={scale.fontPixel(18)}
+                      color={colors.mainPrimary}
+                      style={{
+                        marginRight: scale.pixelSizeHorizontal(4),
+                      }}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+              <Text
+                textStyle={{
+                  marginVertical: scale.pixelSizeVertical(10),
+                  fontFamily: "Outfit_400Regular",
+                  fontSize: scale.fontPixel(10),
+                  marginTop: scale.pixelSizeVertical(9),
+                  color: colors.mainPrimary,
+                }}
+                text={"Add another address"}
+                onPress={() => {}}
+              />
+            </View>
 
-          <Text
-            textStyle={[
-              Fontscales.labelSmallMedium,
-              {
-                marginVertical: scale.pixelSizeVertical(10),
-              },
-            ]}
-            text={"Payment method"}
-          />
-          <View style={styles.addressContainer}>
-            {paymentData.map((item, index) => {
-              return (
-                <TouchableOpacity
-                  onPress={() => setpay(item.id)}
-                  activeOpacity={1}
-                  key={index}
-                  style={[
-                    styles.eachContainer,
-                    {
-                      opacity: item.id === pay ? 1 : 0.5,
-                    },
-                  ]}
-                >
-                  <MaterialCommunityIcons
-                    name={
-                      item.id === pay
-                        ? "checkbox-multiple-blank-circle"
-                        : "checkbox-multiple-blank-circle-outline"
-                    }
-                    size={24}
-                    color={colors.mainPrimary}
-                    style={styles.selectedIndicator}
-                  />
-                  <View style={styles.homeTextContainer}>
-                    <View style={styles.iconTextContainer}>
-                      <View style={styles.iconContainer}>
-                        <MaterialIcons
-                          name="payment"
-                          size={scale.fontPixel(24)}
-                          color={"white"}
-                        />
-                      </View>
-                      <View
-                        style={{
-                          width: "80%",
-                          marginLeft: scale.pixelSizeHorizontal(7),
-                        }}
-                      >
-                        <Text
-                          textStyle={Fontscales.labelMediumRegular}
-                          text={item.title}
-                        />
-                        <Text
-                          textStyle={{
-                            fontFamily: "Outfit_400Regular",
-                            fontSize: scale.fontPixel(10),
-                            marginTop: scale.pixelSizeVertical(3),
+            <Text
+              textStyle={[
+                Fontscales.labelSmallMedium,
+                {
+                  marginVertical: scale.pixelSizeVertical(10),
+                },
+              ]}
+              text={"Payment method"}
+            />
+            <View style={styles.addressContainer}>
+              {paymentData.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => setpay(item.id)}
+                    activeOpacity={1}
+                    key={index}
+                    style={[
+                      styles.eachContainer,
+                      {
+                        opacity: item.id === pay ? 1 : 0.5,
+                      },
+                    ]}
+                  >
+                    <MaterialCommunityIcons
+                      name={
+                        item.id === pay
+                          ? "checkbox-multiple-blank-circle"
+                          : "checkbox-multiple-blank-circle-outline"
+                      }
+                      size={24}
+                      color={colors.mainPrimary}
+                      style={styles.selectedIndicator}
+                    />
+                    <View style={styles.homeTextContainer}>
+                      <View style={styles.iconTextContainer}>
+                        <View style={styles.iconContainer}>
+                          <MaterialIcons
+                            name="payment"
+                            size={scale.fontPixel(24)}
+                            color={"white"}
+                          />
+                        </View>
+                        <View
+                          style={{
+                            width: "80%",
+                            marginLeft: scale.pixelSizeHorizontal(7),
                           }}
-                          text={item.cardNumber}
-                        />
+                        >
+                          <Text
+                            textStyle={Fontscales.labelMediumRegular}
+                            text={item.title}
+                          />
+                          <Text
+                            textStyle={{
+                              fontFamily: "Outfit_400Regular",
+                              fontSize: scale.fontPixel(10),
+                              marginTop: scale.pixelSizeVertical(3),
+                            }}
+                            text={item.cardNumber}
+                          />
+                        </View>
                       </View>
                     </View>
-                  </View>
-                  <Ionicons
-                    name="chevron-forward"
-                    size={scale.fontPixel(18)}
-                    color={colors.mainPrimary}
-                    style={{
-                      marginRight: scale.pixelSizeHorizontal(4),
-                    }}
-                  />
-                </TouchableOpacity>
-              );
-            })}
-            <Text
-              textStyle={{
-                marginVertical: scale.pixelSizeVertical(10),
-                fontFamily: "Outfit_400Regular",
-                fontSize: scale.fontPixel(10),
-                marginTop: scale.pixelSizeVertical(9),
-                color: colors.mainPrimary,
-              }}
-              text={"Add another payment method"}
-              onPress={() => {}}
-            />
-          </View>
-        </ScrollView>
-      </View>
-
-      <View style={styles.totalExpense}>
-        <View style={styles.expenseContainer}>
-          <View style={styles.expense}>
-            <Text text={"Sub total"} textStyle={Fontscales.labelSmallRegular} />
-            <Text
-              text={naira.format(route.params?.sum)}
-              textStyle={Fontscales.labelSmallRegular}
-            />
-          </View>
-          <View style={styles.expense}>
-            <Text
-              text={"Delivery fee"}
-              textStyle={Fontscales.labelSmallRegular}
-            />
-            <Text
-              text={naira.format(route.params?.deliveryFee)}
-              textStyle={Fontscales.labelSmallRegular}
-            />
-          </View>
+                    <Ionicons
+                      name="chevron-forward"
+                      size={scale.fontPixel(18)}
+                      color={colors.mainPrimary}
+                      style={{
+                        marginRight: scale.pixelSizeHorizontal(4),
+                      }}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+              <Text
+                textStyle={{
+                  marginVertical: scale.pixelSizeVertical(10),
+                  fontFamily: "Outfit_400Regular",
+                  fontSize: scale.fontPixel(10),
+                  marginTop: scale.pixelSizeVertical(9),
+                  color: colors.mainPrimary,
+                }}
+                text={"Add another payment method"}
+                onPress={() => {}}
+              />
+            </View>
+          </ScrollView>
         </View>
-        <View style={styles.totalContainer}>
-          <Text text={"Total"} textStyle={Fontscales.labelMediumBold} />
-          <Text
-            text={naira.format(route.params?.sum + route.params?.deliveryFee)}
-            textStyle={Fontscales.labelMediumBold}
+
+        <View style={styles.totalExpense}>
+          <View style={styles.expenseContainer}>
+            <View style={styles.expense}>
+              <Text
+                text={"Sub total"}
+                textStyle={Fontscales.labelSmallRegular}
+              />
+              <Text
+                text={naira.format(route.params?.sum)}
+                textStyle={Fontscales.labelSmallRegular}
+              />
+            </View>
+            <View style={styles.expense}>
+              <Text
+                text={"Delivery fee"}
+                textStyle={Fontscales.labelSmallRegular}
+              />
+              <Text
+                text={naira.format(route.params?.deliveryFee)}
+                textStyle={Fontscales.labelSmallRegular}
+              />
+            </View>
+          </View>
+          <View style={styles.totalContainer}>
+            <Text text={"Total"} textStyle={Fontscales.labelMediumBold} />
+            <Text
+              text={naira.format(route.params?.sum + route.params?.deliveryFee)}
+              textStyle={Fontscales.labelMediumBold}
+            />
+          </View>
+          <Button
+            onPress={() => _checkOutHandler()}
+            containerStyle={styles.btnContainer}
+            textStyle={[
+              Fontscales.labelSmallRegular,
+              {
+                color: "white",
+              },
+            ]}
+            title={"Confirm payment"}
           />
         </View>
-        <Button
-          onPress={() => _checkOutHandler()}
-          containerStyle={styles.btnContainer}
-          textStyle={[
-            Fontscales.labelSmallRegular,
-            {
-              color: "white",
-            },
-          ]}
-          title={"Confirm payment"}
-        />
       </View>
-    </View>
+    </>
   );
 };

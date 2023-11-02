@@ -1,6 +1,7 @@
 import {
   actionTypesCreateChat,
   actionTypesChatList,
+  actionTypesChatImage,
 } from "../../constants/Chat";
 
 const initialState = {
@@ -69,6 +70,40 @@ export const chatListReducer = (state = initialState, { type, payload }) => {
         dataChatList: null,
         errorChatList: payload,
         loadingChatList: false,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const chatImageReducer = (
+  state = { data: null, loading: "", error: "" },
+  { type, payload, error }
+) => {
+  switch (type) {
+    case actionTypesChatImage.CHAT_IMAGE_LOADING:
+      return {
+        ...state,
+        data: null,
+        loading: true,
+        error: "",
+      };
+
+    case actionTypesChatImage.CHAT_IMAGE_SUCCESS:
+      return {
+        ...state,
+        data: payload.response?.data?.data,
+        loading: false,
+        error: "",
+      };
+
+    case actionTypesChatImage.CHAT_IMAGE_ERROR:
+      return {
+        ...state,
+        data: "null",
+        loading: false,
+        error: error,
       };
 
     default:

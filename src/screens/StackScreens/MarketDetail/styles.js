@@ -31,6 +31,11 @@ export const styles = StyleSheet.create({
   },
   sideImage: {
     width: "100%",
+    height: "100%",
+    borderRadius: scale.fontPixel(4),
+  },
+  sideImageCont: {
+    width: "100%",
     height: "30%",
     borderRadius: scale.fontPixel(4),
   },
@@ -82,6 +87,9 @@ export const styles = StyleSheet.create({
   seeMoreContainer: {
     marginTop: scale.pixelSizeVertical(16),
     paddingBottom: scale.pixelSizeVertical(40),
+  },
+  userdetailContainer: {
+    width: "72%",
   },
   outter: {
     width: "100%",

@@ -1,5 +1,8 @@
 import { fetchGetRequestInit } from "../../../utils/requestInit";
-import { actionTypesGetOrders } from "../../constants/Market";
+import {
+  actionTypesGetOrders,
+  actionTypesTrackStatus,
+} from "../../constants/Market";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const GetOrders = (navigate) => async (dispatch) => {
@@ -32,6 +35,37 @@ export const GetOrders = (navigate) => async (dispatch) => {
       console.warn(err);
       dispatch({
         type: actionTypesGetOrders.GET_ORDERS_ERROR,
+        error: err,
+      });
+    });
+};
+
+export const CheckOrder = (T_N, navigate) => async (dispatch) => {
+  // 4 endpoint,  content-type, token
+
+  dispatch({
+    type: actionTypesTrackStatus.TRACK_ORDER_STATUS_LOADING,
+  });
+
+  const jsonValue = await AsyncStorage.getItem("userTokens");
+  let result = JSON.parse(jsonValue);
+
+  await fetchGetRequestInit(
+    `/api/order-status/${T_N}/`,
+    `Bearer ${result.access}`
+  )
+    .then((res) => {
+      dispatch({
+        type: actionTypesTrackStatus.TRACK_ORDER_STATUS_SUCCESS,
+        payload: res,
+      });
+
+      //   navigate("ForgotPasswordVerification",);
+    })
+    .catch((err) => {
+      console.warn(err);
+      dispatch({
+        type: actionTypesTrackStatus.TRACK_ORDER_STATUS_ERROR,
         error: err,
       });
     });

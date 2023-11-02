@@ -28,8 +28,8 @@ export const styles = StyleSheet.create({
     marginBottom: scale.pixelSizeVertical(24),
   },
   profilePictureContainer: {
-    height: scale.heightPixel(56),
-    width: scale.widthPixel(56),
+    height: scale.heightPixel(46),
+    width: scale.widthPixel(46),
     borderRadius: scale.fontPixel(8),
     backgroundColor: colors.mainPrimary,
   },
@@ -44,7 +44,7 @@ export const styles = StyleSheet.create({
     fontWeight: 400,
   },
   messagesContainer: {
-    width: "64%",
+    width: "78%",
   },
   timeAgo: {
     fontFamily: "Outfit_400Regular",

@@ -99,7 +99,7 @@ export const BuyerProfile = () => {
           <TouchableOpacity
             onPress={() =>
               navigate("RootStack", {
-                screen: "ActiveOrders",
+                screen: "ClassifiedActiveOrders",
               })
             }
             style={styles.btn}

@@ -4,13 +4,15 @@ export const fetchPostRequestInit = async (
   endPoint,
   body,
   contentType,
-  token
+  token,
+  onUploadProgress
 ) => {
   const response = await request.post(endPoint, body, {
     headers: {
       Authorization: token,
       "Content-Type": contentType,
     },
+    onUploadProgress: onUploadProgress,
   });
 
   return { response };

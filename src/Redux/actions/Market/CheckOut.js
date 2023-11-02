@@ -2,6 +2,7 @@ import { fetchPostRequestInit } from "../../../utils/requestInit";
 import { actionTypesCheckOut } from "../../constants/Market";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
+import { CartView } from "./CartView";
 
 export const checkOut = (address, billing, navigate) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
@@ -24,7 +25,6 @@ export const checkOut = (address, billing, navigate) => async (dispatch) => {
     `Bearer ${result.access}`
   )
     .then((res) => {
-      console.warn(res);
       dispatch({
         type: actionTypesCheckOut.CHECK_OUT_SUCCESS,
         payload: res,
@@ -37,6 +37,7 @@ export const checkOut = (address, billing, navigate) => async (dispatch) => {
       navigate("BottomTabStack", {
         screen: "Market",
       });
+      dispatch(CartView(navigate));
     })
     .catch((err) => {
       console.warn(err);

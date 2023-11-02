@@ -45,10 +45,10 @@ const fontPixel = (size) => {
 
 const fontSize = {
   h1: normalize(24),
-  h2: normalize(18),
-  h3: normalize(16),
-  h4: normalize(14),
-  h5: normalize(12),
+  h2: normalize(19),
+  h3: normalize(17),
+  h4: normalize(15),
+  h5: normalize(13),
 };
 
 const lineHeight = {

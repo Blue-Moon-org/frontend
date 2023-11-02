@@ -4,7 +4,7 @@ import { createSharedElementStackNavigator } from "react-navigation-shared-eleme
 import { AuthStack } from "./AuthStack";
 import Stacks from "./Stacks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userLocationPermission } from "../Redux/actions/permission/location";
 import { AuthContext } from "../Context";
 
@@ -12,7 +12,16 @@ const Stack = createSharedElementStackNavigator();
 
 export const StackContainer = () => {
   const dispatch = useDispatch();
-  const { currentUser } = useContext(AuthContext);
+  const {
+    addCallbacks,
+    cb,
+    connect,
+    disconnect,
+    socketNewMessage,
+    state: chatState,
+    ref,
+    currentUser,
+  } = useContext(AuthContext);
 
   const [user, updateUser] = useState(currentUser);
 

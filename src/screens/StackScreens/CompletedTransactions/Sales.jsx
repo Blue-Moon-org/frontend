@@ -1,5 +1,5 @@
 import { FlatList, View, TouchableOpacity, Platform } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { styles } from "./styles";
 import { SharedStyles, Fontscales } from "../../../styles";
 import { Text } from "../../../components/common";
@@ -9,9 +9,24 @@ import { useNavigation } from "@react-navigation/native";
 import { scale } from "../../../utils/scale";
 import { colors } from "../../../constants/colorpallette";
 import { Ionicons } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { GetCompletedOrders } from "../../../Redux/actions/Market/Completed";
 
 export const Sales = () => {
   const { navigate } = useNavigation();
+
+  const state = useSelector((state) => state.completedOrder);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      dispatch(GetCompletedOrders());
+    }
+  }, []);
+  console.warn(state);
+
   const render = ({ item, index }) => {
     return (
       <TouchableOpacity

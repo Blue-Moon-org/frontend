@@ -15,7 +15,10 @@ const Stack = createSharedElementStackNavigator();
 
 export const AuthStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="Login"
+    >
       <Stack.Screen name="Oboard" component={Onbording} />
       <Stack.Screen
         name="Register"

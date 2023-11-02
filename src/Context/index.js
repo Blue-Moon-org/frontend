@@ -1,9 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { createContext, useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { updateChatLog } from "../Redux/actions/Chat/SendChat";
-import { connect } from "socket.io-client";
-import { socket } from "../utils/Socket/";
+import React, { createContext, useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { socketUrl } from "../utils/Socket/";
+import { addMessage, setMessages } from "../Redux/actions/Chat/Chats";
 
 export const AuthContext = createContext({});
 
@@ -32,66 +31,87 @@ export const AuthProvider = ({ children }) => {
     getData();
   }, [currentUser]);
 
-  // let socket;
-  let ws;
+  const ref = useRef();
 
   const dispatch = useDispatch();
 
-  const sendMessage = (command, from, chatId, message, room_name) => {
-    const payload = {
-      command,
-      from,
-      chatId,
-      message,
+  let cb = {};
+
+  const connect = () => {
+    const path = `${socketUrl}/ws/chats/${currentUser?.id}/`;
+    ref.current = new WebSocket(path);
+
+    ref.current.onopen = () => {
+      console.warn("Websocket opened");
     };
-    socket.emit(
-      `ws://212.71.235.37:8000/ws/chat/${room_name}/`,
-      JSON.stringify(payload)
-    );
-    dispatch(updateChatLog(payload));
+
+    ref.current.onmessage = (e) => {
+      socketNewMessage(e.data);
+    };
+
+    ref.current.onerror = (e) => {
+      console.warn(e);
+    };
+
+    ref.current.onclose = () => {
+      console.warn("websocket closed");
+      // connect();
+    };
   };
 
-  // if (!socket) {
-  //   socket = connect(socket);
-
-  // socket.on("event://get-message", (msg) => {
-  //   const payload = JSON.parse(msg);
-  //   dispatch(updateChatLog(payload));
-  // });
-
-  ws = {
-    socket,
-    sendMessage,
+  const disconnect = () => {
+    try {
+      ref.current.close();
+    } catch (error) {
+      console.warn(error);
+    }
   };
-  // }
+
+  const socketNewMessage = (data) => {
+    const parsedData = JSON.parse(data);
+    const command = parsedData.command;
+    if (parsedData.command === "messages") {
+      dispatch(setMessages(parsedData.messages));
+    } else {
+      dispatch(addMessage(parsedData.message));
+    }
+
+    if (Object.keys(cb).length === 0) {
+      return;
+    }
+    if (command === "messages") {
+      cb[command](parsedData.messages);
+      // console.warn(parsedData.messages);
+    }
+    if (command === "new_message") {
+      cb[command](parsedData.message);
+      // chatData.push(parsedData.message);
+    }
+  };
+
+  const addCallbacks = (msgCallback, newMsgCllback) => {
+    cb["messages"] = msgCallback;
+    cb["new_message"] = newMsgCllback;
+  };
+
+  const state = () => {
+    return ref.current.readyState;
+  };
+
   return (
-    <AuthContext.Provider value={{ currentUser, updateCurrentUser, ws }}>
+    <AuthContext.Provider
+      value={{
+        currentUser,
+        updateCurrentUser,
+        state,
+        addCallbacks,
+        disconnect,
+        socketNewMessage,
+        connect,
+        ref,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
-
-// export default ({ children }) => {
-
-//     const sendMessage = (roomId, message) => {
-//         const payload = {
-//             roomId: roomId,
-//             data: message
-//         }
-//         socket.emit("event://send-message", JSON.stringify(payload));
-//         dispatch(updateChatLog(payload));
-//     }
-
-//     if (!socket) {
-//         socket = io.connect(WS_BASE)
-
-//         socket.on("event://get-message", (msg) => {
-//             const payload = JSON.parse(msg);
-//             dispatch(updateChatLog(payload));
-//         })
-
-//         ws = {
-//             socket: socket,
-//             sendMessage
-//         }
-//     }

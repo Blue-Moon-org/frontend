@@ -1,18 +1,21 @@
 import { socketUrl } from "./index";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import { addMessage, setMessages } from "../../Redux/actions/Chat/Chats";
 import { useDispatch } from "react-redux";
+import { AuthContext } from "../../Context/index";
 
-export const Websocket = (room_name) => {
+export const Websocket = (id) => {
   const ref = useRef();
 
   const [chatData, updateChatData] = useState([]);
   const dispatch = useDispatch();
 
+  const { currentUser } = useContext(AuthContext);
+
   let cb = {};
 
   const connect = (room_name) => {
-    const path = `${socketUrl}/ws/chat/${room_name}/`;
+    const path = `${socketUrl}/ws/chat/${id}/`;
     ref.current = new WebSocket(path);
 
     ref.current.onopen = () => {
@@ -29,7 +32,7 @@ export const Websocket = (room_name) => {
 
     ref.current.onclose = () => {
       console.warn("websocket closed");
-      connect();
+      // connect();
     };
   };
 
@@ -71,15 +74,16 @@ export const Websocket = (room_name) => {
   const state = () => {
     return ref.current.readyState;
   };
-
-  return {
-    state,
-    addCallbacks,
-    disconnect,
-    connect,
-    cb,
-    socketNewMessage,
-    ref,
-    chatData,
+  return () => {
+    return {
+      state,
+      addCallbacks,
+      disconnect,
+      connect,
+      cb,
+      socketNewMessage,
+      ref,
+      chatData,
+    };
   };
 };

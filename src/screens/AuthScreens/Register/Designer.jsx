@@ -180,12 +180,13 @@ export const Designer = ({
                   textInputStyle={styles.textInputStyle}
                   //    inputState={}
                   editable={!registerData.loading}
-                  onChangeText={(text) =>
+                  onChangeText={(text) => {
+                    const PasRep = text.replace(/ +/g, "");
                     updateDesignersState({
                       ...designersState,
-                      password: text,
-                    })
-                  }
+                      password: PasRep,
+                    });
+                  }}
                   autoCapitalize="none"
                   placeholder={"************"}
                   textContentType={"password"}
@@ -218,12 +219,13 @@ export const Designer = ({
                   textInputStyle={styles.textInputStyle}
                   //    inputState={}
                   editable={!registerData.loading}
-                  onChangeText={(text) =>
+                  onChangeText={(text) => {
+                    const PasRep = text.replace(/ +/g, "");
                     updateDesignersState({
                       ...designersState,
-                      confirmPassword: text,
-                    })
-                  }
+                      confirmPassword: PasRep,
+                    });
+                  }}
                   autoCapitalize="none"
                   placeholder={"************"}
                   textContentType={"password"}

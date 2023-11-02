@@ -6,6 +6,7 @@ import { HomeListComponentEmpty } from "./HomeListComponentEmpty";
 import { LoadMore } from "./LoadMore";
 import { Error } from "./Error";
 import { ErrorMore } from "./ErrorMore";
+import CarouselImageDisplay from "./CarouselImageDisplay";
 
 export {
   Lodaing,
@@ -16,4 +17,5 @@ export {
   LoadMore,
   Error,
   ErrorMore,
+  CarouselImageDisplay,
 };

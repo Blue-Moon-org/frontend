@@ -1,23 +1,71 @@
 import { Pressable, View, TextInput } from "react-native";
 import React, { useState } from "react";
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
-import { Image } from "expo-image";
-import { images } from "../../../constants/images";
 import { styles } from "./styles";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
+import * as ImagePicker from "expo-image-picker";
+import { chatImage } from "../../../Redux/actions/Chat/ChatImage";
+import { useDispatch } from "react-redux";
 
 export const Interactions = ({
+  id,
   isMeasurementModalActive,
   setIsMeasurementModalActive,
   updateMsg,
   msg,
   _messageHandler,
+  innerRef,
+  userId,
+  room_name,
+  progress,
+  updateProgress,
 }) => {
   const [height, updateHeight] = useState(scale.heightPixel(40));
+  // console.warn(image);
+  const dispatch = useDispatch();
+
+  const onUploadProgress = (e) => {
+    var Percentage = Math.round((e.loaded / e.total) * 100);
+    updateProgress(Percentage);
+    // console.log(
+    //   "Upload progress: " + Math.round((e.loaded / e.total) * 100) + "%"
+    // );
+  };
+  const _galleryHandler = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: false,
+        base64: true,
+        quality: 1,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        selectionLimit: 5,
+        allowsMultipleSelection: true,
+        exif: true,
+        orderedSelection: true,
+      });
+      if (!result.canceled) {
+        dispatch(
+          chatImage(
+            id,
+            result.assets,
+            innerRef,
+            userId,
+            room_name,
+            onUploadProgress
+          )
+        );
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  };
   return (
     <View style={styles.interactionTabs}>
-      <Pressable style={styles.galleryImageContainer}>
+      <Pressable
+        onPress={() => _galleryHandler()}
+        style={styles.galleryImageContainer}
+      >
         <Feather
           name="image"
           size={scale.fontPixel(30)}
@@ -68,7 +116,7 @@ export const Interactions = ({
             updateHeight(e.nativeEvent.contentSize.height)
           }
           onChangeText={(text) => {
-            updateMsg(text);
+            updateMsg(text.trimStart());
           }}
           value={msg}
         />
@@ -83,7 +131,7 @@ export const Interactions = ({
                 msg.length < 1 ? colors.grey1 : colors.mainPrimary,
             },
           ]}
-          disabled={msg.length < 1 ? true : false}
+          disabled={msg.length < 1 || msg === " " ? true : false}
           onPress={() => _messageHandler()}
         >
           <Feather name="send" size={scale.fontPixel(20)} color="black" />

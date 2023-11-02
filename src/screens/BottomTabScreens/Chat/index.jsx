@@ -1,5 +1,5 @@
 import { View, Platform } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { AppHeader, Lodaing } from "../../../components/primary";
 import { SharedStyles } from "../../../styles";
 import { PendingOrders } from "./PendingOrders";
@@ -12,6 +12,8 @@ import { Fontscales } from "../../../styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { chatList } from "../../../Redux/actions/Chat/ChatList";
 import { useDispatch, useSelector } from "react-redux";
+import { Websocket } from "../../../utils/Socket/Websocket";
+import { AuthContext } from "../../../Context";
 
 export const Chat = () => {
   const dispatch = useDispatch();
@@ -22,6 +24,7 @@ export const Chat = () => {
       : scale.heightPixel(1);
 
   const [user, updateUser] = useState("");
+  const { currentUser } = useContext(AuthContext);
 
   const getData = async () => {
     try {
@@ -49,9 +52,7 @@ export const Chat = () => {
 
     return () => (sub = false);
   }, []);
-  // dataChatList: null,
-  // errorChatList: payload,
-  // loadingChatList: false,
+
 
   return (
     <>
@@ -62,7 +63,7 @@ export const Chat = () => {
             height:
               Platform.OS === "ios"
                 ? scale.heightPixel(210) + Constants.statusBarHeight + add
-                : scale.height * 0.24 + Constants.statusBarHeight,
+                : scale.height * 0.23 + Constants.statusBarHeight,
 
             zIndex: 2,
           }}
