@@ -13,7 +13,7 @@ export const GetCompletedOrders = (navigate) => async (dispatch) => {
   let result = JSON.parse(jsonValue);
 
   await fetchGetRequestInit(
-    `/api/orders/get-my-orders/?status=Delivered`, // /api/add-to-cart/product-title/
+    `/api/orders/get_my_orders/?status=Delivered`, // /api/add-to-cart/product-title/
     `Bearer ${result.access}`
   )
     .then((res) => {

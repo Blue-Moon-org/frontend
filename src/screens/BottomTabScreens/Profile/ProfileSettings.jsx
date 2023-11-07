@@ -146,13 +146,13 @@ export const ProfileSettings = () => {
             style={styles.btn}
             activeOpacity={0.7}
           >
-            <AntDesign name="staro" size={scale.fontPixel(20)} color="black" />
+            <AntDesign name="wallet" size={scale.fontPixel(20)} color="black" />
             <Text
               textStyle={[
                 Fontscales.labelSmallMedium,
                 { marginLeft: scale.pixelSizeHorizontal(10) },
               ]}
-              text={"Catalogue"}
+              text={"Pament dashboard"}
             />
           </TouchableOpacity>
         </View>

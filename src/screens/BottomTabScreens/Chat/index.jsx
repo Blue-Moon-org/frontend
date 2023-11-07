@@ -12,19 +12,32 @@ import { Fontscales } from "../../../styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { chatList } from "../../../Redux/actions/Chat/ChatList";
 import { useDispatch, useSelector } from "react-redux";
-import { Websocket } from "../../../utils/Socket/Websocket";
 import { AuthContext } from "../../../Context";
+import { useNavigation } from "@react-navigation/native";
 
 export const Chat = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.chatList);
+  const newList = useSelector((state) => state.wsChatList);
+  const newMeg = useSelector((state) => state.incomingChats);
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
       ? scale.heightPixel(40)
       : scale.heightPixel(1);
 
   const [user, updateUser] = useState("");
-  const { currentUser } = useContext(AuthContext);
+
+  const { addListener } = useNavigation();
+
+  const {
+    currentUser,
+    updateCurrentUser,
+    addCallbacks,
+    disconnect,
+    socketNewMessage,
+    connect,
+    ref,
+  } = useContext(AuthContext);
 
   const getData = async () => {
     try {
@@ -44,15 +57,37 @@ export const Chat = () => {
     return () => (sub = false);
   }, [user]);
 
+  const sendMessage = (data) => {
+    if (ref.current) {
+      try {
+        ref.current.send(JSON.stringify({ ...data }));
+        // console.warn("Message sent successfully");
+      } catch (error) {
+        console.warn(error.message);
+      }
+    } else {
+      console.warn("connection issue");
+    }
+  };
+
+  const fetchChatList = (chatId) => {
+    sendMessage({
+      command: "chat_list",
+    });
+  };
+
   useEffect(() => {
     let sub = true;
     if (sub) {
-      dispatch(chatList());
+      addListener("focus", () => {
+        fetchChatList();
+      });
     }
 
     return () => (sub = false);
   }, []);
 
+  // console.warn(newMeg);
 
   return (
     <>
@@ -86,7 +121,7 @@ export const Chat = () => {
                 : scale.height * 0.58 + Constants.statusBarHeight,
           }}
         >
-          <Messages user={user} data={state.dataChatList} />
+          <Messages user={user} data={newList.WSchatList} />
         </View>
       </View>
     </>

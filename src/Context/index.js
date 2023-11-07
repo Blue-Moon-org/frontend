@@ -2,7 +2,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { socketUrl } from "../utils/Socket/";
-import { addMessage, setMessages } from "../Redux/actions/Chat/Chats";
+import {
+  addMessage,
+  setMessages,
+  lastMessage,
+  chatListws,
+  icomingChats,
+} from "../Redux/actions/Chat/Chats";
 
 export const AuthContext = createContext({});
 
@@ -70,10 +76,17 @@ export const AuthProvider = ({ children }) => {
   const socketNewMessage = (data) => {
     const parsedData = JSON.parse(data);
     const command = parsedData.command;
+    // console.warn(data);
     if (parsedData.command === "messages") {
       dispatch(setMessages(parsedData.messages));
-    } else {
+    } else if (parsedData.command === "new_message") {
       dispatch(addMessage(parsedData.message));
+    } else if (parsedData.command === "chat_list") {
+      dispatch(chatListws(parsedData.messages));
+    } else if (parsedData.command === "incoming-message") {
+      dispatch(icomingChats(parsedData.messages));
+    } else {
+      dispatch(lastMessage(parsedData.messages));
     }
 
     if (Object.keys(cb).length === 0) {

@@ -311,7 +311,7 @@ export const RootStack = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          title: "Catalogue",
+          title: "Payment dashboard",
           headerTitleAlign: "left",
           headerTitleAllowFontScaling: true,
           headerTitleStyle: Fontscales.paragraphLargeMedium,

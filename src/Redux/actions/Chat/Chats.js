@@ -1,4 +1,10 @@
-import { ADD_MESSAGE, SET_MESSAGES } from "../../constants/Chats";
+import {
+  ADD_MESSAGE,
+  SET_MESSAGES,
+  LAST_MESSAGE,
+  LIST_CHATS,
+  INCOMING_CHATS,
+} from "../../constants/Chats";
 
 export const addMessage = (message) => {
   return {
@@ -11,6 +17,26 @@ export const setMessages = (messages) => {
   return {
     type: SET_MESSAGES,
     messages: messages,
+  };
+};
+export const lastMessage = (messages) => {
+  return {
+    type: LAST_MESSAGE,
+    lastMessage: messages,
+  };
+};
+
+export const chatListws = (list) => {
+  return {
+    type: LIST_CHATS,
+    chatListws: list,
+  };
+};
+
+export const icomingChats = (chatList) => {
+  return {
+    type: LIST_CHATS,
+    icomingChatList: chatList,
   };
 };
 

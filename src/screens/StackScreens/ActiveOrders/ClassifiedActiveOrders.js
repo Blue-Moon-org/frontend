@@ -33,7 +33,7 @@ export const ClassifiedActiveOrders = () => {
   // console.warn(state?.data?.map((each) => each.order.order_products));
 
   const RenderItem = ({ item, index }) => {
-    console.warn(item);
+    // console.warn(item);
     return (
       <TouchableOpacity
         activeOpacity={0.8}

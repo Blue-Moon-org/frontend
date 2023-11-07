@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { styles } from "./styles";
 import { SharedStyles, Fontscales } from "../../../styles";
 import { Text } from "../../../components/common";
-import { sales } from "./data";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { scale } from "../../../utils/scale";
@@ -11,6 +10,8 @@ import { colors } from "../../../constants/colorpallette";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { GetCompletedOrders } from "../../../Redux/actions/Market/Completed";
+import { baseURL } from "../../../utils/request";
+import { Lodaing } from "../../../components/primary";
 
 export const Sales = () => {
   const { navigate } = useNavigation();
@@ -25,9 +26,8 @@ export const Sales = () => {
       dispatch(GetCompletedOrders());
     }
   }, []);
-  console.warn(state);
 
-  const render = ({ item, index }) => {
+  const RenderItem = ({ item, index }) => {
     return (
       <TouchableOpacity
         activeOpacity={0.8}
@@ -41,7 +41,9 @@ export const Sales = () => {
         <View style={styles.imageContainer}>
           <Image
             cachePolicy={"memory-disk"}
-            source={{ uri: item.productImage }}
+            source={{
+              uri: `${baseURL + item.products[0]?.product?.images[0]?.image}`,
+            }}
             contentFit="cover"
             style={styles.image}
           />
@@ -53,7 +55,7 @@ export const Sales = () => {
                 numberOfLines={1}
                 ellipsizeMode={"tail"}
                 textStyle={Fontscales.headingSmallMedium}
-                text={item.productName}
+                text={item.products[0].product.title}
               />
               <Text
                 numberOfLines={1}
@@ -62,12 +64,19 @@ export const Sales = () => {
                   fontFamily: "Outfit_400Regular",
                   fontSize: scale.fontPixel(10),
                 }}
-                text={item.designer}
+                text={item?.seller?.brand_name}
               />
             </View>
             <Text
-              textStyle={Fontscales.labelSmallRegular}
-              text={`Arrived on ${item.dateArrived}`}
+              numberOfLines={2}
+              ellipsizeMode={"tail"}
+              textStyle={[
+                Fontscales.labelSmallRegular,
+                {
+                  width: "100%",
+                },
+              ]}
+              text={`Arrived on \n ${"Not Provided"}`}
             />
           </View>
           <View style={styles.iconTextContainer}>
@@ -80,12 +89,13 @@ export const Sales = () => {
               numberOfLines={1}
               ellipsizeMode={"tail"}
               textStyle={[
-                Fontscales.labelLargeRegular,
+                Fontscales.labelSmallRegular,
                 {
                   color: colors.mainPrimary,
+                  width: "100%",
                 },
               ]}
-              text={item.orderId}
+              text={item.tracking_number}
             />
           </View>
         </View>
@@ -94,23 +104,28 @@ export const Sales = () => {
   };
 
   return (
-    <View
-      style={[
-        SharedStyles.container,
-        {
-          paddingBottom:
-            Platform.OS === "ios"
-              ? scale.pixelSizeVertical(30)
-              : scale.pixelSizeVertical(1),
-        },
-      ]}
-    >
-      <FlatList
-        data={sales}
-        renderItem={render}
-        contentContainerStyle={{}}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+    <>
+      {state.loading ? <Lodaing /> : null}
+      <View
+        style={[
+          SharedStyles.container,
+          {
+            paddingBottom:
+              Platform.OS === "ios"
+                ? scale.pixelSizeVertical(30)
+                : scale.pixelSizeVertical(1),
+          },
+        ]}
+      >
+        <FlatList
+          data={state.data}
+          renderItem={({ item, index }) => (
+            <RenderItem item={item} index={index} />
+          )}
+          contentContainerStyle={{}}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+    </>
   );
 };

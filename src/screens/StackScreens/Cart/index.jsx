@@ -1,5 +1,5 @@
 import { FlatList, View } from "react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, Text } from "../../../components/common";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { styles } from "./styles";
@@ -20,15 +20,6 @@ export const Cart = () => {
   const dispatch = useDispatch();
 
   const cartData = useSelector((state) => state.cartView);
-
-  // useEffect(() => {
-  //   let sub = true;
-  //   if (sub) {
-  //     dispatch(CartView(navigate));
-  //   }
-
-  //   return () => (sub = false);
-  // }, []);
 
   let sum = 0;
   let deliveryFee = 0;
@@ -154,7 +145,12 @@ export const Cart = () => {
           </View>
           <Button
             onPress={() => navigate("Checkout", { sum, deliveryFee })}
-            containerStyle={styles.btnContainer}
+            containerStyle={[
+              styles.btnContainer,
+              {
+                backgroundColor: cartData.data ? colors.mainPrimary : "gray",
+              },
+            ]}
             textStyle={[
               Fontscales.labelSmallRegular,
               {
@@ -162,6 +158,7 @@ export const Cart = () => {
               },
             ]}
             title={"Checkout"}
+            disabled={cartData.data ? false : true}
           />
         </View>
       </View>

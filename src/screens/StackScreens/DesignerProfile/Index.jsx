@@ -1,17 +1,17 @@
 import { View, TouchableOpacity, Platform } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { Lodaing, ProfileHeader } from "../../../components/primary";
-import { SharedStyles } from "../../../styles";
+import { Fontscales, SharedStyles } from "../../../styles";
 import { styles } from "./styles";
 import { topData } from "../../BottomTabScreens/Profile/data";
-import { Text } from "../../../components/common";
+import { Button, Text } from "../../../components/common";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
 import { ForSale } from "./ForSale";
 import { Posts } from "./Posts";
 import { Liked } from "./Liked";
 import Constants from "expo-constants";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { AuthContext } from "../../../Context";
@@ -88,11 +88,11 @@ export const DesignerProfile = () => {
   };
 
   const createChatData = useSelector((state) => state.createChat);
-  const state = useSelector((state) => state.chatList);
+  // const state = useSelector((state) => state.chatList);
 
   return (
     <>
-      {createChatData.loading || state.loadingChatList ? <Lodaing /> : null}
+      {createChatData.loading ? <Lodaing /> : null}
       <SafeAreaView style={[SharedStyles.container]}>
         <View
           style={{
@@ -110,23 +110,57 @@ export const DesignerProfile = () => {
           />
           <View style={styles.background} />
           <View style={styles.background2}>
-            {/* <View style={styles.leftSide}> */}
-            <Text text={rating.data ?? 0} textStyle={styles.ratingText} />
-            {Rating(rating.data ?? 0)}
-            {/* <TouchableOpacity
-              onPress={() => navigate("Reviews")}
-              style={styles.review}
-              activeOpacity={0.8}
-            >
-              <Text text={`274 reviews`} textStyle={styles.reviewText} />
-              <Ionicons
-                name="ios-arrow-forward"
-                size={scale.fontPixel(16)}
-                color={colors.mainPrimary}
+            {/* <View> */}
+            <View style={styles.leftSide}>
+              <Text text={rating.data ?? 0} textStyle={styles.ratingText} />
+              {Rating(rating.data ?? 0)}
+            </View>
+
+            <View style={styles.rightSide}>
+              <View
+                style={{
+                  flexDirection: "row",
+                }}
+              >
+                <View style={styles.followerContainer}>
+                  <Text
+                    text={"62.6k"}
+                    textStyle={Fontscales.labelMediumBold}
+                    numberOfLines={1}
+                    ellipsizeMode={"tail"}
+                  />
+                  <Text
+                    text={"Followers"}
+                    textStyle={Fontscales.paragraphSmallRegular}
+                  />
+                </View>
+                <View style={styles.followingContainer}>
+                  <Text
+                    text={"52.7k"}
+                    textStyle={Fontscales.labelMediumBold}
+                    numberOfLines={1}
+                    ellipsizeMode={"tail"}
+                  />
+                  <Text
+                    text={"Following"}
+                    textStyle={Fontscales.paragraphSmallRegular}
+                  />
+                </View>
+              </View>
+              <Button
+                title={1 + 1 === 3 ? "Following" : "Follow"}
+                textStyle={Fontscales.labelSmallRegular}
+                containerStyle={{
+                  backgroundColor:
+                    1 + 1 === 3 ? colors.lightPrimary : colors.mainPrimary,
+                  alignSelf: "center",
+                  marginTop: scale.pixelSizeVertical(8),
+                  paddingVertical: scale.pixelSizeVertical(7),
+                  paddingHorizontal: scale.pixelSizeHorizontal(17),
+                  borderRadius: scale.fontPixel(8),
+                }}
               />
-            </TouchableOpacity> */}
-            {/* </View> */}
-            {/* <View>{Rating(3.1)}</View> */}
+            </View>
           </View>
           <View style={styles.headerOptionContainer}>
             {topData.map((item, index) => {

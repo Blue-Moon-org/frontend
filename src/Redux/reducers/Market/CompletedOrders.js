@@ -22,7 +22,7 @@ export const getCompletedOrderReducer = (
     case actionTypesCompletedOrders.COMPLETED_ORDERS_SUCCESS:
       return {
         ...state,
-        data: payload?.response?.data,
+        data: payload?.response?.data?.data?.order_items,
         loading: false,
         error: "",
       };

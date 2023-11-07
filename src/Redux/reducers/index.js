@@ -58,7 +58,12 @@ import {
   createChatReducer,
 } from "./chat/CreateChat";
 import { chatLogReducer } from "./chat/ChatLog";
-import { chatsReducer } from "./chat/ChatsReducers";
+import {
+  WSChatListReducer,
+  chatsReducer,
+  incomingChatListReducer,
+  lastChatReducer,
+} from "./chat/ChatsReducers";
 import { getCompletedOrderReducer } from "./Market/CompletedOrders";
 
 export const reducers = combineReducers({
@@ -109,7 +114,10 @@ export const reducers = combineReducers({
   chatList: chatListReducer,
   chatLog: chatLogReducer,
   chats: chatsReducer,
+  lastChat: lastChatReducer,
   status: getOrderStatusReducer,
   chatImage: chatImageReducer,
   completedOrder: getCompletedOrderReducer,
+  wsChatList: WSChatListReducer,
+  incomingChats: incomingChatListReducer,
 });

@@ -4,7 +4,7 @@ import { ProfileHeader } from "../../../components/primary";
 import { SharedStyles } from "../../../styles";
 import { styles } from "./styles";
 import { topData } from "./data";
-import { Text } from "../../../components/common";
+import { Text, Button } from "../../../components/common";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
 import { Posts } from "./Posts";
@@ -18,6 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRating } from "../../../Redux/actions/Post/Rating";
 import { AuthContext } from "../../../Context";
+import { Fontscales } from "../../../styles";
 
 export const Profile = () => {
   const [type, updateType] = useState("Posts");
@@ -121,26 +122,57 @@ export const Profile = () => {
         <ProfileHeader designer={true} user={user} />
         <View style={styles.background} />
         <View style={styles.background2}>
-          <Text text={rating.data ?? 0} textStyle={styles.ratingText} />
-          {Rating(rating.data ?? 0)}
-          {/* <View style={styles.leftSide}> */}
-          {/* <TouchableOpacity
-              onPress={() =>
-                navigate("RootStack", {
-                  screen: "Reviews",
-                })
-              }
-              style={styles.review}
-              activeOpacity={0.8}
+          {/* <View> */}
+          <View style={styles.leftSide}>
+            <Text text={rating.data ?? 0} textStyle={styles.ratingText} />
+            {Rating(rating.data ?? 0)}
+          </View>
+
+          <View style={styles.rightSide}>
+            <View
+              style={{
+                flexDirection: "row",
+              }}
             >
-              <Text text={`274 reviews`} textStyle={styles.reviewText} />
-              <Ionicons
-                name="ios-arrow-forward"
-                size={scale.fontPixel(16)}
-                color={colors.mainPrimary}
-              />
-            </TouchableOpacity> */}
-          {/* </View> */}
+              <View style={styles.followerContainer}>
+                <Text
+                  text={"62.6k"}
+                  textStyle={Fontscales.labelMediumBold}
+                  numberOfLines={1}
+                  ellipsizeMode={"tail"}
+                />
+                <Text
+                  text={"Followers"}
+                  textStyle={Fontscales.paragraphSmallRegular}
+                />
+              </View>
+              <View style={styles.followingContainer}>
+                <Text
+                  text={"52.7k"}
+                  textStyle={Fontscales.labelMediumBold}
+                  numberOfLines={1}
+                  ellipsizeMode={"tail"}
+                />
+                <Text
+                  text={"Following"}
+                  textStyle={Fontscales.paragraphSmallRegular}
+                />
+              </View>
+            </View>
+            <Button
+              title={1 + 1 === 3 ? "Following" : "Follow"}
+              textStyle={Fontscales.labelSmallRegular}
+              containerStyle={{
+                backgroundColor:
+                  1 + 1 === 3 ? colors.lightPrimary : colors.mainPrimary,
+                alignSelf: "center",
+                marginTop: scale.pixelSizeVertical(8),
+                paddingVertical: scale.pixelSizeVertical(7),
+                paddingHorizontal: scale.pixelSizeHorizontal(17),
+                borderRadius: scale.fontPixel(8),
+              }}
+            />
+          </View>
         </View>
         <View style={styles.headerOptionContainer}>
           {topData.map((item, index) => {

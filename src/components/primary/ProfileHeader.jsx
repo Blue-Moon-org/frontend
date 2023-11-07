@@ -11,7 +11,6 @@ import { baseURL } from "../../utils/request";
 import { useDispatch } from "react-redux";
 import { createChat } from "../../Redux/actions/Chat/ChatCreate";
 import Toast from "react-native-toast-message";
-import { chatList } from "../../Redux/actions/Chat/ChatList";
 
 export const ProfileHeader = ({ designer, client, user, detail }) => {
   const { goBack, navigate } = useNavigation();
@@ -26,7 +25,6 @@ export const ProfileHeader = ({ designer, client, user, detail }) => {
       });
     } else if (detail.id && detail.chat_created === false) {
       dispatch(createChat(detail.id, navigate));
-      dispatch(chatList());
     } else {
       Toast.show({
         position: "top",

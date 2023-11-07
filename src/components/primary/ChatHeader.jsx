@@ -1,5 +1,11 @@
-import { StyleSheet, View, Platform, Pressable } from "react-native";
-import React from "react";
+import {
+  StyleSheet,
+  View,
+  Platform,
+  Pressable,
+  BackHandler,
+} from "react-native";
+import React, { useEffect } from "react";
 import { Image } from "expo-image";
 import { Text } from "../common";
 import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -20,7 +26,7 @@ export const ChatHeader = ({
   user,
   otherUser,
   goBack,
-  disconnect,
+  // disconnect,
   updateMsg,
 }) => {
   const dispatch = useDispatch();
@@ -51,6 +57,18 @@ export const ChatHeader = ({
       pressAction: () => {},
     },
   ];
+
+  useEffect(() => {
+    const backAction = () => {
+      dispatch(setMessages([]));
+    };
+
+    BackHandler.addEventListener("hardwareBackPress", backAction);
+
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", backAction);
+    };
+  }, []);
   return (
     <View style={styles.mainContainer}>
       <View style={styles.imageTextContainer}>

@@ -1,4 +1,11 @@
-import { View, KeyboardAvoidingView, Platform, FlatList } from "react-native";
+import {
+  View,
+  KeyboardAvoidingView,
+  Platform,
+  FlatList,
+  BackHandler,
+  Alert,
+} from "react-native";
 import React, {
   useState,
   useEffect,
@@ -141,7 +148,7 @@ export const Chat = () => {
     }
 
     return () => (sub = false);
-  }, [params.item.room_name]);
+  }, [params?.item?.room_name]);
 
   const sendMessage = (data) => {
     if (ref.current) {
@@ -232,23 +239,25 @@ export const Chat = () => {
           inverted={-1}
           scrollEventThrottle={16}
           keyExtractor={(item, index) => item.id + index + item.timestamp}
+          ListHeaderComponent={() =>
+            !imageD.loading ? null : (
+              <View style={{ alignSelf: "center" }}>
+                <Progress.Bar
+                  color={colors.mainPrimary}
+                  unfilledColor={colors.lightPrimary}
+                  borderWidth={scale.fontPixel(1)}
+                  borderColor={colors.mainPrimary}
+                  progress={progress / 100}
+                  width={scale.widthPixel(250)}
+                  height={scale.heightPixel(7)}
+                />
+              </View>
+            )
+          }
           // onLayout={() => layout()}
           // contentOffset={{ y: 2000 }}
           // onContentSizeChange={() => scroll()}
         />
-        {progress === 0 || progress === 100 ? null : (
-          <View style={{ alignSelf: "center" }}>
-            <Progress.Bar
-              color={colors.mainPrimary}
-              unfilledColor={colors.lightPrimary}
-              borderWidth={scale.fontPixel(1)}
-              borderColor={colors.mainPrimary}
-              progress={progress / 100}
-              width={scale.widthPixel(250)}
-              height={scale.heightPixel(7)}
-            />
-          </View>
-        )}
       </View>
       {isMeasurementModalActive && (
         <View

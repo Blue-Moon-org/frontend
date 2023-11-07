@@ -1,5 +1,5 @@
 import { View, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Text } from "../../../components/common";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "./styles";
@@ -8,12 +8,17 @@ import { Fontscales } from "../../../styles";
 import { scale } from "../../../utils/scale";
 import { baseURL } from "../../../utils/request";
 import { renderTimestamp } from "../../../utils/Socket/timeStampConverter";
+import { AuthContext } from "../../../Context";
+import { useSelector } from "react-redux";
 
 const RenderMessages = ({ item, index }) => {
-  const { navigate } = useNavigation();
+  const { navigate, addListener } = useNavigation();
 
   const otherUser = item.participants.filter((each) => each.owner === false);
-  // console.warn(item?.last_message?.timestamp?.slice(11, 16));
+
+
+
+  const chatD = useSelector((state) => state.lastChat);
   return (
     <TouchableOpacity
       activeOpacity={0.9}

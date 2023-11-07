@@ -6,13 +6,15 @@ export const styles = StyleSheet.create({
   background: {
     backgroundColor: colors.grey2,
     width: "100%",
-    height: scale.heightPixel(92),
+    height: scale.heightPixel(82),
     borderRadius: scale.fontPixel(9),
   },
   background2: {
-    height: scale.heightPixel(75),
+    height: scale.heightPixel(85),
     marginTop: scale.pixelSizeVertical(10),
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   leftSide: {
     alignItems: "center",
@@ -111,5 +113,15 @@ export const styles = StyleSheet.create({
     fontSize: scale.fontPixel(10),
     marginRight: scale.fontPixel(5),
     color: colors.mainPrimary,
+  },
+  followerContainer: {
+    alignItems: "center",
+    marginRight: scale.pixelSizeHorizontal(22),
+  },
+  followingContainer: {
+    alignItems: "center",
+  },
+  rightSide: {
+    marginLeft: scale.pixelSizeHorizontal(16),
   },
 });

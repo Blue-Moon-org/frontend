@@ -40,9 +40,28 @@ const Stacks = () => {
   };
   const chatInitialization = () => {
     waitForSocketConnection(() => {
-      // fetchMessages(user.id);
+      fetchChatList();
     });
     connect(currentUser?.id);
+  };
+
+  const sendMessage = (data) => {
+    if (ref.current) {
+      try {
+        ref.current.send(JSON.stringify({ ...data }));
+        // console.warn("Message sent successfully");
+      } catch (error) {
+        console.warn(error.message);
+      }
+    } else {
+      console.warn("connection issue");
+    }
+  };
+
+  const fetchChatList = () => {
+    sendMessage({
+      command: "chat_list",
+    });
   };
 
   return (

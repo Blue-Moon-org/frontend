@@ -32,4 +32,28 @@ export const styles = StyleSheet.create({
     fontSize: scale.fontPixel(10),
     color: colors.mainPrimary,
   },
+  DContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+    marginTop: scale.pixelSizeVertical(15),
+  },
+  DImageContainer: {
+    height: scale.heightPixel(50),
+    width: "20%",
+  },
+  DImage: {
+    height: "100%",
+    width: "100%",
+  },
+  MimageContainer: {
+    height: "100%",
+    width: "30%",
+    borderRadius: scale.fontPixel(8),
+  },
+  Mimage: {
+    height: "100%",
+    width: "100%",
+    borderRadius: scale.fontPixel(8),
+  },
 });

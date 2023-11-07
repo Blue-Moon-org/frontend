@@ -10,8 +10,9 @@ import {
   ErrorMore,
   Lodaing,
 } from "../../../components/primary";
-import { HomeRenderItems } from "../Renders/HomeRenderItems";
+import { LikeRender } from "../Renders/LilkeRender";
 import { AuthContext } from "../../../Context";
+import { useNavigation } from "@react-navigation/native";
 
 export const Liked = ({ detail, designerDetail }) => {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ export const Liked = ({ detail, designerDetail }) => {
 
   const state = useSelector((state) => state.like);
   const { currentUser } = useContext(AuthContext);
+
+  const { addListener } = useNavigation();
 
   // dataSelfLike: [],
   // moreLoadingSelfLike: false,
@@ -35,6 +38,10 @@ export const Liked = ({ detail, designerDetail }) => {
       dispatch(fetchSelfLike(detail?.id ?? currentUser?.id, page, "navigate"));
     }
 
+    // addListener("blur", () => {
+    //   updateLikes([]);
+    // });
+
     return () => (subscribe = false);
   }, [page]);
 
@@ -48,6 +55,16 @@ export const Liked = ({ detail, designerDetail }) => {
     }
   }, [state.isListEndSelfLike]);
 
+  const [likes, updateLikes] = useState([]);
+
+  const removeHanlder = (id) => {
+    // const newLikes = likes.map((e) => {
+    //   return e.id !== id;
+    // });
+    // console.warn(newLikes);
+  };
+  // console.warn(likes)
+
   return (
     <>
       {state.loadingSelfLike ? <Lodaing /> : null}
@@ -57,12 +74,13 @@ export const Liked = ({ detail, designerDetail }) => {
           numColumns={3}
           data={state.dataSelfLike}
           renderItem={({ item, index, separators }) => (
-            <HomeRenderItems
+            <LikeRender
               item={item}
               index={index}
               personalProfile={true}
               separator={separators}
               designerDetail={designerDetail}
+              removeHanlder={removeHanlder}
             />
           )}
           columnWrapperStyle={{ gap: scale.pixelSizeHorizontal(10) }}
