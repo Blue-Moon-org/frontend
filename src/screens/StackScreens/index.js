@@ -2,11 +2,13 @@ import { PostDetail } from "./PostDetail/PostDetail";
 import { ProfilePostDetail } from "./PostDetail/ProfilePostDetail";
 import { PersonalProfilePostDetail } from "./PostDetail/PersonalProfilePostDetail";
 import { MarketDetail } from "./MarketDetail";
+import { SearchMarketDetail } from "./MarketDetail/SearchMarketDetail";
 import { ProfileMarketDetail } from "./MarketDetail/ProfileMarketDetail";
+import { SearchPostDetail } from "./PostDetail/SearchPostDetail";
 import { PersonalMarketPostDetail } from "./MarketDetail/PersonalMarketPostDetail";
 import { Cart } from "./Cart";
 import { Checkout } from "./Checkout";
-import { ActiveOrders ,} from "./ActiveOrders";
+import { ActiveOrders } from "./ActiveOrders";
 import { OrderDetail } from "./ActiveOrders/OrderDetail";
 import { Catalogue } from "./Catalogue";
 import { Sales } from "./CompletedTransactions/Sales";
@@ -25,11 +27,13 @@ import { PersonalInfo } from "./PersonalInfo";
 import { DesignerProfile } from "./DesignerProfile/Index";
 import { Comments } from "./Comment";
 import { Reviews } from "./Comment/Reviews";
+import { SearchReviews } from "./Comment/SearchReviews";
 import { ImagePreview } from "./ImagePreview";
 import { Feedback } from "./Feedback";
 import { Notification } from "./Notifications";
 import { ClassifiedActiveOrders } from "./ActiveOrders/ClassifiedActiveOrders";
 import { DActiveOrders } from "./ActiveOrders/DActiveOrders";
+import { SearchComments } from "./Comment/SearchComments";
 
 export {
   PostDetail,
@@ -63,5 +67,9 @@ export {
   PersonalMarketPostDetail,
   PersonalProfilePostDetail,
   ClassifiedActiveOrders,
-DActiveOrders
+  DActiveOrders,
+  SearchMarketDetail,
+  SearchReviews,
+  SearchPostDetail,
+  SearchComments,
 };

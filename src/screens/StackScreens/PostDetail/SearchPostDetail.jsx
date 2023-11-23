@@ -23,7 +23,7 @@ import { postDetail } from "../../../Redux/actions/Post/PostDetail";
 import { fetchLikes } from "../../../Redux/actions";
 import { CarouselImageDisplay } from "../../../components/primary";
 
-export const PostDetail = () => {
+export const SearchPostDetail = () => {
   const { navigate } = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
@@ -91,7 +91,6 @@ export const PostDetail = () => {
     setCurrentIndex(number);
     setShowImagePreview(true);
   };
-
 
   return (
     <>

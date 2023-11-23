@@ -33,6 +33,10 @@ import {
   PersonalProfilePostDetail,
   ClassifiedActiveOrders,
   DActiveOrders,
+  SearchMarketDetail,
+  SearchReviews,
+  SearchPostDetail,
+  SearchComments,
 } from "../screens/StackScreens";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -92,6 +96,26 @@ export const RootStack = () => {
         component={PostDetail}
       />
       <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Post",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => navigate("Search")}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="SearchPostDetail"
+        component={SearchPostDetail}
+      />
+      <Stack.Screen
         // options={{
         //   headerShown: true,
         //   title: "Post",
@@ -130,6 +154,26 @@ export const RootStack = () => {
         }}
         name="MarketDetail"
         component={MarketDetail}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "About",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => navigate("Search")}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="SearchMarketDetail"
+        component={SearchMarketDetail}
       />
       <Stack.Screen
         options={{
@@ -512,6 +556,26 @@ export const RootStack = () => {
         name="PostCreate"
         component={PostCreate}
       />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Comments",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => navigate("Search")}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="SearchComments"
+        component={SearchComments}
+      />
       <Stack.Screen name="Comments" component={Comments} />
       <Stack.Screen
         options={{
@@ -572,6 +636,26 @@ export const RootStack = () => {
         }}
         name="Reviews"
         component={Reviews}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Reviews",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => navigate("Search")}
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="SearchReviews"
+        component={SearchReviews}
       />
       <Stack.Screen
         options={{

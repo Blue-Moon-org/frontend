@@ -1,36 +1,36 @@
-import { actionTypesFetchRating } from "../../constants/Rating";
+import { actionTypesFollowers } from "../constants/actionTypes";
 
 const initialState = {
-  data: null,
-  error: "",
+  data: [],
   loading: false,
+  error: "",
 };
 
-export const fetchRatingReducer = (
+export const FollowersReducer = (
   state = initialState,
   { type, payload, error }
 ) => {
   switch (type) {
-    case actionTypesFetchRating.FETCH_RATING_LOADING:
+    case actionTypesFollowers.FOLLOWERS_LOADING:
       return {
         ...state,
-        data: null,
+        data: [],
         loading: true,
         error: "",
       };
 
-    case actionTypesFetchRating.FETCH_RATING_SUCCESS:
+    case actionTypesFollowers.FOLLOWERS_SUCCESS:
       return {
         ...state,
-        data: payload.response.data,
+        data: payload,
         loading: false,
         error: "",
       };
 
-    case actionTypesFetchRating.FETCH_RATING_ERROR:
+    case actionTypesFollowers.FOLLOWERS_ERROR:
       return {
         ...state,
-        data: null,
+        data: [],
         loading: false,
         error: error,
       };

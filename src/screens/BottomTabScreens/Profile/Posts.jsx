@@ -73,7 +73,7 @@ export const Posts = ({ detail, designerDetail }) => {
             state.moreErrorPost ? (
               <ErrorMore state={state} />
             ) : (
-              <LoadMore loading={state.moreLoadingAll} />
+              <LoadMore loading={state.moreLoadingPost} />
             )
           }
         />

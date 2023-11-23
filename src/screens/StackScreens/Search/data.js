@@ -218,15 +218,11 @@ export const searchFilterData = [
     name: "Designers",
   },
   {
-    id: 3,
-    name: "Seller",
-  },
-  {
-    id: 4,
+    id: 2,
     name: "Posts",
   },
   {
-    id: 5,
+    id: 3,
     name: "Market",
   },
 ];

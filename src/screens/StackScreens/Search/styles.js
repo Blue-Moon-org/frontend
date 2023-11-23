@@ -39,12 +39,14 @@ export const styles = StyleSheet.create({
     marginTop: scale.pixelSizeVertical(15),
   },
   DImageContainer: {
-    height: scale.heightPixel(50),
+    height: scale.heightPixel(60),
     width: "20%",
+    borderRadius: scale.fontPixel(6),
   },
   DImage: {
     height: "100%",
     width: "100%",
+    borderRadius: scale.fontPixel(6),
   },
   MimageContainer: {
     height: "100%",

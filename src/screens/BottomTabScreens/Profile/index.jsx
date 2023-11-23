@@ -4,7 +4,7 @@ import { ProfileHeader } from "../../../components/primary";
 import { SharedStyles } from "../../../styles";
 import { styles } from "./styles";
 import { topData } from "./data";
-import { Text, Button } from "../../../components/common";
+import { Text } from "../../../components/common";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
 import { Posts } from "./Posts";
@@ -124,8 +124,11 @@ export const Profile = () => {
         <View style={styles.background2}>
           {/* <View> */}
           <View style={styles.leftSide}>
-            <Text text={rating.data ?? 0} textStyle={styles.ratingText} />
-            {Rating(rating.data ?? 0)}
+            <Text
+              text={rating.data?.rating ?? "-"}
+              textStyle={styles.ratingText}
+            />
+            {Rating(rating.data?.rating ?? 0)}
           </View>
 
           <View style={styles.rightSide}>
@@ -136,8 +139,8 @@ export const Profile = () => {
             >
               <View style={styles.followerContainer}>
                 <Text
-                  text={"62.6k"}
-                  textStyle={Fontscales.labelMediumBold}
+                  text={rating.data?.data?.followers_count ?? "-"}
+                  textStyle={Fontscales.headingLargeBold}
                   numberOfLines={1}
                   ellipsizeMode={"tail"}
                 />
@@ -148,8 +151,8 @@ export const Profile = () => {
               </View>
               <View style={styles.followingContainer}>
                 <Text
-                  text={"52.7k"}
-                  textStyle={Fontscales.labelMediumBold}
+                  text={rating.data?.data?.following_count ?? "-"}
+                  textStyle={Fontscales.headingLargeBold}
                   numberOfLines={1}
                   ellipsizeMode={"tail"}
                 />
@@ -159,7 +162,8 @@ export const Profile = () => {
                 />
               </View>
             </View>
-            <Button
+            {/* <Button
+            
               title={1 + 1 === 3 ? "Following" : "Follow"}
               textStyle={Fontscales.labelSmallRegular}
               containerStyle={{
@@ -171,7 +175,7 @@ export const Profile = () => {
                 paddingHorizontal: scale.pixelSizeHorizontal(17),
                 borderRadius: scale.fontPixel(8),
               }}
-            />
+            /> */}
           </View>
         </View>
         <View style={styles.headerOptionContainer}>
@@ -216,7 +220,7 @@ export const Profile = () => {
           height:
             Platform.OS === "ios"
               ? scale.height - scale.heightPixel(500) - add
-              : scale.height * 0.4611,
+              : scale.height * 0.4611, //611
         }}
       >
         {type === "Posts" ? (

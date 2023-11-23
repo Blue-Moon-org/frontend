@@ -26,6 +26,7 @@ export const fetchLikes = (id, navigate) => async (dispatch) => {
         type: actionTypesLike.LIKE_SUCCESS,
         payload: res,
       });
+      // console.warn(res);
       //   navigate("ForgotPasswordVerification",);
     })
     .catch((err) => {

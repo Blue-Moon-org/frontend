@@ -11,12 +11,13 @@ import { ForSale } from "./ForSale";
 import { Posts } from "./Posts";
 import { Liked } from "./Liked";
 import Constants from "expo-constants";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { AuthContext } from "../../../Context";
 import { fetchRating } from "../../../Redux/actions/Post/Rating";
 import { useDispatch, useSelector } from "react-redux";
+import { Follow } from "../../../Redux/actions/Follow";
 
 export const DesignerProfile = () => {
   const [type, updateType] = useState("Posts");
@@ -24,17 +25,25 @@ export const DesignerProfile = () => {
 
   const { navigate } = useNavigation();
   const { params } = useRoute();
+  const rating = useSelector((state) => state.rating);
 
   const { currentUser } = useContext(AuthContext);
-
-  const rating = useSelector((state) => state.rating);
+  const [follow, upadteFollow] = useState(rating.data?.data?.is_following);
+  const [followCount, updateFollowCount] = useState(
+    rating.data?.data?.followers_count
+  );
+  const followHandler = () => {
+    upadteFollow(!follow);
+    updateFollowCount(follow ? followCount - 1 : followCount + 1);
+    dispatch(Follow(params.designerDetail.id));
+  };
 
   useEffect(() => {
     let sub = true;
     if (sub) {
-      dispatch(fetchRating(currentUser?.id, navigate));
+      dispatch(fetchRating(params.designerDetail.id, navigate));
     }
-  }, [currentUser?.id]);
+  }, [params.designerDetail.id]);
 
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
@@ -112,8 +121,11 @@ export const DesignerProfile = () => {
           <View style={styles.background2}>
             {/* <View> */}
             <View style={styles.leftSide}>
-              <Text text={rating.data ?? 0} textStyle={styles.ratingText} />
-              {Rating(rating.data ?? 0)}
+              <Text
+                text={rating.data?.rating ?? "-"}
+                textStyle={styles.ratingText}
+              />
+              {Rating(rating.data?.rating ?? 0)}
             </View>
 
             <View style={styles.rightSide}>
@@ -124,7 +136,7 @@ export const DesignerProfile = () => {
               >
                 <View style={styles.followerContainer}>
                   <Text
-                    text={"62.6k"}
+                    text={followCount ?? "-"}
                     textStyle={Fontscales.labelMediumBold}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
@@ -136,7 +148,7 @@ export const DesignerProfile = () => {
                 </View>
                 <View style={styles.followingContainer}>
                   <Text
-                    text={"52.7k"}
+                    text={rating.data?.data?.following_count ?? "-"}
                     textStyle={Fontscales.labelMediumBold}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
@@ -147,19 +159,23 @@ export const DesignerProfile = () => {
                   />
                 </View>
               </View>
-              <Button
-                title={1 + 1 === 3 ? "Following" : "Follow"}
-                textStyle={Fontscales.labelSmallRegular}
-                containerStyle={{
-                  backgroundColor:
-                    1 + 1 === 3 ? colors.lightPrimary : colors.mainPrimary,
-                  alignSelf: "center",
-                  marginTop: scale.pixelSizeVertical(8),
-                  paddingVertical: scale.pixelSizeVertical(7),
-                  paddingHorizontal: scale.pixelSizeHorizontal(17),
-                  borderRadius: scale.fontPixel(8),
-                }}
-              />
+              {currentUser.id === params.designerDetail.id ? null : (
+                <Button
+                  title={follow ? "Following" : "Follow"}
+                  textStyle={Fontscales.labelSmallRegular}
+                  containerStyle={{
+                    backgroundColor: follow
+                      ? colors.lightPrimary
+                      : colors.mainPrimary,
+                    alignSelf: "center",
+                    marginTop: scale.pixelSizeVertical(8),
+                    paddingVertical: scale.pixelSizeVertical(7),
+                    paddingHorizontal: scale.pixelSizeHorizontal(17),
+                    borderRadius: scale.fontPixel(8),
+                  }}
+                  onPress={() => followHandler()}
+                />
+              )}
             </View>
           </View>
           <View style={styles.headerOptionContainer}>

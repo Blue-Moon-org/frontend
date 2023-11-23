@@ -97,7 +97,7 @@ export const Liked = ({ detail, designerDetail }) => {
             state.moreErrorSelfLike ? (
               <ErrorMore state={state} />
             ) : (
-              <LoadMore loading={state.moreLoadingAll} />
+              <LoadMore loading={state.moreLoadingSelfLike} />
             )
           }
         />

@@ -78,7 +78,7 @@ export const ForSale = ({ detail, designerDetail }) => {
             state.moreErrorSale ? (
               <ErrorMore state={state} />
             ) : (
-              <LoadMore loading={state.moreLoadingAll} />
+              <LoadMore loading={state.moreLoadingSale} />
             )
           }
         />

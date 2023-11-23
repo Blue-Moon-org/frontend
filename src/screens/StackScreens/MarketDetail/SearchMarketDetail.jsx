@@ -1,89 +1,29 @@
-import {
-  View,
-  TextInput,
-  ActivityIndicator,
-  Keyboard,
-  TouchableOpacity,
-} from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, TouchableOpacity, ActivityIndicator } from "react-native";
+import React, { useState } from "react";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Image } from "expo-image";
 import { KeyBoardAvoidingWrapper, Text } from "../../../components/common";
-import { AntDesign, Feather } from "@expo/vector-icons";
-import { colors } from "../../../constants/colorpallette";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { scale } from "../../../utils/scale";
 import { dataFits } from "../../BottomTabScreens/Home/data";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { baseURL } from "../../../utils/request";
-import { addComment } from "../../../Redux/actions/Post/AddComment";
-import { useSelector, useDispatch } from "react-redux";
-import { addFavourite } from "../../../Redux/actions/Post/FavoritePost";
-import { postDetail } from "../../../Redux/actions/Post/PostDetail";
-import { fetchLikes } from "../../../Redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { AddToCart } from "../../../Redux/actions/Market/AddToCart";
+import { colors } from "../../../constants/colorpallette";
 import { CarouselImageDisplay } from "../../../components/primary";
 
-export const PostDetail = () => {
-  const { navigate } = useNavigation();
+export const SearchMarketDetail = () => {
   const route = useRoute();
+  const { navigate } = useNavigation();
   const dispatch = useDispatch();
 
-  const [values, updateValue] = useState({
-    comment: "",
-  });
-
-  const [favValues, updateFavValues] = useState({
-    count: route.params?.item?.favs,
-    fav: route.params?.item?.user_has_favorited,
-  });
-
-  const [likeValues, updateLikeValues] = useState({
-    likeCount: route.params?.item?.likes,
-    like: route.params?.item?.user_has_liked,
-  });
-
-  const _commentHandler = () => {
-    dispatch(addComment(values.comment, route?.params?.item?.id, navigate));
-    Keyboard.dismiss();
-    updateValue({ ...values, comment: "" });
+  const _cartHandler = () => {
+    dispatch(AddToCart(route.params.item.slug, navigate));
   };
 
-  const state = useSelector((state) => state.comment);
-
-  useEffect(() => {
-    let sub = true;
-    if (sub) {
-      dispatch(postDetail(route.params?.item?.id));
-    }
-    return () => (sub = false);
-  }, [route.params?.item?.id]);
-  // const detail = useSelector((state) => state.postDetail);
-  // const allData = useSelector((state) => state.fetchFeedsAll);
-  // const posDel = useSelector((state) => state.postDetail);
-  // dispatch(postDetail(route.params?.item?.id));
-  // dispatch(postDetail(route.params?.item?.id));
-  // let active = "";
-  // const fav = useSelector((state) => state.favourite);
-
-  const _handleFav = () => {
-    dispatch(addFavourite(route.params?.item?.id, navigate));
-    updateFavValues({
-      ...favValues,
-      count: favValues.fav ? favValues.count - 1 : favValues.count + 1,
-      fav: !favValues.fav,
-    });
-  };
-  const _handleLike = () => {
-    dispatch(fetchLikes(route.params?.item?.id));
-    updateLikeValues({
-      ...likeValues,
-      likeCount: likeValues.like
-        ? likeValues.likeCount - 1
-        : likeValues.likeCount + 1,
-      like: !likeValues.like,
-    });
-  };
-
+  const { loading, error, data } = useSelector((state) => state.cartView);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showImagePreview, setShowImagePreview] = useState(false);
 
@@ -91,7 +31,6 @@ export const PostDetail = () => {
     setCurrentIndex(number);
     setShowImagePreview(true);
   };
-
 
   return (
     <>
@@ -105,7 +44,7 @@ export const PostDetail = () => {
         />
       )}
       <View style={SharedStyles.container}>
-        <KeyBoardAvoidingWrapper offset={scale.heightPixel(105)}>
+        <KeyBoardAvoidingWrapper>
           <View>
             <View style={styles.detailContainer}>
               <View style={styles.imagesContainer}>
@@ -140,6 +79,7 @@ export const PostDetail = () => {
                       }}
                       style={styles.sideImage}
                       contentFit="cover"
+                      cachePolicy={"memory-disk"}
                     />
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -155,6 +95,7 @@ export const PostDetail = () => {
                       }}
                       style={styles.sideImage}
                       contentFit="cover"
+                      cachePolicy={"memory-disk"}
                     />
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -170,6 +111,7 @@ export const PostDetail = () => {
                       }}
                       style={styles.sideImage}
                       contentFit="cover"
+                      cachePolicy={"memory-disk"}
                     />
                   </TouchableOpacity>
                 </View>
@@ -177,18 +119,18 @@ export const PostDetail = () => {
 
               <View style={styles.profilecontainer}>
                 <TouchableOpacity
-                  activeOpacity={0.9}
                   onPress={() =>
                     navigate("DesignerProfile", {
-                      designerDetail: route.params.item.owner,
+                      designerDetail: route.params.item.user,
                     })
                   }
+                  activeOpacity={0.9}
                   style={styles.imageText}
                 >
                   <View style={styles.userProfileContainer}>
                     <Image
                       source={{
-                        uri: `${route.params.item.owner.brand_image}`,
+                        uri: `${baseURL + route.params.item.user.brand_image}`,
                       }}
                       style={styles.userProfile}
                       contentFit="cover"
@@ -198,7 +140,7 @@ export const PostDetail = () => {
                   <View style={styles.userdetailContainer}>
                     <Text
                       text={
-                        route.params.item.owner.brand_name ?? "Not provided"
+                        route.params.item?.user?.brand_name ?? "Not provided"
                       }
                       numberOfLines={1}
                       ellipsizeMode={"tail"}
@@ -208,7 +150,7 @@ export const PostDetail = () => {
                       ]}
                     />
                     <Text
-                      text={route.params.item.owner.fullname}
+                      text={route.params.item.user.fullname ?? "Not Provided"}
                       numberOfLines={1}
                       ellipsizeMode={"tail"}
                       textStyle={[
@@ -219,42 +161,58 @@ export const PostDetail = () => {
                   </View>
                 </TouchableOpacity>
 
-                <View style={styles.reactionIcons}>
-                  <View style={styles.iconTextContainer}>
-                    <AntDesign
-                      name={likeValues.like ? "heart" : "hearto"}
-                      size={scale.fontPixel(16)}
-                      color={colors.blackText}
-                      onPress={() => _handleLike()}
+                {loading === false ? (
+                  <TouchableOpacity
+                    onPress={() => _cartHandler()}
+                    activeOpacity={1}
+                    style={styles.reactionIcons}
+                  >
+                    <Ionicons
+                      name={
+                        data
+                          ? data.find(
+                              (e) => e.product.id === route.params.item.id
+                            )
+                            ? "cart"
+                            : "cart-outline"
+                          : "cart-outline"
+                      }
+                      color={"white"}
+                      size={scale.fontPixel(20)}
                     />
                     <Text
-                      text={likeValues.likeCount}
+                      text={
+                        data
+                          ? data.find(
+                              (e) => e.product.id === route.params.item.id
+                            )
+                            ? "In cart"
+                            : "Add to cart"
+                          : "Add to cart"
+                      }
+                      textStyle={styles.cartText}
                       numberOfLines={1}
                       ellipsizeMode={"tail"}
-                      textStyle={styles.likeShareText}
                     />
-                  </View>
-                  <AntDesign
-                    name={favValues.fav ? "star" : "staro"}
-                    size={scale.fontPixel(16)}
-                    color={colors.blackText}
-                    onPress={() => {
-                      _handleFav();
-                    }}
-                  />
-                  <Text
-                    text={favValues.count}
-                    numberOfLines={1}
-                    ellipsizeMode={"tail"}
-                    textStyle={styles.likeShareText}
-                  />
-                  <Feather
-                    style={styles.likeShareText}
-                    name="send"
-                    size={scale.fontPixel(16)}
-                    color={colors.blackText}
-                  />
-                </View>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    disabled={true}
+                    activeOpacity={1}
+                    style={styles.reactionIcons}
+                  >
+                    <ActivityIndicator
+                      color={"white"}
+                      size={scale.fontPixel(20)}
+                    />
+                    <Text
+                      text={!data && "Checking"}
+                      textStyle={styles.cartText}
+                      numberOfLines={1}
+                      ellipsizeMode={"tail"}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
               <View style={styles.aboutContainer}>
                 <Text
@@ -264,63 +222,41 @@ export const PostDetail = () => {
                   numberOfLines={1}
                 />
                 <Text
-                  text={route.params?.item.body}
+                  text={route.params?.item.description}
                   textStyle={Fontscales.paragraphSmallRegular}
                   numberOfLines={2}
                   ellipsizeMode={"tail"}
                 />
               </View>
-
-              <View style={styles.commentContainer}>
-                <View style={styles.inputSendContainer}>
-                  <TextInput
-                    keyboardType="default"
-                    autoComplete="off"
-                    textContentType="none"
-                    placeholder="Leave a comment"
-                    placeholderTextColor={colors.blackText}
-                    style={styles.input}
-                    value={values.comment}
-                    onChangeText={(text) =>
-                      updateValue({
-                        ...values,
-                        comment: text,
-                      })
-                    }
-                    multiline={false}
-                  />
-                  {state.loading ? (
-                    <ActivityIndicator
-                      size={scale.fontPixel(16)}
-                      color={colors.mainPrimary}
-                    />
-                  ) : (
-                    <Feather
-                      onPress={() => _commentHandler()}
-                      name="send" //add loading
-                      size={scale.fontPixel(16)}
-                      disabled={values?.comment?.length < 1 ? true : false}
-                      color={
-                        values?.comment?.length < 1
-                          ? "lightgray"
-                          : colors.blackText
-                      }
-                    />
-                  )}
-                </View>
-              </View>
-              <Text
-                onPress={() =>
-                  navigate("Comments", {
-                    item: route.params.item,
-                    hasLike: route.params?.item.likes,
-                  })
-                }
-                ellipsizeMode={"tail"}
-                numberOfLines={1}
-                textStyle={styles.comment}
-                text={`view ${route.params?.item?.no_comments} comments`}
-              />
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigate("Reviews")}
+                style={{
+                  alignSelf: "flex-end",
+                  flexDirection: "row",
+                  marginTop: scale.pixelSizeVertical(7),
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  textStyle={[
+                    Fontscales.paragraphSmallRegular,
+                    {
+                      color: colors.mainPrimary,
+                      fontSize: scale.fontPixel(11),
+                      marginRight: scale.pixelSizeHorizontal(5),
+                    },
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode={"tail"}
+                  text={"See product reviews from buyers"}
+                />
+                <AntDesign
+                  name="arrowright"
+                  size={scale.fontPixel(13)}
+                  color={colors.mainPrimary}
+                />
+              </TouchableOpacity>
             </View>
             <View style={styles.seeMoreContainer}>
               <Text
@@ -333,13 +269,13 @@ export const PostDetail = () => {
                     <View key={index} style={styles.itemContainer}>
                       <View style={styles.innerContainer}>
                         <Image
-                          source={{ uri: item?.imageUrl }}
+                          source={{ uri: item.imageUrl }}
                           contentFit="cover"
                           cachePolicy={"memory-disk"}
                           style={styles.image}
                         />
                         <AntDesign
-                          name={item?.like ? "heart" : "hearto"}
+                          name={item.like ? "heart" : "hearto"}
                           size={scale.fontPixel(18)}
                           color={"white"}
                           style={styles.likeIcon}
@@ -350,10 +286,10 @@ export const PostDetail = () => {
                           textStyle={styles.text}
                           ellipsizeMode={"tail"}
                           numberOfLines={1}
-                          text={item?.name}
+                          text={item.name}
                         />
                         <Text
-                          text={item?.subText}
+                          text={item.subText}
                           textStyle={styles.subText}
                           ellipsizeMode={"tail"}
                           numberOfLines={2}

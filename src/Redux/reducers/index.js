@@ -65,6 +65,9 @@ import {
   lastChatReducer,
 } from "./chat/ChatsReducers";
 import { getCompletedOrderReducer } from "./Market/CompletedOrders";
+import { FollowReducer } from "./FollowReducer";
+import { FollowingReducer } from "./Following";
+import { FollowersReducer } from "./Followers";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -120,4 +123,7 @@ export const reducers = combineReducers({
   completedOrder: getCompletedOrderReducer,
   wsChatList: WSChatListReducer,
   incomingChats: incomingChatListReducer,
+  follow: FollowReducer,
+  following: FollowingReducer,
+  followers: FollowersReducer,
 });

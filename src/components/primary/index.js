@@ -1,4 +1,4 @@
-import { Lodaing } from "./Lodaing";
+import { Lodaing ,SearchLoading} from "./Lodaing";
 import { AppHeader } from "./AppHeader";
 import { ProfileHeader } from "./ProfileHeader";
 import { FindHeader } from "./FindHeader";
@@ -10,6 +10,7 @@ import CarouselImageDisplay from "./CarouselImageDisplay";
 
 export {
   Lodaing,
+  SearchLoading,
   AppHeader,
   ProfileHeader,
   FindHeader,

@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   background2: {
     height: scale.heightPixel(85),
     marginTop: scale.pixelSizeVertical(10),
-    alignItems: "center",
+    alignItems: "flex-end",
     flexDirection: "row",
     justifyContent: "center",
   },
