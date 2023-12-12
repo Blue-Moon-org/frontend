@@ -6,6 +6,7 @@ import { Image } from "expo-image";
 import { Text } from "../../../components/common";
 import { styles } from "./styles";
 import { scale } from "../../../utils/scale";
+import { baseURL } from "../../../utils/request";
 
 export const OrderDetails = () => {
   const { setOptions } = useNavigation();
@@ -15,9 +16,16 @@ export const OrderDetails = () => {
   const item = route.params.item;
 
   setOptions({
-    title: `Order ${item.orderId}`,
+    title: `Order ${item.tracking_number}`,
   });
 
+  let naira = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    notation: "compact",
+    compactDisplay: "short",
+    useGrouping: true,
+  });
   return (
     <View
       style={[
@@ -36,7 +44,9 @@ export const OrderDetails = () => {
             cachePolicy={"memory-disk"}
             contentFit="cover"
             style={styles.detailImage}
-            source={{ uri: item.productImage }}
+            source={{
+              uri: baseURL + item.products[0]?.product?.images[0]?.image,
+            }}
           />
         </View>
         <View style={styles.section}>
@@ -46,14 +56,14 @@ export const OrderDetails = () => {
           />
           <Text
             textStyle={Fontscales.paragraphMediumRegular}
-            text={item.productName}
+            text={item.products[0]?.product?.title}
           />
         </View>
         <View style={styles.section}>
           <Text textStyle={Fontscales.headingSmallBold} text={"Order ID :"} />
           <Text
             textStyle={Fontscales.paragraphMediumRegular}
-            text={item.orderId}
+            text={item.tracking_number}
           />
         </View>
         <View style={styles.section}>
@@ -62,18 +72,18 @@ export const OrderDetails = () => {
             text={"Designer's Brand :"}
           />
           <Text
-            text={item.designer}
+            text={item.seller?.brand_name}
             textStyle={Fontscales.paragraphMediumRegular}
           />
         </View>
         <View style={styles.section}>
           <Text
             textStyle={Fontscales.headingSmallBold}
-            text={"Designer's Name :"}
+            text={"Designer's Name : "}
           />
           <Text
             textStyle={Fontscales.paragraphMediumRegular}
-            text={item.designerName}
+            text={item.seller?.fullname}
           />
         </View>
         <View style={styles.section}>
@@ -83,14 +93,14 @@ export const OrderDetails = () => {
           />
           <Text
             textStyle={Fontscales.paragraphMediumRegular}
-            text={item.buyerName}
+            text={item.user.fullname}
           />
         </View>
         <View style={styles.section}>
           <Text textStyle={Fontscales.headingSmallBold} text={"Rating :"} />
           <Text
             textStyle={Fontscales.paragraphMediumRegular}
-            text={item.rating}
+            text={item.rating ?? "Not Provided"}
           />
         </View>
         <View style={styles.section}>
@@ -100,7 +110,7 @@ export const OrderDetails = () => {
           />
           <Text
             textStyle={Fontscales.paragraphMediumRegular}
-            text={item.dateOrdered}
+            text={item.dateOrdered ?? "Not Provided"}
           />
         </View>
         <View style={styles.section}>
@@ -110,7 +120,7 @@ export const OrderDetails = () => {
           />
           <Text
             textStyle={Fontscales.paragraphMediumRegular}
-            text={item.dateArrived}
+            text={item.dateArrived ?? "Not Provided"}
           />
         </View>
         <View style={styles.section}>
@@ -120,7 +130,7 @@ export const OrderDetails = () => {
           />
           <Text
             textStyle={Fontscales.paragraphMediumRegular}
-            text={item.productPrice}
+            text={naira.format(item.products[0]?.product.price)}
           />
         </View>
         <View style={styles.section}>
@@ -128,21 +138,31 @@ export const OrderDetails = () => {
             textStyle={Fontscales.headingSmallBold}
             text={"Delivery Price :"}
           />
-          <Text text={item.deliveryFee} />
+          <Text
+            textStyle={Fontscales.paragraphMediumRegular}
+            text={item.deliveryFee ?? "Not Provided"}
+          />
         </View>
         <View style={styles.section}>
           <Text
             textStyle={Fontscales.headingSmallBold}
-            text={"Total Amount Paid :"}
+            text={"Total Amount Paid : "}
           />
-          <Text text={item.totalAmountPaid} />
+          <Text
+            textStyle={Fontscales.paragraphMediumRegular}
+            text={
+              item.deliveryFee
+                ? item.deliveryFee + item.products[0]?.product.price
+                : item.products[0]?.product.price
+            }
+          />
         </View>
         <View style={styles.section}>
           <Text
             textStyle={Fontscales.headingSmallBold}
             text={"Product Description :"}
           />
-          <Text text={item.productDescription} />
+          <Text text={item.products[0]?.product?.description} />
         </View>
       </ScrollView>
     </View>

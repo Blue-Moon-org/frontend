@@ -5,12 +5,18 @@ import {
 import { actionTypesAddReview, actionTypesReiew } from "../../constants/review";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const GetReviews = (id, navigate) => async (dispatch) => {
+export const GetReviews = (page, id, navigate) => async (dispatch) => {
   // 4 endpoint,  content-type, token
 
-  dispatch({
-    type: actionTypesReiew.REVIEW_LOADING,
-  });
+  if (page === 1) {
+    dispatch({
+      type: actionTypesReiew.REVIEW_LOADING,
+    });
+  } else {
+    dispatch({
+      type: actionTypesReiew.REVIEW_MORE_LOADING,
+    });
+  }
 
   const jsonValue = await AsyncStorage.getItem("userTokens");
   let result = JSON.parse(jsonValue);
@@ -23,16 +29,25 @@ export const GetReviews = (id, navigate) => async (dispatch) => {
       dispatch({
         type: actionTypesReiew.REVIEW_SUCCESS,
         payload: res,
+        isListEnd: res?.response.data.meta.next,
       });
 
       //   navigate("ForgotPasswordVerification",);
     })
     .catch((err) => {
-      console.warn(err);
-      dispatch({
-        type: actionTypesReiew.REVIEW_ERROR,
-        error: err,
-      });
+      if (err) {
+        if (page === 1) {
+          dispatch({
+            type: actionTypesReiew.REVIEW_ERROR,
+            error: err,
+          });
+        } else {
+          dispatch({
+            type: actionTypesReiew.REVIEW_MORE_ERROR,
+            error: err,
+          });
+        }
+      }
     });
 };
 

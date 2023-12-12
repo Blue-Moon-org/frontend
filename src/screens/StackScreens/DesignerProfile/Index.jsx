@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, Platform } from "react-native";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import { Lodaing, ProfileHeader } from "../../../components/primary";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { styles } from "./styles";
@@ -33,9 +33,15 @@ export const DesignerProfile = () => {
     rating.data?.data?.followers_count
   );
   const followHandler = () => {
-    upadteFollow(!follow);
-    updateFollowCount(follow ? followCount - 1 : followCount + 1);
-    dispatch(Follow(params.designerDetail.id));
+    console.warn("object");
+    if (followCount === undefined || follow === undefined) {
+      updateFollowCount(rating.data?.data?.followers_count);
+      upadteFollow(rating.data?.data?.is_following);
+    } else {
+      upadteFollow(!follow);
+      updateFollowCount(follow ? followCount - 1 : followCount + 1);
+      dispatch(Follow(params.designerDetail.id));
+    }
   };
 
   useEffect(() => {
@@ -43,7 +49,20 @@ export const DesignerProfile = () => {
     if (sub) {
       dispatch(fetchRating(params.designerDetail.id, navigate));
     }
-  }, [params.designerDetail.id]);
+  }, []); //params.designerDetail.id
+
+  useEffect(() => {
+    if (follow === undefined) {
+      return;
+    } else {
+      upadteFollow(rating.data?.data?.is_following);
+    }
+    console.warn(rating);
+  }, [rating.data?.data?.is_following]); //]
+
+  // console.warn(rating.data?.data?.is_following);
+  // 7de98887-0fb2-4753-a226-9067a5bedcfa
+  // 7de98887-0fb2-4753-a226-9067a5bedcfa
 
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
@@ -136,7 +155,11 @@ export const DesignerProfile = () => {
               >
                 <View style={styles.followerContainer}>
                   <Text
-                    text={followCount ?? "-"}
+                    text={
+                      followCount === undefined
+                        ? rating.data?.data?.followers_count
+                        : followCount
+                    }
                     textStyle={Fontscales.labelMediumBold}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
@@ -159,7 +182,26 @@ export const DesignerProfile = () => {
                   />
                 </View>
               </View>
-              {currentUser.id === params.designerDetail.id ? null : (
+              {currentUser.id === params.designerDetail.id ? null : follow ===
+                undefined ? (
+                <Button
+                  title={
+                    rating.data?.data?.is_following ? "Following" : "Follow"
+                  }
+                  textStyle={Fontscales.labelSmallRegular}
+                  containerStyle={{
+                    backgroundColor: rating.data?.data?.is_following
+                      ? colors.lightPrimary
+                      : colors.mainPrimary,
+                    alignSelf: "center",
+                    marginTop: scale.pixelSizeVertical(8),
+                    paddingVertical: scale.pixelSizeVertical(7),
+                    paddingHorizontal: scale.pixelSizeHorizontal(17),
+                    borderRadius: scale.fontPixel(8),
+                  }}
+                  onPress={() => followHandler()}
+                />
+              ) : (
                 <Button
                   title={follow ? "Following" : "Follow"}
                   textStyle={Fontscales.labelSmallRegular}

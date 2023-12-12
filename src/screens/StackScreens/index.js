@@ -34,6 +34,8 @@ import { Notification } from "./Notifications";
 import { ClassifiedActiveOrders } from "./ActiveOrders/ClassifiedActiveOrders";
 import { DActiveOrders } from "./ActiveOrders/DActiveOrders";
 import { SearchComments } from "./Comment/SearchComments";
+import { PostDetailNoti } from "./PostDetail/PostDetailNoti";
+import { NotiOrderDetail } from "./ActiveOrders/NotiOrderDetail";
 
 export {
   PostDetail,
@@ -72,4 +74,6 @@ export {
   SearchReviews,
   SearchPostDetail,
   SearchComments,
+  PostDetailNoti,
+  NotiOrderDetail,
 };

@@ -15,6 +15,8 @@ export const notification = (navigate) => async (dispatch) => {
 
   await fetchGetRequestInit(`/notification/list/`, `Bearer ${result.access}`)
     .then((res) => {
+      // console.warn(res);
+
       dispatch({
         type: actionTypesNotification.NOTIFICATION_SUCCESS,
         payload: res,

@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Keyboard,
   TouchableOpacity,
+  Share,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { styles } from "./styles";
@@ -13,7 +14,6 @@ import { KeyBoardAvoidingWrapper, Text } from "../../../components/common";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
-import { dataFits } from "../../BottomTabScreens/Home/data";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { baseURL } from "../../../utils/request";
 import { addComment } from "../../../Redux/actions/Post/AddComment";
@@ -21,7 +21,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { addFavourite } from "../../../Redux/actions/Post/FavoritePost";
 import { postDetail } from "../../../Redux/actions/Post/PostDetail";
 import { fetchLikes } from "../../../Redux/actions";
-import { CarouselImageDisplay } from "../../../components/primary";
+import { CarouselImageDisplay, LoadMore } from "../../../components/primary";
+import { seeMorePost } from "../../../Redux/actions/Post/SeeMorePost";
+import { SeeMore } from "./SeeMore";
 
 export const PostDetail = () => {
   const { navigate } = useNavigation();
@@ -42,22 +44,43 @@ export const PostDetail = () => {
     like: route.params?.item?.user_has_liked,
   });
 
+  const [commentNo, updateCommentNo] = useState(
+    route.params?.item?.no_comments
+  );
+
   const _commentHandler = () => {
     dispatch(addComment(values.comment, route?.params?.item?.id, navigate));
+    dispatch(postDetail(route.params?.item?.id));
     Keyboard.dismiss();
     updateValue({ ...values, comment: "" });
+    updateCommentNo(detail?.data?.no_comments);
   };
 
   const state = useSelector((state) => state.comment);
+  const seeMore = useSelector((state) => state.seeMorePost);
 
   useEffect(() => {
     let sub = true;
     if (sub) {
       dispatch(postDetail(route.params?.item?.id));
+      dispatch(seeMorePost(route.params?.item?.id));
     }
     return () => (sub = false);
   }, [route.params?.item?.id]);
-  // const detail = useSelector((state) => state.postDetail);
+  const detail = useSelector((state) => state.postDetail);
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      if (detail?.data?.no_comments === undefined) {
+        return;
+      } else {
+        updateCommentNo(detail?.data?.no_comments);
+      }
+    }
+
+    return () => (sub = false);
+  }, [detail?.data?.no_comments]);
+
   // const allData = useSelector((state) => state.fetchFeedsAll);
   // const posDel = useSelector((state) => state.postDetail);
   // dispatch(postDetail(route.params?.item?.id));
@@ -92,7 +115,24 @@ export const PostDetail = () => {
     setShowImagePreview(true);
   };
 
-
+  const shareFunc = async (item) => {
+    try {
+      await Share.share(
+        {
+          title: "Check this amazing product on bluemoon",
+          // Android
+          message: `Bluemoon://Share?id=/${item.id}`, //,`exp://192.168.1.194:19000/--/Shared?id=${item.id}`, /
+          //ios
+          url: `Bluemoon://Share?id=/${item.id}`,
+        },
+        { dialogTitle: "Check this amazing product on bluemoon" }
+      ).then((res) => {
+        console.warn(res);
+      });
+    } catch (error) {
+      alert(error.message);
+    }
+  };
   return (
     <>
       {showImagePreview && (
@@ -234,25 +274,28 @@ export const PostDetail = () => {
                       textStyle={styles.likeShareText}
                     />
                   </View>
-                  <AntDesign
-                    name={favValues.fav ? "star" : "staro"}
-                    size={scale.fontPixel(16)}
-                    color={colors.blackText}
-                    onPress={() => {
-                      _handleFav();
-                    }}
-                  />
-                  <Text
-                    text={favValues.count}
-                    numberOfLines={1}
-                    ellipsizeMode={"tail"}
-                    textStyle={styles.likeShareText}
-                  />
+                  <View style={styles.iconTextContainer}>
+                    <AntDesign
+                      name={favValues.fav ? "star" : "staro"}
+                      size={scale.fontPixel(16)}
+                      color={colors.blackText}
+                      onPress={() => {
+                        _handleFav();
+                      }}
+                    />
+                    <Text
+                      text={favValues.count}
+                      numberOfLines={1}
+                      ellipsizeMode={"tail"}
+                      textStyle={styles.likeShareText}
+                    />
+                  </View>
                   <Feather
                     style={styles.likeShareText}
                     name="send"
                     size={scale.fontPixel(16)}
                     color={colors.blackText}
+                    onPress={() => shareFunc(route?.params?.item)}
                   />
                 </View>
               </View>
@@ -309,59 +352,47 @@ export const PostDetail = () => {
                   )}
                 </View>
               </View>
-              <Text
-                onPress={() =>
-                  navigate("Comments", {
-                    item: route.params.item,
-                    hasLike: route.params?.item.likes,
-                  })
-                }
-                ellipsizeMode={"tail"}
-                numberOfLines={1}
-                textStyle={styles.comment}
-                text={`view ${route.params?.item?.no_comments} comments`}
-              />
+              {commentNo < 1 ? (
+                <Text
+                  onPress={() => {}}
+                  ellipsizeMode={"tail"}
+                  numberOfLines={1}
+                  textStyle={styles.comment}
+                  text={`No new comments`}
+                />
+              ) : (
+                <Text
+                  onPress={() =>
+                    navigate("Comments", {
+                      item: route.params.item,
+                      hasLike: route.params?.item.likes,
+                    })
+                  }
+                  ellipsizeMode={"tail"}
+                  numberOfLines={1}
+                  textStyle={styles.comment}
+                  text={`view ${commentNo} comments`}
+                />
+              )}
             </View>
             <View style={styles.seeMoreContainer}>
               <Text
-                text={"See more like this"}
+                text={
+                  seeMore.data?.length < 1
+                    ? "No Recommendations for this post"
+                    : "See more like this"
+                }
                 textStyle={Fontscales.paragraphMediumRegular}
               />
+
               <View style={styles.outter}>
-                {dataFits.map((item, index) => {
-                  return (
-                    <View key={index} style={styles.itemContainer}>
-                      <View style={styles.innerContainer}>
-                        <Image
-                          source={{ uri: item?.imageUrl }}
-                          contentFit="cover"
-                          cachePolicy={"memory-disk"}
-                          style={styles.image}
-                        />
-                        <AntDesign
-                          name={item?.like ? "heart" : "hearto"}
-                          size={scale.fontPixel(18)}
-                          color={"white"}
-                          style={styles.likeIcon}
-                        />
-                      </View>
-                      <View style={styles.bottomContainer}>
-                        <Text
-                          textStyle={styles.text}
-                          ellipsizeMode={"tail"}
-                          numberOfLines={1}
-                          text={item?.name}
-                        />
-                        <Text
-                          text={item?.subText}
-                          textStyle={styles.subText}
-                          ellipsizeMode={"tail"}
-                          numberOfLines={2}
-                        />
-                      </View>
-                    </View>
-                  );
-                })}
+                {seeMore?.loading ? (
+                  <LoadMore loading={seeMore.loading} />
+                ) : seeMore.data === null ? null : (
+                  seeMore?.data?.map((item, index) => (
+                    <SeeMore item={item} index={index} />
+                  ))
+                )}
               </View>
             </View>
           </View>

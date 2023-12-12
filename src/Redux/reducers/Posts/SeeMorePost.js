@@ -1,37 +1,36 @@
-import { actionTypesNotification } from "../constants/Notification";
+import { actionTypesSeeMorePosts } from "../../constants/actionTypes";
 
 const initialState = {
-  //phone
   data: [],
-  loading: false,
   error: "",
+  loading: false,
 };
 
-export const NotificationReducer = (
+export const seeMorePostReducer = (
   state = initialState,
   { type, payload, error }
 ) => {
   switch (type) {
-    case actionTypesNotification.NOTIFICATION_LOADING:
+    case actionTypesSeeMorePosts.SEE_MORE_POSTS_LOADING:
       return {
         ...state,
-        data: [],
+        data: null,
         loading: true,
         error: "",
       };
 
-    case actionTypesNotification.NOTIFICATION_SUCCESS:
+    case actionTypesSeeMorePosts.SEE_MORE_POSTS_SUCCESS:
       return {
         ...state,
-        data: payload?.response?.data?.data?.data,
+        data: payload?.response?.data?.recommendations,
         loading: false,
         error: "",
       };
 
-    case actionTypesNotification.NOTIFICATION_ERROR:
+    case actionTypesSeeMorePosts.SEE_MORE_POSTS_ERROR:
       return {
         ...state,
-        data: [],
+        data: null,
         loading: false,
         error: error,
       };

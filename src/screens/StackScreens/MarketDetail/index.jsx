@@ -1,18 +1,19 @@
 import { View, TouchableOpacity, ActivityIndicator } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Image } from "expo-image";
 import { KeyBoardAvoidingWrapper, Text } from "../../../components/common";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { scale } from "../../../utils/scale";
-import { dataFits } from "../../BottomTabScreens/Home/data";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { baseURL } from "../../../utils/request";
 import { useDispatch, useSelector } from "react-redux";
 import { AddToCart } from "../../../Redux/actions/Market/AddToCart";
 import { colors } from "../../../constants/colorpallette";
-import { CarouselImageDisplay } from "../../../components/primary";
+import { CarouselImageDisplay, LoadMore } from "../../../components/primary";
+import { seeMoreMarket } from "../../../Redux/actions/Post/SeeMoreMarket";
+import { SeeMore } from "../PostDetail/SeeMore";
 
 export const MarketDetail = () => {
   const route = useRoute();
@@ -23,7 +24,16 @@ export const MarketDetail = () => {
     dispatch(AddToCart(route.params.item.slug, navigate));
   };
 
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      dispatch(seeMoreMarket(route.params?.item?.id));
+    }
+    return () => (sub = false);
+  }, [route.params?.item?.id]);
+
   const { loading, error, data } = useSelector((state) => state.cartView);
+  const state = useSelector((state) => state.seeMoreMarket);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showImagePreview, setShowImagePreview] = useState(false);
 
@@ -121,7 +131,7 @@ export const MarketDetail = () => {
                 <TouchableOpacity
                   onPress={() =>
                     navigate("DesignerProfile", {
-                      designerDetail: route.params.item.user,
+                      designerDetail: route.params.item?.owner,
                     })
                   }
                   activeOpacity={0.9}
@@ -130,7 +140,7 @@ export const MarketDetail = () => {
                   <View style={styles.userProfileContainer}>
                     <Image
                       source={{
-                        uri: `${baseURL + route.params.item.user.brand_image}`,
+                        uri: `${baseURL + route.params.item.owner.brand_image}`,
                       }}
                       style={styles.userProfile}
                       contentFit="cover"
@@ -140,7 +150,7 @@ export const MarketDetail = () => {
                   <View style={styles.userdetailContainer}>
                     <Text
                       text={
-                        route.params.item?.user?.brand_name ?? "Not provided"
+                        route.params.item?.owner?.brand_name ?? "Not provided"
                       }
                       numberOfLines={1}
                       ellipsizeMode={"tail"}
@@ -150,7 +160,7 @@ export const MarketDetail = () => {
                       ]}
                     />
                     <Text
-                      text={route.params.item.user.fullname ?? "Not Provided"}
+                      text={route.params.item.owner.fullname ?? "Not Provided"}
                       numberOfLines={1}
                       ellipsizeMode={"tail"}
                       textStyle={[
@@ -162,39 +172,42 @@ export const MarketDetail = () => {
                 </TouchableOpacity>
 
                 {loading === false ? (
-                  <TouchableOpacity
-                    onPress={() => _cartHandler()}
-                    activeOpacity={1}
-                    style={styles.reactionIcons}
-                  >
-                    <Ionicons
-                      name={
-                        data
-                          ? data.find(
-                              (e) => e.product.id === route.params.item.id
-                            )
-                            ? "cart"
+                  route.params.item?.user?.id ===
+                  route.params?.item.owner?.id ? null : (
+                    <TouchableOpacity
+                      onPress={() => _cartHandler()}
+                      activeOpacity={1}
+                      style={styles.reactionIcons}
+                    >
+                      <Ionicons
+                        name={
+                          data
+                            ? data.find(
+                                (e) => e.product.id === route.params.item.id
+                              )
+                              ? "cart"
+                              : "cart-outline"
                             : "cart-outline"
-                          : "cart-outline"
-                      }
-                      color={"white"}
-                      size={scale.fontPixel(20)}
-                    />
-                    <Text
-                      text={
-                        data
-                          ? data.find(
-                              (e) => e.product.id === route.params.item.id
-                            )
-                            ? "In cart"
+                        }
+                        color={"white"}
+                        size={scale.fontPixel(20)}
+                      />
+                      <Text
+                        text={
+                          data
+                            ? data.find(
+                                (e) => e.product.id === route.params.item.id
+                              )
+                              ? "In cart"
+                              : "Add to cart"
                             : "Add to cart"
-                          : "Add to cart"
-                      }
-                      textStyle={styles.cartText}
-                      numberOfLines={1}
-                      ellipsizeMode={"tail"}
-                    />
-                  </TouchableOpacity>
+                        }
+                        textStyle={styles.cartText}
+                        numberOfLines={1}
+                        ellipsizeMode={"tail"}
+                      />
+                    </TouchableOpacity>
+                  )
                 ) : (
                   <TouchableOpacity
                     disabled={true}
@@ -230,7 +243,7 @@ export const MarketDetail = () => {
               </View>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigate("Reviews")}
+                onPress={() => navigate("Reviews", { item: route.params.item })}
                 style={{
                   alignSelf: "flex-end",
                   flexDirection: "row",
@@ -260,44 +273,21 @@ export const MarketDetail = () => {
             </View>
             <View style={styles.seeMoreContainer}>
               <Text
-                text={"See more like this"}
+                text={
+                  state.data?.length < 1
+                    ? "No Recommendations for this post"
+                    : "See more like this"
+                }
                 textStyle={Fontscales.paragraphMediumRegular}
               />
               <View style={styles.outter}>
-                {dataFits.map((item, index) => {
-                  return (
-                    <View key={index} style={styles.itemContainer}>
-                      <View style={styles.innerContainer}>
-                        <Image
-                          source={{ uri: item.imageUrl }}
-                          contentFit="cover"
-                          cachePolicy={"memory-disk"}
-                          style={styles.image}
-                        />
-                        <AntDesign
-                          name={item.like ? "heart" : "hearto"}
-                          size={scale.fontPixel(18)}
-                          color={"white"}
-                          style={styles.likeIcon}
-                        />
-                      </View>
-                      <View style={styles.bottomContainer}>
-                        <Text
-                          textStyle={styles.text}
-                          ellipsizeMode={"tail"}
-                          numberOfLines={1}
-                          text={item.name}
-                        />
-                        <Text
-                          text={item.subText}
-                          textStyle={styles.subText}
-                          ellipsizeMode={"tail"}
-                          numberOfLines={2}
-                        />
-                      </View>
-                    </View>
-                  );
-                })}
+                {state?.loading ? (
+                  <LoadMore loading={state.loading} />
+                ) : state.data === null ? null : (
+                  state?.data?.map((item, index) => (
+                    <SeeMore item={item} index={index} />
+                  ))
+                )}
               </View>
             </View>
           </View>

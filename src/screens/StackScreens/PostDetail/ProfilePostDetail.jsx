@@ -13,7 +13,6 @@ import { KeyBoardAvoidingWrapper, Text } from "../../../components/common";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
-import { dataFits } from "../../BottomTabScreens/Home/data";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { baseURL } from "../../../utils/request";
 import { addComment } from "../../../Redux/actions/Post/AddComment";
@@ -22,7 +21,9 @@ import { addFavourite } from "../../../Redux/actions/Post/FavoritePost";
 import { postDetail } from "../../../Redux/actions/Post/PostDetail";
 import { fetchLikes } from "../../../Redux/actions";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { CarouselImageDisplay } from "../../../components/primary";
+import { CarouselImageDisplay, LoadMore } from "../../../components/primary";
+import { seeMorePost } from "../../../Redux/actions/Post/SeeMorePost";
+import { SeeMore } from "./SeeMore";
 
 export const ProfilePostDetail = () => {
   const { navigate, setOptions } = useNavigation();
@@ -71,11 +72,13 @@ export const ProfilePostDetail = () => {
   };
 
   const state = useSelector((state) => state.comment);
+  const seeMore = useSelector((state) => state.seeMorePost);
 
   useEffect(() => {
     let sub = true;
     if (sub) {
       dispatch(postDetail(route.params?.item?.id));
+      dispatch(seeMorePost(route.params?.item?.id));
     }
     return () => (sub = false);
   }, [route.params?.item?.id]);
@@ -339,44 +342,21 @@ export const ProfilePostDetail = () => {
             </View>
             <View style={styles.seeMoreContainer}>
               <Text
-                text={"See more like this"}
+                text={
+                  seeMore.data?.length < 1
+                    ? "No Recommendations for this post"
+                    : "See more like this"
+                }
                 textStyle={Fontscales.paragraphMediumRegular}
               />
               <View style={styles.outter}>
-                {dataFits.map((item, index) => {
-                  return (
-                    <View key={index} style={styles.itemContainer}>
-                      <View style={styles.innerContainer}>
-                        <Image
-                          source={{ uri: item?.imageUrl }}
-                          contentFit="cover"
-                          cachePolicy={"memory-disk"}
-                          style={styles.image}
-                        />
-                        <AntDesign
-                          name={item?.like ? "heart" : "hearto"}
-                          size={scale.fontPixel(18)}
-                          color={"white"}
-                          style={styles.likeIcon}
-                        />
-                      </View>
-                      <View style={styles.bottomContainer}>
-                        <Text
-                          textStyle={styles.text}
-                          ellipsizeMode={"tail"}
-                          numberOfLines={1}
-                          text={item?.name}
-                        />
-                        <Text
-                          text={item?.subText}
-                          textStyle={styles.subText}
-                          ellipsizeMode={"tail"}
-                          numberOfLines={2}
-                        />
-                      </View>
-                    </View>
-                  );
-                })}
+                {seeMore?.loading ? (
+                  <LoadMore loading={seeMore.loading} />
+                ) : seeMore.data === null ? null : (
+                  seeMore?.data?.map((item, index) => (
+                    <SeeMore item={item} index={index} />
+                  ))
+                )}
               </View>
             </View>
           </View>

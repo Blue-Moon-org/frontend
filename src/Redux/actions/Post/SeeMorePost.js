@@ -1,30 +1,29 @@
 import { fetchGetRequestInit } from "../../../utils/requestInit";
-import { actionTypesFetchRating } from "../../constants/Rating";
+import { actionTypesSeeMorePosts } from "../../constants/actionTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const fetchRating = (id, navigate) => async (dispatch) => {
+export const seeMorePost = (id) => async (dispatch) => {
   // 4 endpoint, body, content-type, token
 
   dispatch({
-    type: actionTypesFetchRating.FETCH_RATING_LOADING,
+    type: actionTypesSeeMorePosts.SEE_MORE_POSTS_LOADING,
   });
 
   const jsonValue = await AsyncStorage.getItem("userTokens");
   let result = JSON.parse(jsonValue);
 
-  await fetchGetRequestInit(`/api/rating/${id}/`, `Bearer ${result.access}`)
+  await fetchGetRequestInit(`/post/see-more/${id}/`, `Bearer ${result.access}`)
     .then((res) => {
       dispatch({
-        type: actionTypesFetchRating.FETCH_RATING_SUCCESS,
+        type: actionTypesSeeMorePosts.SEE_MORE_POSTS_SUCCESS,
         payload: res,
       });
-      // console.warn(res);
       //   navigate("ForgotPasswordVerification",);
     })
     .catch((err) => {
       console.warn(err);
       dispatch({
-        type: actionTypesFetchRating.FETCH_RATING_ERROR,
+        type: actionTypesSeeMorePosts.SEE_MORE_POSTS_ERROR,
         error: err,
       });
     });

@@ -15,7 +15,7 @@ import { fetchLikes } from "../../../Redux/actions";
 
 const PostList = ({ item, index }) => {
   // console.warn(item);
-  const [follow, updateFollow] = useState("item?.user.is_following");
+  const [follow, updateFollow] = useState(item?.user.is_following);
   const dispatch = useDispatch();
   const { navigate } = useNavigation();
 

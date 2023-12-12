@@ -37,6 +37,8 @@ import {
   SearchReviews,
   SearchPostDetail,
   SearchComments,
+  PostDetailNoti,
+  NotiOrderDetail,
 } from "../screens/StackScreens";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -94,6 +96,26 @@ export const RootStack = () => {
         }}
         name="PostDetail"
         component={PostDetail}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Post",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+          headerLeft: () => (
+            <MaterialCommunityIcons
+              onPress={() => navigate("Notification")} //ProfileSettings
+              style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
+              name="keyboard-backspace"
+              size={scale.fontPixel(24)}
+              color="black"
+            />
+          ),
+        }}
+        name="PostDetailNoti"
+        component={PostDetailNoti}
       />
       <Stack.Screen
         options={{
@@ -401,6 +423,17 @@ export const RootStack = () => {
       <Stack.Screen
         options={{
           headerShown: true,
+          title: "Active Orders",
+          headerTitleAlign: "left",
+          headerTitleAllowFontScaling: true,
+          headerTitleStyle: Fontscales.paragraphLargeMedium,
+        }}
+        name="NotiOrderDetail"
+        component={NotiOrderDetail}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
           headerTitleAlign: "left",
           headerTitleAllowFontScaling: true,
           headerTitleStyle: Fontscales.paragraphLargeMedium,
@@ -586,7 +619,7 @@ export const RootStack = () => {
           headerTitleStyle: Fontscales.paragraphLargeMedium,
           headerLeft: () => (
             <MaterialCommunityIcons
-              onPress={() => goBack()}
+              onPress={() => navigate("ProfileSettings")}
               style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
               name="keyboard-backspace"
               size={scale.fontPixel(24)}

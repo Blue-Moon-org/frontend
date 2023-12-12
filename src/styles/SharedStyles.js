@@ -7,5 +7,6 @@ export const SharedStyles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: scale.pixelSizeHorizontal(16),
     backgroundColor: "white",
+    paddingBottom: scale.pixelSizeVertical(15),
   },
 });

@@ -1,37 +1,36 @@
-import { actionTypesNotification } from "../constants/Notification";
+import { actionTypesSeeMoreMarket } from "../../constants/actionTypes";
 
 const initialState = {
-  //phone
   data: [],
-  loading: false,
   error: "",
+  loading: false,
 };
 
-export const NotificationReducer = (
+export const seeMoreMarketReducer = (
   state = initialState,
   { type, payload, error }
 ) => {
   switch (type) {
-    case actionTypesNotification.NOTIFICATION_LOADING:
+    case actionTypesSeeMoreMarket.SEE_MORE_MARKET_LOADING:
       return {
         ...state,
-        data: [],
+        data: null,
         loading: true,
         error: "",
       };
 
-    case actionTypesNotification.NOTIFICATION_SUCCESS:
+    case actionTypesSeeMoreMarket.SEE_MORE_MARKET_SUCCESS:
       return {
         ...state,
-        data: payload?.response?.data?.data?.data,
+        data: payload?.response?.data?.recommendations,
         loading: false,
         error: "",
       };
 
-    case actionTypesNotification.NOTIFICATION_ERROR:
+    case actionTypesSeeMoreMarket.SEE_MORE_MARKET_ERROR:
       return {
         ...state,
-        data: [],
+        data: null,
         loading: false,
         error: error,
       };

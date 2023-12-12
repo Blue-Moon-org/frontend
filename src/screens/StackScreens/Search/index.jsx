@@ -29,7 +29,7 @@ export const Search = () => {
   const dispatch = useDispatch();
 
   const submitSearch = () => {
-    if (searchText.length <= 2) return;
+    if (searchText.length < 3) return;
     if (filter === "Designers") {
       dispatch(peopleSearch(searchText, 1, "navigate"));
     } else if (filter === "Posts") {
@@ -41,14 +41,14 @@ export const Search = () => {
     }
   };
 
-  useEffect(() => {
-    let sub = true;
-    if (sub) {
-      submitSearch();
-    }
+  // useEffect(() => {
+  //   let sub = true;
+  //   if (sub) {
+  //     submitSearch();
+  //   }
 
-    return () => (sub = false);
-  }, [filter]);
+  //   return () => (sub = false);
+  // }, [filter]);
 
   const latest = useSelector((state) => state.latest);
   const post = useSelector((state) => state.post);
@@ -134,13 +134,18 @@ export const Search = () => {
 
         {/* </KeyBoardAvoidingWrapper> */}
       </View>
-      <View style={{ height: 500 }}>
+      <View
+        style={{
+          height: scale.height - scale.heightPixel(235),
+          paddingBottom: scale.heightPixel(30),
+        }}
+      >
         {filter === "Designers" ? (
-          <Designer people={people} />
+          <Designer people={people} searchText={searchText} />
         ) : filter === "Posts" ? (
-          <Post post={post} />
+          <Post post={post} searchText={searchText} />
         ) : filter === "Market" ? (
-          <Market product={product} />
+          <Market product={product} searchText={searchText} />
         ) : (
           ""
         )}

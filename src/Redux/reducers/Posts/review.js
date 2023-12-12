@@ -3,7 +3,10 @@ import { actionTypesAddReview, actionTypesReiew } from "../../constants/review";
 const initialState = {
   dataReview: null,
   errorReview: "",
+  moreErrorReview: "",
   loadingReview: false,
+  moreLoadingReview: false,
+  reviewIsListEnd: "",
 
   dataAddReview: null,
   errorAddReview: "",
@@ -12,7 +15,7 @@ const initialState = {
 
 export const ReviewsReducer = (
   state = initialState,
-  { type, payload, error }
+  { type, payload, error, isListEnd }
 ) => {
   switch (type) {
     case actionTypesReiew.REVIEW_LOADING:
@@ -20,15 +23,32 @@ export const ReviewsReducer = (
         ...state,
         dataReview: null,
         errorReview: "",
+        moreErrorReview: "",
         loadingReview: true,
+        moreLoadingReview: false,
+        reviewIsListEnd: "",
+      };
+
+    case actionTypesReiew.REVIEW_MORE_LOADING:
+      return {
+        ...state,
+        dataReview: null,
+        errorReview: "",
+        moreErrorReview: "",
+        loadingReview: false,
+        moreLoadingReview: true,
+        reviewIsListEnd: "",
       };
 
     case actionTypesReiew.REVIEW_SUCCESS:
       return {
         ...state,
-        dataReview: payload,
+        dataReview: payload.response?.data?.data?.reviews,
         errorReview: "",
+        moreErrorReview: "",
         loadingReview: false,
+        moreLoadingReview: false,
+        reviewIsListEnd: isListEnd,
       };
 
     case actionTypesReiew.REVIEW_ERROR:
@@ -36,7 +56,21 @@ export const ReviewsReducer = (
         ...state,
         dataReview: null,
         errorReview: error,
+        moreErrorReview: "",
         loadingReview: false,
+        moreLoadingReview: false,
+        reviewIsListEnd: "",
+      };
+
+    case actionTypesReiew.REVIEW_MORE_ERROR:
+      return {
+        ...state,
+        dataReview: null,
+        errorReview: "",
+        moreErrorReview: error,
+        loadingReview: false,
+        moreLoadingReview: false,
+        reviewIsListEnd: "",
       };
 
     default:

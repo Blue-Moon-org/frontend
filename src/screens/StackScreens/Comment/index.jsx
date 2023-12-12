@@ -20,7 +20,7 @@ export const Comments = () => {
   const { navigate, setOptions } = useNavigation();
   setOptions({
     headerShown: true,
-    title: "Comment",
+    title: "Comments",
     headerTitleAlign: "left",
     headerTitleAllowFontScaling: true,
     headerTitleStyle: Fontscales.paragraphLargeMedium,
@@ -94,10 +94,10 @@ export const Comments = () => {
           scrollEventThrottle={16}
           // ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
           ListFooterComponent={() =>
-            state.moreErrorAll ? (
+            state.moreError ? (
               <ErrorMore state={state} />
             ) : (
-              <LoadMore loading={state.moreLoadingAll} />
+              <LoadMore loading={state.moreLoading} />
             )
           }
         />

@@ -1,19 +1,20 @@
 import { View, TouchableOpacity, ActivityIndicator } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Image } from "expo-image";
 import { KeyBoardAvoidingWrapper, Text } from "../../../components/common";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { scale } from "../../../utils/scale";
-import { dataFits } from "../../BottomTabScreens/Home/data";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { baseURL } from "../../../utils/request";
 import { useDispatch, useSelector } from "react-redux";
 import { AddToCart } from "../../../Redux/actions/Market/AddToCart";
 import { colors } from "../../../constants/colorpallette";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { CarouselImageDisplay } from "../../../components/primary";
+import { CarouselImageDisplay, LoadMore } from "../../../components/primary";
+import { seeMoreMarket } from "../../../Redux/actions/Post/SeeMoreMarket";
+import { SeeMore } from "../PostDetail/SeeMore";
 
 export const PersonalMarketPostDetail = () => {
   const route = useRoute();
@@ -22,7 +23,7 @@ export const PersonalMarketPostDetail = () => {
 
   setOptions({
     headerShown: true,
-    title: "Post",
+    title: "About",
     headerTitleAlign: "left",
     headerTitleAllowFontScaling: true,
     headerTitleStyle: Fontscales.paragraphLargeMedium,
@@ -50,6 +51,16 @@ export const PersonalMarketPostDetail = () => {
     setCurrentIndex(number);
     setShowImagePreview(true);
   };
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      dispatch(seeMoreMarket(route.params?.item?.id));
+    }
+    return () => (sub = false);
+  }, [route.params?.item?.id]);
+
+  const state = useSelector((state) => state.seeMoreMarket);
 
   return (
     <>
@@ -271,44 +282,21 @@ export const PersonalMarketPostDetail = () => {
             </View>
             <View style={styles.seeMoreContainer}>
               <Text
-                text={"See more like this"}
+                text={
+                  state.data?.length < 1
+                    ? "No Recommendations for this post"
+                    : "See more like this"
+                }
                 textStyle={Fontscales.paragraphMediumRegular}
               />
               <View style={styles.outter}>
-                {dataFits.map((item, index) => {
-                  return (
-                    <View key={index} style={styles.itemContainer}>
-                      <View style={styles.innerContainer}>
-                        <Image
-                          source={{ uri: item.imageUrl }}
-                          contentFit="cover"
-                          cachePolicy={"memory-disk"}
-                          style={styles.image}
-                        />
-                        <AntDesign
-                          name={item.like ? "heart" : "hearto"}
-                          size={scale.fontPixel(18)}
-                          color={"white"}
-                          style={styles.likeIcon}
-                        />
-                      </View>
-                      <View style={styles.bottomContainer}>
-                        <Text
-                          textStyle={styles.text}
-                          ellipsizeMode={"tail"}
-                          numberOfLines={1}
-                          text={item.name}
-                        />
-                        <Text
-                          text={item.subText}
-                          textStyle={styles.subText}
-                          ellipsizeMode={"tail"}
-                          numberOfLines={2}
-                        />
-                      </View>
-                    </View>
-                  );
-                })}
+                {state?.loading ? (
+                  <LoadMore loading={state.loading} />
+                ) : state.data === null ? null : (
+                  state?.data?.map((item, index) => (
+                    <SeeMore item={item} index={index} />
+                  ))
+                )}
               </View>
             </View>
           </View>

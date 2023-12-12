@@ -57,7 +57,6 @@ export const HomeRenderItems = ({
           },
         });
   };
-
   return (
     <TouchableOpacity
       onPress={() => _detailHandler()}

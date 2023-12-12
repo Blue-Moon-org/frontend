@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Chat,
   Find,
@@ -15,6 +15,7 @@ import { scale } from "../utils/scale";
 import { Text } from "../components/common";
 import { Fontscales } from "../styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "../Context";
 
 const Tab = createBottomTabNavigator();
 export const BottomTabStack = () => {
@@ -38,6 +39,8 @@ export const BottomTabStack = () => {
 
     return () => (sub = false);
   }, [user]);
+
+  const { currentUser } = useContext(AuthContext);
 
   return (
     <Tab.Navigator
@@ -314,7 +317,9 @@ export const BottomTabStack = () => {
           tabBarAccessibilityLabel: "home",
         }}
         name="Profile"
-        component={user?.account_type === "Buyer" ? BuyerProfile : Profile}
+        component={
+          currentUser?.account_type === "Buyer" ? BuyerProfile : Profile
+        }
       />
     </Tab.Navigator>
   );

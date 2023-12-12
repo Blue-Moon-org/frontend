@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, ActivityIndicator } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styles } from "./styles";
 import { Fontscales, SharedStyles } from "../../../styles";
 import { Image } from "expo-image";
@@ -12,7 +12,9 @@ import { baseURL } from "../../../utils/request";
 import { useDispatch, useSelector } from "react-redux";
 import { AddToCart } from "../../../Redux/actions/Market/AddToCart";
 import { colors } from "../../../constants/colorpallette";
-import { CarouselImageDisplay } from "../../../components/primary";
+import { CarouselImageDisplay, LoadMore } from "../../../components/primary";
+import { seeMoreMarket } from "../../../Redux/actions/Post/SeeMoreMarket";
+import { SeeMore } from "../PostDetail/SeeMore";
 
 export const SearchMarketDetail = () => {
   const route = useRoute();
@@ -31,6 +33,16 @@ export const SearchMarketDetail = () => {
     setCurrentIndex(number);
     setShowImagePreview(true);
   };
+
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      dispatch(seeMoreMarket(route.params?.item?.id));
+    }
+    return () => (sub = false);
+  }, [route.params?.item?.id]);
+
+  const state = useSelector((state) => state.seeMoreMarket);
 
   return (
     <>
@@ -121,7 +133,7 @@ export const SearchMarketDetail = () => {
                 <TouchableOpacity
                   onPress={() =>
                     navigate("DesignerProfile", {
-                      designerDetail: route.params.item.user,
+                      designerDetail: route.params.item.owner,
                     })
                   }
                   activeOpacity={0.9}
@@ -130,7 +142,7 @@ export const SearchMarketDetail = () => {
                   <View style={styles.userProfileContainer}>
                     <Image
                       source={{
-                        uri: `${baseURL + route.params.item.user.brand_image}`,
+                        uri: `${baseURL + route.params.item?.owner.brand_image}`,
                       }}
                       style={styles.userProfile}
                       contentFit="cover"
@@ -140,7 +152,7 @@ export const SearchMarketDetail = () => {
                   <View style={styles.userdetailContainer}>
                     <Text
                       text={
-                        route.params.item?.user?.brand_name ?? "Not provided"
+                        route.params.item?.owner?.brand_name ?? "Not provided"
                       }
                       numberOfLines={1}
                       ellipsizeMode={"tail"}
@@ -150,7 +162,7 @@ export const SearchMarketDetail = () => {
                       ]}
                     />
                     <Text
-                      text={route.params.item.user.fullname ?? "Not Provided"}
+                      text={route.params.item?.owner.fullname ?? "Not Provided"}
                       numberOfLines={1}
                       ellipsizeMode={"tail"}
                       textStyle={[
@@ -260,44 +272,21 @@ export const SearchMarketDetail = () => {
             </View>
             <View style={styles.seeMoreContainer}>
               <Text
-                text={"See more like this"}
+                text={
+                  state.data?.length < 1
+                    ? "No Recommendations for this post"
+                    : "See more like this"
+                }
                 textStyle={Fontscales.paragraphMediumRegular}
               />
               <View style={styles.outter}>
-                {dataFits.map((item, index) => {
-                  return (
-                    <View key={index} style={styles.itemContainer}>
-                      <View style={styles.innerContainer}>
-                        <Image
-                          source={{ uri: item.imageUrl }}
-                          contentFit="cover"
-                          cachePolicy={"memory-disk"}
-                          style={styles.image}
-                        />
-                        <AntDesign
-                          name={item.like ? "heart" : "hearto"}
-                          size={scale.fontPixel(18)}
-                          color={"white"}
-                          style={styles.likeIcon}
-                        />
-                      </View>
-                      <View style={styles.bottomContainer}>
-                        <Text
-                          textStyle={styles.text}
-                          ellipsizeMode={"tail"}
-                          numberOfLines={1}
-                          text={item.name}
-                        />
-                        <Text
-                          text={item.subText}
-                          textStyle={styles.subText}
-                          ellipsizeMode={"tail"}
-                          numberOfLines={2}
-                        />
-                      </View>
-                    </View>
-                  );
-                })}
+                {state?.loading ? (
+                  <LoadMore loading={state.loading} />
+                ) : state.data === null ? null : (
+                  state?.data?.map((item, index) => (
+                    <SeeMore item={item} index={index} />
+                  ))
+                )}
               </View>
             </View>
           </View>

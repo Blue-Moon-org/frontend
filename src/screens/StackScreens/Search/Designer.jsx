@@ -1,17 +1,52 @@
 import { FlatList, View } from "react-native";
-import React from "react";
-import { Text, Button } from "../../../components/common";
-import { designerSearchResultData } from "./data";
+import React, { useState, useEffect, useCallback } from "react";
+import { Text } from "../../../components/common";
 import { Fontscales } from "../../../styles";
 import { scale } from "../../../utils/scale";
-import { styles } from "./styles";
-import { colors } from "../../../constants/colorpallette";
-import { Image } from "expo-image";
-import { SearchLoading } from "../../../components/primary";
+import {
+  ErrorMore,
+  LoadMore,
+  SearchLoading,
+} from "../../../components/primary";
 import DesignerList from "./DesignerList";
+import { useDispatch } from "react-redux";
+import { peopleSearch } from "../../../Redux/actions/Post/search";
 
-export const Designer = ({ people }) => {
-  console.warn(people.dataPeople);
+export const Designer = ({ people, searchText }) => {
+  const dispatch = useDispatch();
+
+  //     loadingMorePeople: true,
+  // loadingPeople: false,
+  // errorPeople: "",
+  // isListEndPeople: null,
+  // errorMorePeople: "",
+
+  const [page, updatePage] = useState(1);
+
+  useEffect(() => {
+    let subscribe = true;
+
+    if (subscribe) {
+      if (searchText.length < 3) {
+        return;
+      } else {
+        dispatch(peopleSearch(searchText, page, "navigate"));
+      }
+    }
+
+    return () => (subscribe = false);
+  }, [page]);
+
+  const fetchMoreFeeds = useCallback(() => {
+    if (people.isListEndPeople === null) {
+      return;
+    } else {
+      if (people.loadingMorePeople === false) {
+        updatePage(page + 1);
+      }
+    }
+  }, [people.isListEndPeople]);
+
   return (
     <>
       {people.loadingPeople ? <SearchLoading /> : null}
@@ -24,7 +59,21 @@ export const Designer = ({ people }) => {
               <DesignerList item={item} index={index} />
             )}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{}}
+            keyExtractor={(item, index) => item.id}
+            // ListEmptyComponent={() => <HomeListComponentEmpty state={state} />}
+            contentContainerStyle={{
+              marginTop: scale.pixelSizeVertical(4),
+            }}
+            onEndReachedThreshold={0.5}
+            scrollEventThrottle={16}
+            onEndReached={() => fetchMoreFeeds()}
+            ListFooterComponent={() =>
+              people.errorMorePeople ? (
+                <ErrorMore state={people} />
+              ) : (
+                <LoadMore loading={people.loadingMorePeople} />
+              )
+            }
           />
         </View>
       </View>

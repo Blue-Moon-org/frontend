@@ -27,14 +27,14 @@ import { colors } from "../../../constants/colorpallette";
 import StarRating from "react-native-star-rating-widget";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { baseURL } from "../../../utils/request";
-import { AddReview } from "../../../Redux/actions/Market/review";
+import { addComment } from "../../../Redux/actions/Post/AddComment";
 import { useDispatch, useSelector } from "react-redux";
 import { TrackOrders } from "../../../Redux/actions/Market/OrderTracking";
 import { CheckOrder } from "../../../Redux/actions/Market/GetOrders";
 import { Lodaing } from "../../../components/primary";
 import { createChat } from "../../../Redux/actions/Chat/ChatCreate";
 
-export const OrderDetail = () => {
+export const NotiOrderDetail = () => {
   const { navigate, setOptions } = useNavigation();
   const dispatch = useDispatch();
 
@@ -115,7 +115,7 @@ export const OrderDetail = () => {
       return;
     } else {
       dispatch(
-        AddReview(
+        addComment(
           comment,
           params.item?.order?.order_products
             ?.map((each) => each?.product.id)
@@ -149,7 +149,7 @@ export const OrderDetail = () => {
                   contentFit="cover"
                   source={{
                     uri: `${
-                      baseURL + params.productItem?.product.images[0]?.image
+                      baseURL + params.productItem[0]?.product.images[0]?.image
                     }`,
                   }}
                 />
@@ -158,7 +158,7 @@ export const OrderDetail = () => {
                 <View>
                   <Text
                     textStyle={Fontscales.headingSmallMedium}
-                    text={params?.productItem?.product.title}
+                    text={params?.productItem[0]?.product.title}
                     numberOfLines={1}
                     ellipsizeMode={"tail"}
                   />
@@ -571,7 +571,7 @@ export const OrderDetail = () => {
                 />
                 <Text
                   textStyle={Fontscales.labelMediumRegular}
-                  text={params?.productItem?.product?.title}
+                  text={params?.productItem[0]?.product?.title}
                 />
               </View>
               <View style={styles.eachDetailContainer}>
@@ -581,7 +581,7 @@ export const OrderDetail = () => {
                 />
                 <Text
                   textStyle={Fontscales.labelMediumRegular}
-                  text={params?.productItem?.product?.owner}
+                  text={params?.productItem[0]?.product?.owner}
                 />
               </View>
               <View style={styles.eachDetailContainer}>
@@ -591,7 +591,7 @@ export const OrderDetail = () => {
                 />
                 <Text
                   textStyle={Fontscales.labelMediumRegular}
-                  text={naira.format(params?.productItem?.product?.price)}
+                  text={naira.format(params?.productItem[0]?.product?.price)}
                 />
               </View>
             </View>

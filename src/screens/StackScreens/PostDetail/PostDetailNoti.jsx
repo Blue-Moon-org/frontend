@@ -13,7 +13,6 @@ import { KeyBoardAvoidingWrapper, Text } from "../../../components/common";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { colors } from "../../../constants/colorpallette";
 import { scale } from "../../../utils/scale";
-import { dataFits } from "../../BottomTabScreens/Home/data";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { baseURL } from "../../../utils/request";
 import { addComment } from "../../../Redux/actions/Post/AddComment";
@@ -21,51 +20,41 @@ import { useSelector, useDispatch } from "react-redux";
 import { addFavourite } from "../../../Redux/actions/Post/FavoritePost";
 import { postDetail } from "../../../Redux/actions/Post/PostDetail";
 import { fetchLikes } from "../../../Redux/actions";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { CarouselImageDisplay, LoadMore } from "../../../components/primary";
 import { seeMorePost } from "../../../Redux/actions/Post/SeeMorePost";
 import { SeeMore } from "./SeeMore";
 
-export const PersonalProfilePostDetail = () => {
-  const { navigate, setOptions, goBack } = useNavigation();
+export const PostDetailNoti = () => {
+  const { navigate } = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
-
-  setOptions({
-    headerShown: true,
-    title: "Post",
-    headerTitleAlign: "left",
-    headerTitleAllowFontScaling: true,
-    headerTitleStyle: Fontscales.paragraphLargeMedium,
-    headerLeft: () => (
-      <MaterialCommunityIcons
-        onPress={() => goBack()}
-        style={{ marginLeft: scale.pixelSizeHorizontal(16) }}
-        name="keyboard-backspace"
-        size={scale.fontPixel(24)}
-        color="black"
-      />
-    ),
-  });
 
   const [values, updateValue] = useState({
     comment: "",
   });
 
   const [favValues, updateFavValues] = useState({
-    count: route.params?.item?.favs,
-    fav: route.params?.item?.user_has_favorited,
+    count: route.params?.item?.detail?.favs,
+    fav: route.params?.item?.detail?.user_has_favorited,
   });
 
   const [likeValues, updateLikeValues] = useState({
-    likeCount: route.params?.item?.likes,
-    like: route.params?.item?.user_has_liked,
+    likeCount: route.params?.item?.detail?.likes,
+    like: route.params?.item?.detail?.user_has_liked,
   });
 
+  const [commentNo, updateCommentNo] = useState(
+    route.params?.item?.detail?.no_comments
+  );
+
   const _commentHandler = () => {
-    dispatch(addComment(values.comment, route?.params?.item?.id, navigate));
+    dispatch(
+      addComment(values.comment, route?.params?.item?.detail?.id, navigate)
+    );
+    dispatch(postDetail(route.params?.item?.detail?.id));
     Keyboard.dismiss();
     updateValue({ ...values, comment: "" });
+    updateCommentNo(detail?.data?.no_comments);
   };
 
   const state = useSelector((state) => state.comment);
@@ -74,12 +63,25 @@ export const PersonalProfilePostDetail = () => {
   useEffect(() => {
     let sub = true;
     if (sub) {
-      dispatch(postDetail(route.params?.item?.id));
-      dispatch(seeMorePost(route.params?.item?.id));
+      dispatch(postDetail(route.params?.item?.detail?.id));
+      dispatch(seeMorePost(route.params?.item?.detail?.id));
     }
     return () => (sub = false);
-  }, [route.params?.item?.id]);
-  // const detail = useSelector((state) => state.postDetail);
+  }, [route.params?.item?.detail?.id]);
+  const detail = useSelector((state) => state.postDetail);
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      if (detail?.data?.no_comments === undefined) {
+        return;
+      } else {
+        updateCommentNo(detail?.data?.no_comments);
+      }
+    }
+
+    return () => (sub = false);
+  }, [detail?.data?.no_comments]);
+
   // const allData = useSelector((state) => state.fetchFeedsAll);
   // const posDel = useSelector((state) => state.postDetail);
   // dispatch(postDetail(route.params?.item?.id));
@@ -88,14 +90,13 @@ export const PersonalProfilePostDetail = () => {
   // const fav = useSelector((state) => state.favourite);
 
   const _handleFav = () => {
-    dispatch(addFavourite(route.params?.item?.id, navigate));
+    dispatch(addFavourite(route.params?.item?.detail?.id, navigate));
     updateFavValues({
       ...favValues,
       count: favValues.fav ? favValues.count - 1 : favValues.count + 1,
       fav: !favValues.fav,
     });
   };
-
   const _handleLike = () => {
     dispatch(fetchLikes(route.params?.item?.id));
     updateLikeValues({
@@ -121,7 +122,7 @@ export const PersonalProfilePostDetail = () => {
         <CarouselImageDisplay
           setCurrentIndex={setCurrentIndex}
           currentIndex={currentIndex}
-          item={route.params?.item?.detail?.images}
+          item={route.params?.detail?.images}
           setShowImagePreview={setShowImagePreview}
           showImagePreview={showImagePreview}
         />
@@ -140,7 +141,7 @@ export const PersonalProfilePostDetail = () => {
                       cachePolicy={"memory-disk"}
                       source={{
                         uri: `${
-                          baseURL + route.params?.item?.images[0]?.image
+                          baseURL + route.params?.item?.detail?.images[0]?.image
                         }`,
                       }}
                       style={styles.mainImage}
@@ -157,7 +158,7 @@ export const PersonalProfilePostDetail = () => {
                     <Image
                       source={{
                         uri: `${
-                          baseURL + route.params?.item?.images[1]?.image
+                          baseURL + route.params?.item?.detail?.images[1]?.image
                         }`,
                       }}
                       style={styles.sideImage}
@@ -172,7 +173,7 @@ export const PersonalProfilePostDetail = () => {
                     <Image
                       source={{
                         uri: `${
-                          baseURL + route.params?.item?.images[2]?.image
+                          baseURL + route.params?.item?.detail?.images[2]?.image
                         }`,
                       }}
                       style={styles.sideImage}
@@ -187,7 +188,7 @@ export const PersonalProfilePostDetail = () => {
                     <Image
                       source={{
                         uri: `${
-                          baseURL + route.params?.item?.images[3]?.image
+                          baseURL + route.params?.item?.detail?.images[3]?.image
                         }`,
                       }}
                       style={styles.sideImage}
@@ -198,7 +199,15 @@ export const PersonalProfilePostDetail = () => {
               </View>
 
               <View style={styles.profilecontainer}>
-                <View style={styles.imageText}>
+                <TouchableOpacity
+                  activeOpacity={0.9}
+                  onPress={() =>
+                    navigate("DesignerProfile", {
+                      designerDetail: route.params.item.owner,
+                    })
+                  }
+                  style={styles.imageText}
+                >
                   <View style={styles.userProfileContainer}>
                     <Image
                       source={{
@@ -231,7 +240,7 @@ export const PersonalProfilePostDetail = () => {
                       ]}
                     />
                   </View>
-                </View>
+                </TouchableOpacity>
 
                 <View style={styles.reactionIcons}>
                   <View style={styles.iconTextContainer}>
@@ -248,20 +257,22 @@ export const PersonalProfilePostDetail = () => {
                       textStyle={styles.likeShareText}
                     />
                   </View>
-                  <AntDesign
-                    name={favValues.fav ? "star" : "staro"}
-                    size={scale.fontPixel(16)}
-                    color={colors.blackText}
-                    onPress={() => {
-                      _handleFav();
-                    }}
-                  />
-                  <Text
-                    text={favValues.count}
-                    numberOfLines={1}
-                    ellipsizeMode={"tail"}
-                    textStyle={styles.likeShareText}
-                  />
+                  <View style={styles.iconTextContainer}>
+                    <AntDesign
+                      name={favValues.fav ? "star" : "staro"}
+                      size={scale.fontPixel(16)}
+                      color={colors.blackText}
+                      onPress={() => {
+                        _handleFav();
+                      }}
+                    />
+                    <Text
+                      text={favValues.count}
+                      numberOfLines={1}
+                      ellipsizeMode={"tail"}
+                      textStyle={styles.likeShareText}
+                    />
+                  </View>
                   <Feather
                     style={styles.likeShareText}
                     name="send"
@@ -272,13 +283,13 @@ export const PersonalProfilePostDetail = () => {
               </View>
               <View style={styles.aboutContainer}>
                 <Text
-                  text={route.params?.item.title}
+                  text={route.params?.item?.detail?.title}
                   textStyle={[Fontscales.headingSmallBold]}
                   ellipsizeMode={"tail"}
                   numberOfLines={1}
                 />
                 <Text
-                  text={route.params?.item.body}
+                  text={route.params?.item.detail?.body}
                   textStyle={Fontscales.paragraphSmallRegular}
                   numberOfLines={2}
                   ellipsizeMode={"tail"}
@@ -323,18 +334,28 @@ export const PersonalProfilePostDetail = () => {
                   )}
                 </View>
               </View>
-              <Text
-                onPress={() =>
-                  navigate("Comments", {
-                    item: route.params.item,
-                    hasLike: route.params?.item.likes,
-                  })
-                }
-                ellipsizeMode={"tail"}
-                numberOfLines={1}
-                textStyle={styles.comment}
-                text={`view ${route.params?.item?.no_comments} comments`}
-              />
+              {commentNo < 1 ? (
+                <Text
+                  onPress={() => {}}
+                  ellipsizeMode={"tail"}
+                  numberOfLines={1}
+                  textStyle={styles.comment}
+                  text={`No new comments`}
+                />
+              ) : (
+                <Text
+                  onPress={() =>
+                    navigate("Comments", {
+                      item: route.params.item,
+                      hasLike: route.params?.item.likes,
+                    })
+                  }
+                  ellipsizeMode={"tail"}
+                  numberOfLines={1}
+                  textStyle={styles.comment}
+                  text={`view ${commentNo} comments`}
+                />
+              )}
             </View>
             <View style={styles.seeMoreContainer}>
               <Text
@@ -345,6 +366,7 @@ export const PersonalProfilePostDetail = () => {
                 }
                 textStyle={Fontscales.paragraphMediumRegular}
               />
+
               <View style={styles.outter}>
                 {seeMore?.loading ? (
                   <LoadMore loading={seeMore.loading} />

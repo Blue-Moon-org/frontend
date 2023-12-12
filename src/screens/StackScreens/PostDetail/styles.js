@@ -71,6 +71,7 @@ export const styles = StyleSheet.create({
   iconTextContainer: {
     marginRight: scale.pixelSizeHorizontal(8),
     flexDirection: "row",
+    alignItems: "center",
   },
   likeShareText: {
     fontFamily: "Outfit_400Regular",
@@ -120,10 +121,10 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   itemContainer: {
-    width: "30%",
+    width: "31%",
     height: scale.heightPixel(182),
     borderRadius: scale.fontPixel(10),
-    marginBottom: scale.pixelSizeVertical(20),
+    marginBottom: scale.pixelSizeVertical(10),
     backgroundColor: colors.mainPrimary,
     shadowColor: "#000",
     marginTop: scale.pixelSizeVertical(16),

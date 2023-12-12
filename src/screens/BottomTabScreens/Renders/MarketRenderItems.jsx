@@ -28,22 +28,22 @@ export const MarketRenderItems = ({
   const { currentUser } = useContext(AuthContext);
 
   const detailHandler = () => {
-    !personalProfile
-      ? profile
-        ? navigate("ProfileMarketDetail", {
+    personalProfile === true
+      ? navigate("RootStack", {
+          screen: "PersonalMarketPostDetail",
+          params: {
             item,
             hasCarted,
-            designerDetail,
-          })
-        : navigate("RootStack", {
-            screen: "MarketDetail",
-            params: {
-              item,
-              hasCarted,
-            },
-          })
+          },
+        })
+      : profile
+      ? navigate("ProfileMarketDetail", {
+          item,
+          hasCarted,
+          designerDetail,
+        })
       : navigate("RootStack", {
-          screen: "PersonalMarketPostDetail",
+          screen: "MarketDetail",
           params: {
             item,
             hasCarted,
@@ -77,7 +77,7 @@ export const MarketRenderItems = ({
             color={colors.grey1}
             size={scale.fontPixel(25)}
           />
-        ) : (
+        ) : item.owner.id === item.user.id ? null : (
           <Ionicons
             name={
               data

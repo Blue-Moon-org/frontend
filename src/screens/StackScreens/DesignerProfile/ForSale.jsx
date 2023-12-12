@@ -47,6 +47,7 @@ export const ForSale = ({ detail, designerDetail }) => {
       }
     }
   }, [state.isListEndSale]);
+  
 
   return (
     <>
@@ -56,7 +57,7 @@ export const ForSale = ({ detail, designerDetail }) => {
           showsVerticalScrollIndicator={false}
           numColumns={3}
           data={state.dataForSale}
-          renderItem={({ item, index, separators, designerDetail }) => (
+          renderItem={({ item, index, separators }) => (
             <MarketRenderItems
               index={index}
               item={item}

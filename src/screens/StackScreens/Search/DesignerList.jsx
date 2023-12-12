@@ -1,16 +1,32 @@
-import { View } from "react-native";
-import React from "react";
+import { View, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
 import { Fontscales } from "../../../styles";
 import { scale } from "../../../utils/scale";
 import { styles } from "./styles";
 import { colors } from "../../../constants/colorpallette";
 import { Image } from "expo-image";
 import { Text, Button } from "../../../components/common";
+import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import { Follow } from "../../../Redux/actions/Follow";
 
 const DesignerList = ({ item, index }) => {
-  console.warn(item);
+  // console.warn(item);
+  const [follow, updateFollow] = useState(item?.user.is_following);
+  const dispatch = useDispatch();
+
+  const { navigate } = useNavigation();
+
   return (
-    <View style={styles.DContainer}>
+    <TouchableOpacity
+      onPress={() =>
+        navigate("DesignerProfile", {
+          designerDetail: item,
+        })
+      }
+      style={styles.DContainer}
+      activeOpacity={0.8}
+    >
       <View style={styles.DImageContainer}>
         <Image
           style={styles.DImage}
@@ -41,18 +57,24 @@ const DesignerList = ({ item, index }) => {
           }}
         >
           <Text textStyle={Fontscales.labelSmallMedium} text={item?.fullname} />
-          <Button
-            textStyle={Fontscales.paragraphSmallRegular}
-            title={item.isFollowing ? "Following" : "Follow"}
-            containerStyle={{
-              paddingHorizontal: scale.pixelSizeHorizontal(10),
-              paddingVertical: scale.pixelSizeVertical(3),
-              backgroundColor: item.isFollowing
-                ? colors.lightPrimary
-                : colors.mainPrimary,
-              borderRadius: scale.fontPixel(4),
-            }}
-          />
+          {item?.id === item?.user?.id ? null : (
+            <Button
+              onPress={() => {
+                updateFollow(!follow);
+                dispatch(Follow(item?.owner?.id));
+              }}
+              textStyle={Fontscales.paragraphSmallRegular}
+              title={follow ? "Following" : "Follow"}
+              containerStyle={{
+                paddingHorizontal: scale.pixelSizeHorizontal(10),
+                paddingVertical: scale.pixelSizeVertical(3),
+                backgroundColor: follow
+                  ? colors.lightPrimary
+                  : colors.mainPrimary,
+                borderRadius: scale.fontPixel(4),
+              }}
+            />
+          )}
         </View>
         <Text
           textStyle={Fontscales.paragraphSmallRegular}
@@ -61,7 +83,7 @@ const DesignerList = ({ item, index }) => {
           ellipsizeMode={"tail"}
         />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

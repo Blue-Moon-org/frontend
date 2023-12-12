@@ -10,10 +10,14 @@ export const GetCompletedOrders = (navigate) => async (dispatch) => {
   });
 
   const jsonValue = await AsyncStorage.getItem("userTokens");
+  const Value = await AsyncStorage.getItem("user");
   let result = JSON.parse(jsonValue);
+  let user = JSON.parse(Value);
 
   await fetchGetRequestInit(
-    `/api/orders/get_my_orders/?status=Delivered`, // /api/add-to-cart/product-title/
+    user.account_type === "Designer"
+      ? `/api/orders/get_my_orders/?status=Delivered`
+      : "/api/orders/get_orders/?status=Delivered", // /api/add-to-cart/product-title/
     `Bearer ${result.access}`
   )
     .then((res) => {
@@ -32,3 +36,7 @@ export const GetCompletedOrders = (navigate) => async (dispatch) => {
       });
     });
 };
+
+//
+//   ? "/api/orders/get_my_orders/"
+//   : `/api/orders/get_orders/`, /

@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import { userLocationPermission } from "../Redux/actions/permission/location";
 import { AuthContext } from "../Context";
+import * as Linking from "expo-linking";
 
 const Stack = createSharedElementStackNavigator();
 
@@ -56,10 +57,20 @@ export const StackContainer = () => {
     return () => (unsubscribe = false);
   }, []);
 
+  const prefix = Linking.createURL("/");
+
+  const linking = {
+    prefixes: [prefix],
+    config: {
+      screens: {
+        PostDetail: "PostDetail",
+      },
+    },
+  };
   return (
     <>
       {authloaded !== false && (
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             {user ? (
               <Stack.Screen name="Stacks" component={Stacks} />

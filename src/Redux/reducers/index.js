@@ -68,6 +68,10 @@ import { getCompletedOrderReducer } from "./Market/CompletedOrders";
 import { FollowReducer } from "./FollowReducer";
 import { FollowingReducer } from "./Following";
 import { FollowersReducer } from "./Followers";
+import { seeMorePostReducer } from "./Posts/SeeMorePost";
+import { seeMoreMarketReducer } from "./Posts/SeeMoreMarket";
+import { ReviewsReducer } from "./Posts/review";
+import { fetchFavReducer } from "./Posts/Favs";
 
 export const reducers = combineReducers({
   loginState: loginReducer,
@@ -126,4 +130,8 @@ export const reducers = combineReducers({
   follow: FollowReducer,
   following: FollowingReducer,
   followers: FollowersReducer,
+  seeMorePost: seeMorePostReducer,
+  seeMoreMarket: seeMoreMarketReducer,
+  reviews: ReviewsReducer,
+  favs: fetchFavReducer,
 });

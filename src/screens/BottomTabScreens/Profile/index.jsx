@@ -56,6 +56,8 @@ export const Profile = () => {
     return () => (sub = false);
   }, [user]);
 
+  // console.warn(currentUser?.id);
+
   const add =
     Platform.OS === "ios" && Constants.statusBarHeight < 30
       ? scale.heightPixel(40)
